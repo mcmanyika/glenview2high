@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+    font-family: 'Inter', sans-serif; /* Assuming 'Inter' is imported */
+    color: #333; /* Example text color */
+  }

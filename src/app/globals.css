@@ -7,3 +7,10 @@ body {
     font-family: 'Inter', sans-serif; /* Assuming 'Inter' is imported */
     color: #333; /* Example text color */
   }
+
+  .bg-blue {
+    background-color: #85b6fb
+  }
+  .bg-blue2{
+    background-color: #85b6fb36;
+  }

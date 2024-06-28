@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { GlobeAltIcon } from '@heroicons/react/24/outline'; // Import the GlobeAltIcon from Heroicons v2
+import Image from 'next/image'; // Import Image component from Next.js
 
 const Header = () => {
   const [isSticky, setIsSticky] = useState(false);
@@ -24,12 +25,21 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed z-50 w-full bg-green-500 text-white transition-all duration-500 ease-in-out ${
+      className={`fixed z-50 w-full bg-blue  text-white transition-all duration-500 ease-in-out ${
         isSticky ? 'top-0 p-4' : 'bottom-0 p-10'
       }`}
     >
       <nav className="max-w-4xl mx-auto flex justify-between items-center">
-        <h1 className="text-sm md:text-3xl font-normal uppercase">Mufakose 2 High</h1>
+        <div className="flex items-center space-x-2">
+          <Image
+            src="/images/logo.png"
+            alt="Logo"
+            width={isSticky ? 50 : 80} // Adjusted height based on sticky state
+            height={isSticky ? 50 : 80} // Adjusted height based on sticky state
+            className="rounded"
+          />
+          <h1 className="text-sm md:text-2xl font-normal uppercase">GlenView 2 High</h1>
+        </div>
         <ul className="flex space-x-4">
           <li>
             <Link href="/about">

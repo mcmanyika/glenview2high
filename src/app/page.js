@@ -5,12 +5,13 @@ import Features from "./components/Features";
 import EventsCalendar from "./components/EventsCalendar";
 import Address from "./components/Address";
 import MissionStatement from "./components/MissionStatement";
+import Fountain from "./components/Fountain";
+import Placeholder from "./components/Placeholder";
 
 export default function Home() {
   return (
     <Layout>
-      {/* <MissionStatement /> */}
-      <Features />
+      <Placeholder />
     </Layout>
   );
 }

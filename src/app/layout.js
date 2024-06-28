@@ -4,7 +4,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "MUFAKOSE 2 HIGH SCHOOL",
+  title: "GLENVIEW 2 HIGH SCHOOL",
 };
 
 export default function RootLayout({ children }) {

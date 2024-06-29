@@ -18,7 +18,7 @@ const Layout = ({ children }) => {
         {children}
       </main>
       <NewStudents />
-      {/* <Address /> */}
+      <Address />
       <Footer />
     </div>
   );

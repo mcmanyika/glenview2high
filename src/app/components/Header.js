@@ -1,8 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { GlobeAltIcon } from '@heroicons/react/24/outline'; // Import the GlobeAltIcon from Heroicons v2
-import Image from 'next/image'; // Import Image component from Next.js
+import { GlobeAltIcon } from '@heroicons/react/24/outline';
+import Image from 'next/image';
 
 const Header = () => {
   const [isSticky, setIsSticky] = useState(false);
@@ -25,8 +25,8 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed z-50 w-full bg-blue  text-white transition-all duration-500 ease-in-out ${
-        isSticky ? 'top-0 p-4' : 'bottom-0 p-10'
+      className={`fixed z-50 w-full bg-blue text-white transition-all duration-500 ease-in-out ${
+        isSticky ? 'top-0 p-4 ' : 'bottom-0 border-t-4 border-t-white p-10'
       }`}
     >
       <nav className="max-w-4xl mx-auto flex justify-between items-center">
@@ -34,34 +34,32 @@ const Header = () => {
           <Image
             src="/images/logo.png"
             alt="Logo"
-            width={isSticky ? 50 : 80} // Adjusted height based on sticky state
+            width={isSticky ? 50 : 80} // Adjusted width based on sticky state
             height={isSticky ? 50 : 80} // Adjusted height based on sticky state
             className="rounded"
           />
           <h1 className="text-sm md:text-2xl font-normal uppercase">GlenView 2 High</h1>
         </div>
-        <ul className="flex space-x-4">
+        <ul className="hidden md:flex space-x-4"> {/* Hide on mobile, show on medium screens and above */}
           <li>
             <Link href="/about">
               <div className="hover:underline">About</div>
             </Link>
           </li>
           <li>
-            <Link href="/contact">
-              <div className="hover:underline">Contact</div>
+            <Link href="/academics">
+              <div className="hover:underline">Academics</div>
             </Link>
           </li>
           <li>
-            <a
-              href="https://www.facebook.com/your-school-page"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white hover:text-gray-300 flex items-center space-x-2"
-            >
-              <span className="sr-only">Facebook</span>
-              <GlobeAltIcon className="h-6 w-6" aria-hidden="true" />
-              <span>Facebook</span>
-            </a>
+            <Link href="/sports">
+              <div className="hover:underline">Sports</div>
+            </Link>
+          </li>
+          <li>
+            <Link href="/admissions">
+              <div className="hover:underline">Admissions</div>
+            </Link>
           </li>
         </ul>
       </nav>

@@ -43,22 +43,22 @@ const Header = () => {
         <ul className="hidden md:flex space-x-4"> {/* Hide on mobile, show on medium screens and above */}
           <li>
             <Link href="/about">
-              <div className="hover:underline">About</div>
+              <div>About</div>
             </Link>
           </li>
           <li>
             <Link href="/academics">
-              <div className="hover:underline">Academics</div>
+              <div>Academics</div>
             </Link>
           </li>
           <li>
             <Link href="/sports">
-              <div className="hover:underline">Sports</div>
+              <div>Sports</div>
             </Link>
           </li>
           <li>
             <Link href="/admissions">
-              <div className="hover:underline">Admissions</div>
+              <div>Admissions</div>
             </Link>
           </li>
         </ul>

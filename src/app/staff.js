@@ -10,10 +10,12 @@ import MissionStatement from "./components/MissionStatement";
 import Fountain from "./components/Fountain";
 import Placeholder from "./components/Placeholder";
 
-export default function Home() {
+export default function Staff() {
+  const session = useSession();
   return (
     <Layout>
       <Features />
+      <button onClick={() => signOut()}>Logout</button>
     </Layout>
   );
 }

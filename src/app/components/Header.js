@@ -3,8 +3,13 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { GlobeAltIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
+import { useGlobalState, setGlobalState } from '../store';
+import { useSession, signIn, signOut } from 'next-auth/react';
 
 const Header = () => {
+  const session = useSession();
+  const [user] = useGlobalState('user');
+
   const [isSticky, setIsSticky] = useState(false);
 
   useEffect(() => {
@@ -60,6 +65,14 @@ const Header = () => {
             <Link href="/admissions">
               <div>Admissions</div>
             </Link>
+          </li>
+          <li>
+              {session ? 
+                <><button onClick={() => signOut('google')}>Sign Out </button></>
+                :
+                <><button onClick={() => signIn('google')}>Sign In </button></>  
+            }
+              
           </li>
         </ul>
       </nav>

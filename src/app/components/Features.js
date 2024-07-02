@@ -21,20 +21,21 @@ const Features = () => {
   ];
 
   return (
-    <section className=" px-4 md:px-0 mb-10">
+    <section className="px-4 md:px-0 mb-10">
       <div className="flex flex-col md:flex-row justify-around items-center md:items-start space-y-4 md:space-y-0 md:space-x-4">
         {features.map((feature, index) => (
           <div key={index} className="text-center rounded-lg w-full p-4 md:w-1/3 relative group">
             <h3 className="text-2xl p-4">{feature.title}</h3>
             <hr /> <br/>
-            <div className="relative h-64">
-              <Image 
-                src={feature.image}
-                alt={`${feature.title} Image`}
-                layout="fill"
-                objectFit="cover"
-                className="opacity-95"
-              />
+            <div className="relative h-64 overflow-hidden">
+              <div className="h-full w-full transform transition-transform duration-500 group-hover:scale-105">
+                <Image 
+                  src={feature.image}
+                  alt={`${feature.title} Image`}
+                  fill
+                  className="opacity-95 object-cover"
+                />
+              </div>
               <div className="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="text-white p-4 text-center">
                   <p>{feature.description}</p>

@@ -1,13 +1,51 @@
 'use client'
-import { useState } from 'react';
+import Link from 'next/link';
+import { useState, useEffect } from 'react';
 import { MenuIcon, XIcon } from '@heroicons/react/outline'; // Ensure you have heroicons installed
+import { ref, onValue, query, orderByChild, equalTo } from 'firebase/database';
+import { database } from '../../../utils/firebaseConfig'; // Assuming you have database imported from firebaseConfig
 
 const Hero = () => {
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+  const [titles, setTitles] = useState([]);
 
   const handleMenuClick = () => {
     setIsOverlayVisible(!isOverlayVisible);
   };
+
+  useEffect(() => {
+    const fetchData = () => {
+      try {
+        const titleRef = ref(database, 'title'); // Reference to 'title' collection in Firebase
+        const statusQuery = query(titleRef, orderByChild('status'), equalTo('Active')); // Query to filter by status 'Active'
+
+        onValue(statusQuery, (snapshot) => {
+          const data = snapshot.val();
+          if (data) {
+            const titlesArray = Object.keys(data)
+              .map((key) => ({
+                id: key,
+                title: data[key].title, // Adjust according to your database structure
+                status: data[key].status, // Adjust according to your database structure
+              }))
+              .sort((a, b) => {
+                if (a.title === 'Admissions') return 1; // Move 'Admissions' to the end
+                if (b.title === 'Admissions') return -1; // Move 'Admissions' to the end
+                return a.title.localeCompare(b.title); // Sort other titles alphabetically
+              });
+            setTitles(titlesArray);
+          } else {
+            setTitles([]); // Handle no data case
+          }
+        });
+      } catch (error) {
+        console.error('Firebase Error:', error);
+        // Handle error fetching data
+      }
+    };
+
+    fetchData();
+  }, []); // Ensure this effect runs only once on component mount
 
   return (
     <div className="relative h-screen flex items-center justify-center">
@@ -23,12 +61,21 @@ const Hero = () => {
       </div>
       {isOverlayVisible && (
         <div className="fixed inset-0 bg-black bg-opacity-100 flex items-center justify-center z-50">
-          <button
-            className="absolute top-4 right-4 z-60 text-white"
-            onClick={handleMenuClick}
-          >
-            <XIcon className="h-8 w-8" />
-          </button>
+          <div className="absolute top-4 right-4 z-60 text-white">
+            <button onClick={handleMenuClick}>
+              <XIcon className="h-8 w-8" />
+            </button>
+            
+          </div>
+          <div className="max-w-96 mx-auto text-center"> {/* Adjusted to center the list */}
+              {titles.map((rw) => (
+                <div key={rw.id}>
+                  <Link href={`/${rw.id}`}>
+                    <div className="text-gray-300 hover:text-white text-6xl uppercase p-3">{rw.title}</div>
+                  </Link>
+                </div>
+              ))}
+          </div>
         </div>
       )}
       <section className="relative text-white p-10 md:p-20 text-center md:text-left">

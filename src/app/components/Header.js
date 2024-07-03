@@ -2,12 +2,12 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useSession, signIn, signOut } from 'next-auth/react';
+// import { useSession, signIn, signOut } from 'next-auth/react';
 import { ref, onValue, query, orderByChild, equalTo } from 'firebase/database';
 import { database } from '../../../utils/firebaseConfig'; // Assuming you have firebaseConfig set up properly
 
 const Header = () => {
-  const session = useSession();
+  // const session = useSession();
   const [titles, setTitles] = useState([]);
   const [isSticky, setIsSticky] = useState(false);
 

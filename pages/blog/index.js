@@ -2,14 +2,14 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../utils/firebaseConfig';
+import { database } from '../../utils/firebaseConfig';
 
 const BlogList = () => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const querySnapshot = await getDocs(collection(db, 'posts'));
+      const querySnapshot = await getDocs(collection(database, 'posts'));
       const postsList = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setPosts(postsList);
     };

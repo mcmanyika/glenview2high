@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { addDoc, collection } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { useGlobalState } from '../../src/app/store';
-import { db } from '../../utils/firebaseConfig';
+import { database } from '../../utils/firebaseConfig';
 
 const Admin = () => {
   const [title, setTitle] = useState('');
@@ -19,7 +19,7 @@ const Admin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await addDoc(collection(db, 'posts'), {
+      await addDoc(collection(database, 'posts'), {
         title,
         content,
         excerpt: content.substring(0, 100) + '...',

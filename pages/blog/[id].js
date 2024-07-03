@@ -2,7 +2,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../../utils/firebaseConfig';
+import { database } from '../../utils/firebaseConfig';
 
 const BlogPost = () => {
   const router = useRouter();
@@ -12,7 +12,7 @@ const BlogPost = () => {
   useEffect(() => {
     if (id) {
       const getPost = async () => {
-        const docRef = doc(db, 'posts', id);
+        const docRef = doc(database, 'posts', id);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {

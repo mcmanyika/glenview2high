@@ -23,8 +23,9 @@ const Header = () => {
             const titlesArray = Object.keys(data)
               .map((key) => ({
                 id: key,
-                title: data[key].title, // Adjust according to your database structure
-                status: data[key].status, // Adjust according to your database structure
+                title: data[key].title,
+                link: data[key].link, 
+                status: data[key].status, 
               }))
               .sort((a, b) => {
                 if (a.title === 'Admissions') return 1; // Move 'Admissions' to the end
@@ -79,7 +80,7 @@ const Header = () => {
         <ul className="hidden md:flex space-x-4"> {/* Hide on mobile, show on medium screens and above */}
           {titles.map((rw) => (
             <li key={rw.id}>
-              <Link href={`/${rw.id}`}>
+              <Link href={`${rw.link}`}>
                 <div className="hover:text-gray-300">{rw.title}</div>
               </Link>
             </li>

@@ -26,6 +26,7 @@ const Hero = () => {
               .map((key) => ({
                 id: key,
                 title: data[key].title, // Adjust according to your database structure
+                link: data[key].link,
                 status: data[key].status, // Adjust according to your database structure
               }))
               .sort((a, b) => {
@@ -70,7 +71,7 @@ const Hero = () => {
           <div className="max-w-96 mx-auto text-center"> {/* Adjusted to center the list */}
               {titles.map((rw) => (
                 <div key={rw.id}>
-                  <Link href={`/${rw.id}`}>
+                  <Link href={`${rw.link}`}>
                     <div className="text-gray-300 hover:text-white text-6xl uppercase p-3">{rw.title}</div>
                   </Link>
                 </div>

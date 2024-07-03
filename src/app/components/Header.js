@@ -1,18 +1,49 @@
-'use client';
+// Import necessary dependencies
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { GlobeAltIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
-import { useGlobalState, setGlobalState } from '../store';
 import { useSession, signIn, signOut } from 'next-auth/react';
+import { ref, onValue, query, orderByChild, equalTo } from 'firebase/database';
+import { database } from '../../../utils/firebaseConfig'; // Assuming you have firebaseConfig set up properly
 
 const Header = () => {
   const session = useSession();
-  const [user] = useGlobalState('user');
-
+  const [titles, setTitles] = useState([]);
   const [isSticky, setIsSticky] = useState(false);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const titleRef = ref(database, 'title'); // Reference to 'title' collection in Firebase
+        const statusQuery = query(titleRef, orderByChild('status'), equalTo('Active')); // Query to filter by status 'Active'
+
+        onValue(statusQuery, (snapshot) => {
+          const data = snapshot.val();
+          if (data) {
+            const titlesArray = Object.keys(data)
+              .map((key) => ({
+                id: key,
+                title: data[key].title, // Adjust according to your database structure
+                status: data[key].status, // Adjust according to your database structure
+              }))
+              .sort((a, b) => {
+                if (a.title === 'Admissions') return 1; // Move 'Admissions' to the end
+                if (b.title === 'Admissions') return -1; // Move 'Admissions' to the end
+                return a.title.localeCompare(b.title); // Sort other titles alphabetically
+              });
+            setTitles(titlesArray);
+          } else {
+            setTitles([]); // Handle no data case
+          }
+        });
+      } catch (error) {
+        console.error('Firebase Error:', error);
+        // Handle error fetching data
+      }
+    };
+
+    fetchData();
+
     const handleScroll = () => {
       if (window.scrollY > 600) {
         setIsSticky(true);
@@ -46,34 +77,20 @@ const Header = () => {
           <h1 className="text-sm md:text-2xl font-normal uppercase">GlenView 2 High</h1>
         </div>
         <ul className="hidden md:flex space-x-4"> {/* Hide on mobile, show on medium screens and above */}
-          <li>
-            <Link href="/about">
-              <div>About</div>
-            </Link>
-          </li>
-          <li>
-            <Link href="/academics">
-              <div>Academics</div>
-            </Link>
-          </li>
-          <li>
-            <Link href="/sports">
-              <div>Sports</div>
-            </Link>
-          </li>
-          <li>
-            <Link href="/admissions">
-              <div>Admissions</div>
-            </Link>
-          </li>
-          <li>
-              {session ? 
-                <><button onClick={() => signOut('google')}>Sign Out </button></>
-                :
-                <><button onClick={() => signIn('google')}>Sign In </button></>  
-            }
-              
-          </li>
+          {titles.map((rw) => (
+            <li key={rw.id}>
+              <Link href={`/${rw.id}`}>
+                <div className="hover:text-gray-300">{rw.title}</div>
+              </Link>
+            </li>
+          ))}
+          {/* <li>
+            {session ? (
+              <button onClick={() => signOut('google')}>Sign Out </button>
+            ) : (
+              <button onClick={() => signIn('google')}>Sign In </button>
+            )}
+          </li> */}
         </ul>
       </nav>
     </header>

@@ -14,7 +14,7 @@ const Features = () => {
       description: 'We have committees such as Disciplinary and Guidance and Counselling that work with the Prefects Body to ensure maximum discipline',
     },
     {
-      title: 'Projects',
+      title: 'In Class',
       image: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2FScreen%20Shot%202024-07-03%20at%208.22.33%20AM.png?alt=media&token=016853a8-7561-4395-9efb-93286fd2a8d8',
       description: 'In support of STEM in the 21st Century. `A` Level chemistry practical in progress',
     },

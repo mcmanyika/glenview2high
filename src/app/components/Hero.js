@@ -81,7 +81,7 @@ const Hero = () => {
       )}
       <section className="relative text-white p-10 md:p-20 text-center md:text-left">
         <h1 className="text-4xl md:text-4xl font-thin font-sans">Glenview 2 High - </h1>
-        <p className="mt-4 text-sm md:text-xl md:text-thin">Empowering students to reach their full potential.</p>
+        <p className="mt-4 text-sm md:text-xl text-thin font-sans">Empowering students to reach their full potential.</p>
       </section>
     </div>
   );

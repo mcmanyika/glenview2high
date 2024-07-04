@@ -16,7 +16,7 @@ const Vision = () => {
                 </div>
                 <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Academic Excellence</p>
               </dt>
-              <dd className="mt-2 ml-16 text-base text-gray-500">
+              <dd className="mt-2 ml-16  text-gray-500 font-sans text-xl font-thin">
                 We strive to provide a rigorous academic curriculum that challenges students to achieve their best.
               </dd>
             </div>
@@ -29,7 +29,7 @@ const Vision = () => {
                 </div>
                 <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Innovative Learning</p>
               </dt>
-              <dd className="mt-2 ml-16 text-base text-gray-500">
+              <dd className="mt-2 ml-16 font-sans text-xl font-thin text-gray-500">
                 Embracing modern teaching methods and technology to enhance the learning experience.
               </dd>
             </div>
@@ -42,7 +42,7 @@ const Vision = () => {
                 </div>
                 <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Holistic Development</p>
               </dt>
-              <dd className="mt-2 ml-16 text-base text-gray-500">
+              <dd className="mt-2 ml-16 font-sans text-xl font-thin text-gray-500">
                 Fostering growth in all aspects of student life, including arts, sports, and social skills.
               </dd>
             </div>

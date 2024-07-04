@@ -4,7 +4,7 @@
 
 
 body {
-    font-family: 'Inter', sans-serif; /* Assuming 'Inter' is imported */
+    font-family: 'sans','Inter', sans-serif; /* Assuming 'Inter' is imported */
     color: #333; /* Example text color */
   }
 

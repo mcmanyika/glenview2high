@@ -71,7 +71,7 @@ const Header = () => {
           <Image
             src="/images/logo.png"
             alt="Logo"
-            width={isSticky ? 50 : 80} // Adjusted width based on sticky state
+            width={isSticky ? 50 : 70} // Adjusted width based on sticky state
             height={isSticky ? 50 : 80} // Adjusted height based on sticky state
             className="rounded"
           />

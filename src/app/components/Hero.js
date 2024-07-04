@@ -72,7 +72,7 @@ const Hero = () => {
               {titles.map((rw) => (
                 <div key={rw.id}>
                   <Link href={`${rw.link}`}>
-                    <div className="text-gray-300 hover:text-white text-6xl uppercase p-3">{rw.title}</div>
+                    <div className="text-gray-300 hover:text-white text-3xl md:text-6xl uppercase p-3">{rw.title}</div>
                   </Link>
                 </div>
               ))}

@@ -2,9 +2,9 @@ import { FaFacebookSquare, FaTwitter, FaInstagram, FaLinkedin } from 'react-icon
 
 const Address = () => {
   return (
-    <section className="p-4 m-0 bg-gray-400 text-white flex flex-col md:flex-row items-start md:items-center">
-      <div className='container mx-auto'>
-        <div className='flex justify-between'>
+    <section className="p-4 bg-gray-400 text-white">
+      <div className="container mx-auto">
+        <div className="flex flex-col md:flex-row justify-between">
           <div className="mb-4 md:mb-0">
             <h2 className="text-lg font-bold mb-2">Our Address</h2>
             <p className="text-sm text-white">

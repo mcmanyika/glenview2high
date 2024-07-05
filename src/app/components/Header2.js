@@ -29,6 +29,8 @@ const Header2 = () => {
               .sort((a, b) => {
                 if (a.title === 'Admissions') return 1; // Move 'Admissions' to the end
                 if (b.title === 'Admissions') return -1; // Move 'Admissions' to the end
+                if (a.title === 'Alumni') return 1; // Move 'Alumni' to the end
+                if (b.title === 'Alumni') return -1; // Move 'Alumni' to the end
                 return a.title.localeCompare(b.title); // Sort other titles alphabetically
               });
             setTitles(titlesArray);

@@ -6,10 +6,9 @@ import Image from 'next/image';
 import { ref, onValue, query, orderByChild, equalTo } from 'firebase/database';
 import { database } from '../../../utils/firebaseConfig'; // Assuming you have firebaseConfig set up properly
 
-const Header = () => {
+const Header2 = () => {
   // const session = useSession();
   const [titles, setTitles] = useState([]);
-  const [isSticky, setIsSticky] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,8 +23,8 @@ const Header = () => {
               .map((key) => ({
                 id: key,
                 title: data[key].title,
-                link: data[key].link, 
-                status: data[key].status, 
+                link: data[key].link,
+                status: data[key].status,
               }))
               .sort((a, b) => {
                 if (a.title === 'Admissions') return 1; // Move 'Admissions' to the end
@@ -44,38 +43,20 @@ const Header = () => {
     };
 
     fetchData();
-
-    const handleScroll = () => {
-      if (window.scrollY > 600) {
-        setIsSticky(true);
-      } else {
-        setIsSticky(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
   }, []);
 
   return (
-    <header
-      className={`fixed z-50 w-full bg-blue text-white transition-all duration-500 ease-in-out ${
-        isSticky ? 'top-0 p-4 ' : 'bottom-0 border-t-4 border-t-white p-10'
-      }`}
-    >
+    <header className="fixed top-0 z-50 w-full bg-blue text-white p-4 transition-all duration-500 ease-in-out">
       <nav className="max-w-4xl mx-auto flex justify-between items-center">
         <div className="flex items-center space-x-2">
-          <Link href='/'>
-            <Image
-              src="/images/logo.png"
-              alt="Logo"
-              width={isSticky ? 50 : 70} // Adjusted width based on sticky state
-              height={isSticky ? 50 : 80} // Adjusted height based on sticky state
-              className="rounded"
-            />
+            <Link href='/'>
+                <Image
+                    src="/images/logo.png"
+                    alt="Logo"
+                    width={50} // Adjusted width for a consistent size
+                    height={50} // Adjusted height for a consistent size
+                    className="rounded"
+                />
           </Link>
           <h1 className="text-sm md:text-2xl font-normal uppercase">GlenView 2 High</h1>
         </div>
@@ -95,9 +76,12 @@ const Header = () => {
             )}
           </li> */}
         </ul>
+        <div className="md:hidden">
+          {/* Mobile menu button can be added here */}
+        </div>
       </nav>
     </header>
   );
 };
 
-export default Header;
+export default Header2;

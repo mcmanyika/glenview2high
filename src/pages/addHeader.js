@@ -1,10 +1,10 @@
 'use client';
 import { useState } from 'react';
 import { ref, push, set } from 'firebase/database';
-import { database } from '../utils/firebaseConfig';
+import { database } from '../../utils/firebaseConfig';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Layout from '../src/app/components/Layout2';
+import Layout from '../app/components/Layout2';
 
 export default function AddHeader() {
     const [title, setTitle] = useState("");
@@ -95,7 +95,7 @@ export default function AddHeader() {
                 </div>
                 <button 
                     onClick={handleAddData} 
-                    className='bg-blue-500 text-white p-2 rounded w-full max-w-xs hover:bg-blue-600 transition duration-200'
+                    className='bg-blue text-white p-2 rounded w-full max-w-xs hover:bg-blue-600 transition duration-200'
                 >
                     Add Data
                 </button>

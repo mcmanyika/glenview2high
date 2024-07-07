@@ -10,7 +10,7 @@ export default function AboutUs() {
           <div className="grid grid-cols-1 md:grid-cols-2">
             {/* Image 1 */}
             <div className="relative flex items-center justify-center">
-              <div className="w-full h-96 relative">
+              <div className="w-full h-96 mb-5 relative">
                 <Image 
                   src="/images/fountain.png" 
                   alt="Fountain" 
@@ -21,7 +21,7 @@ export default function AboutUs() {
               </div>
             </div>
             {/* Our History */}
-            <div className="p-10 flex flex-col justify-center">
+            <div className="mb:p-10 flex flex-col justify-center">
               <h2 className="text-4xl font-bold mb-4">Our History</h2>
               <p className="text-xl font-thin mb-4">
                 Established in 1990, GlenView 2 High has a rich history of nurturing students and helping them achieve their dreams. Over the years, our school has grown and evolved, but our core values of integrity, respect, and excellence have remained constant.

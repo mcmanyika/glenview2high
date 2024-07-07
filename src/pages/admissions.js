@@ -11,7 +11,7 @@ const Admissions = () => {
           <div className="grid grid-cols-1 md:grid-cols-2">
             {/* First Image Section */}
             <div className="relative flex items-center justify-center">
-              <div className="w-full h-96 relative overflow-hidden">
+              <div className="w-full h-96 mb-5 relative overflow-hidden">
                 <Image 
                   src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2FScreen%20Shot%202024-07-03%20at%208.20.55%20AM.png?alt=media&token=b60de27d-f07d-41d2-a036-918ee8a64674" 
                   alt="Admissions" 
@@ -22,7 +22,7 @@ const Admissions = () => {
               </div>
             </div>
             {/* First Text Section */}
-            <div className="p-10 flex flex-col justify-center">
+            <div className="md:p-10 flex flex-col justify-center">
               <h2 className="text-4xl font-bold mb-4">Admissions Information</h2>
               <p className="text-xl font-thin mb-4">
                 GlenView 2 High welcomes applications from students who are eager to learn, grow, and contribute to our diverse community. We offer a supportive environment that encourages academic excellence and personal development.

@@ -1,15 +1,13 @@
-// Import necessary dependencies
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-// import { useSession, signIn, signOut } from 'next-auth/react';
 import { ref, onValue, query, orderByChild, equalTo } from 'firebase/database';
 import { database } from '../../../utils/firebaseConfig'; // Assuming you have firebaseConfig set up properly
 
 const Header = () => {
-  // const session = useSession();
   const [titles, setTitles] = useState([]);
   const [isSticky, setIsSticky] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // State to manage mobile menu visibility
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,8 +22,8 @@ const Header = () => {
               .map((key) => ({
                 id: key,
                 title: data[key].title,
-                link: data[key].link, 
-                status: data[key].status, 
+                link: data[key].link,
+                status: data[key].status,
               }))
               .sort((a, b) => {
                 if (a.title === 'Admissions') return 1; // Move 'Admissions' to the end
@@ -62,6 +60,11 @@ const Header = () => {
     };
   }, []);
 
+  // Function to toggle mobile menu
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <header
       className={`fixed z-50 w-full bg-blue text-white transition-all duration-500 ease-in-out ${
@@ -69,18 +72,40 @@ const Header = () => {
       }`}
     >
       <nav className="max-w-4xl mx-auto flex justify-between items-center">
-        <div className="flex items-center space-x-2">
+        <div className={`flex items-center space-x-2 ${isOpen ? 'hidden md:flex' : 'block'} `}>
           <Link href='/'>
             <Image
               src="/images/logo.png"
               alt="Logo"
               width={isSticky ? 50 : 70} // Adjusted width based on sticky state
               height={isSticky ? 50 : 80} // Adjusted height based on sticky state
-              className="rounded"
+              className={`rounded `}
             />
           </Link>
           <h1 className="text-sm md:text-2xl font-normal uppercase">GlenView 2 High</h1>
         </div>
+        {isSticky && (
+          <div className="md:hidden"> {/* Display menu icon on mobile */}
+            <button onClick={toggleMenu} className="text-white focus:outline-none">
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                {isOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+                )}
+              </svg>
+            </button>
+          </div>
+        )}
+        <ul className={`md:hidden ${isOpen ? 'flex' : 'hidden'} mt-4`} onClick={toggleMenu}>
+          {titles.map((rw) => (
+            <li key={rw.id} className="py-2 px-4 hover:text-gray-300 font-sans font-thin">
+              <Link href={`${rw.link}`}>
+                <span>{rw.title}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
         <ul className="hidden md:flex space-x-4"> {/* Hide on mobile, show on medium screens and above */}
           {titles.map((rw) => (
             <li key={rw.id}>

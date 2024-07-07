@@ -25,7 +25,7 @@ const Academics = () => {
                 GlenView 2 High offers a diverse range of academic programs designed to meet the needs of every student. Whether its advanced placement courses, vocational training, or extracurricular activities, we provide a comprehensive education that prepares students for success.
               </p>
             </div>
-            <div className="p-10 flex flex-col justify-center">
+            <div className="md:p-10 flex flex-col justify-center">
               <h2 className="text-4xl font-bold mb-4">Student Achievements</h2>
               <p className="text-xl font-thin mb-4">
                 Our students consistently achieve excellence in academics, sports, and arts. From winning national competitions to excelling in community service, our students are well-rounded individuals who contribute positively to society.

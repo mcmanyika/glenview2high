@@ -28,7 +28,7 @@ export default function AboutUs() {
               </p>
             </div>
             {/* Our Vision */}
-            <div className="p-10 flex flex-col justify-center">
+            <div className="md:p-10 flex flex-col justify-center">
               <h2 className="text-4xl font-bold mb-4">Our Vision</h2>
               <p className="text-xl font-thin mb-4">
                 Our vision is to be a leading educational institution that inspires students to be innovative thinkers, responsible global citizens, and lifelong learners.

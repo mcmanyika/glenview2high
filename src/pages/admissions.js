@@ -29,7 +29,7 @@ const Admissions = () => {
               </p>
             </div>
             {/* Second Text Section */}
-            <div className="p-10 flex flex-col justify-center">
+            <div className="md:p-10 flex flex-col justify-center">
               <h2 className="text-4xl font-bold mb-4">Enrollment Process</h2>
               <p className="text-xl font-thin mb-4">
                 Our enrollment process is designed to be straightforward and transparent. Prospective students and their families can request here detailed information about application deadlines, required documents, and admission criteria.

@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 export default function AboutUs() {
   return (
-    <Layout>
+    <Layout templateText="About Us">
       <section className="p-4 m-0 text-gray-800">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2">

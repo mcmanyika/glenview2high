@@ -1,11 +1,11 @@
 // Academics.js
 import React from 'react';
-import Layout2 from '../app/components/Layout2';
+import Layout from '../app/components/Layout2';
 import Image from 'next/image';
 
 const Academics = () => {
   return (
-    <Layout2>
+    <Layout templateText="Academics">
       <section className="p-4 m-0 text-gray-800">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2">
@@ -44,7 +44,7 @@ const Academics = () => {
           </div>
         </div>
       </section>
-    </Layout2>
+    </Layout>
   );
 };
 

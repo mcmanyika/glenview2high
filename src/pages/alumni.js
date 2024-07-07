@@ -6,7 +6,7 @@ import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
 
 export default function Alumni() {
   return (
-    <Layout>
+    <Layout templateText="Alumni">
       <section className="p-6 bg-gray-100">
         <div className="w-full">
           <h1 className="text-3xl font-bold text-center mb-6">Alumni</h1>

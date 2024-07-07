@@ -21,7 +21,7 @@ export default function AboutUs() {
               </div>
             </div>
             {/* Our History */}
-            <div className="mb:p-10 flex flex-col justify-center">
+            <div className="md:p-10 flex flex-col justify-center">
               <h2 className="text-4xl font-bold mb-4">Our History</h2>
               <p className="text-xl font-thin mb-4">
                 Established in 1990, GlenView 2 High has a rich history of nurturing students and helping them achieve their dreams. Over the years, our school has grown and evolved, but our core values of integrity, respect, and excellence have remained constant.

@@ -5,15 +5,18 @@ import '../globals.css'
 
 
 const Layout = ({ children }) => {
+  
     
   return (
-
-    <div className="flex flex-col bg-cover bg-center">
+  <>
+    <div className="flex flex-col bg-cover bg-center mb-10">
       <Header2 />
-      <main className="flex-grow container mx-auto pt-32">
+      <main className="container mx-auto pt-32">
         {children}
       </main>
     </div>
+    <Footer />
+  </>
   );
 };
 

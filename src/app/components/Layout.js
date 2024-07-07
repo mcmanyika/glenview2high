@@ -19,7 +19,6 @@ const Layout = ({ children }) => {
       </main>
       <Vision />
       <NewStudents />
-      <Address />
       <Footer />
     </div>
   );

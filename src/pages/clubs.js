@@ -23,7 +23,7 @@ const Clubs = () => {
             <div className="p-10 flex flex-col justify-center">
               <h2 className="text-4xl font-bold mb-4">Student Clubs</h2>
               <p className="text-xl font-thin mb-4">
-                GlenView 2 High offers a wide range of student clubs and organizations where students can pursue their interests, develop leadership skills, and build lasting friendships. From academic clubs to cultural and sports clubs, there's something for everyone.
+                GlenView 2 High offers a wide range of student clubs and organizations where students can pursue their interests, develop leadership skills, and build lasting friendships. From academic clubs to cultural and sports clubs, there is something for everyone.
               </p>
             </div>
             <div className="p-10 flex flex-col justify-center">

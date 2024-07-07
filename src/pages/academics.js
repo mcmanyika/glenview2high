@@ -22,7 +22,7 @@ const Academics = () => {
             <div className="p-10 flex flex-col justify-center">
               <h2 className="text-4xl font-bold mb-4">Our Programs</h2>
               <p className="text-xl font-thin mb-4">
-                GlenView 2 High offers a diverse range of academic programs designed to meet the needs of every student. Whether it's advanced placement courses, vocational training, or extracurricular activities, we provide a comprehensive education that prepares students for success.
+                GlenView 2 High offers a diverse range of academic programs designed to meet the needs of every student. Whether its advanced placement courses, vocational training, or extracurricular activities, we provide a comprehensive education that prepares students for success.
               </p>
             </div>
             <div className="p-10 flex flex-col justify-center">

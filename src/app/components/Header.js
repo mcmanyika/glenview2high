@@ -73,7 +73,7 @@ const Header = () => {
     >
       <nav className="max-w-4xl mx-auto flex justify-between items-center">
         <div className={`flex items-center space-x-2 ${isOpen ? 'hidden md:flex' : 'block'}, `}>
-          <Link href='/' className={`${!isSticky ? 'hidden': ''}`}>
+          <Link href='/'>
             <Image
               src="/images/logo.png"
               alt="Logo"
@@ -82,7 +82,7 @@ const Header = () => {
               className={`rounded `}
             />
           </Link>
-          <h1 className="text-sm md:text-2xl font-normal uppercase">GlenView 2 High</h1>
+          <h1 className={`text-sm md:text-2xl font-normal uppercase ${isSticky ? 'hidden': ''}`}>GlenView 2 High</h1>
         </div>
         {isSticky && (
           <div className="md:hidden"> {/* Display menu icon on mobile */}

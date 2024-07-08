@@ -9,7 +9,6 @@ const Hero = () => {
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);
   const [titles, setTitles] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0); // Carousel index
-  const [fadeIn, setFadeIn] = useState(true);
   const [carouselData, setCarouselData] = useState([
     {
       title: "Excellence in Education",
@@ -72,11 +71,7 @@ const Hero = () => {
   // Carousel logic
   useEffect(() => {
     const interval = setInterval(() => {
-      setFadeIn(false);
-      setTimeout(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % carouselData.length);
-        setFadeIn(true);
-      }, 1000); // Match the duration of the fade-out effect
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % carouselData.length);
     }, 5000); // Change slide every 5 seconds
     return () => clearInterval(interval);
   }, [carouselData.length]);
@@ -84,25 +79,24 @@ const Hero = () => {
   const currentSlide = carouselData[currentIndex];
 
   return (
-    <div className="relative h-screen flex items-center justify-center">
-      <div
-        className={`absolute inset-0 bg-cover bg-center opacity-90 transition-opacity duration-1000 ${fadeIn ? 'opacity-90' : 'opacity-0'}`}
-        style={{
-          backgroundImage: `url(${currentSlide.imageUrl})`
-        }}
-      ></div>
-      <div className={`absolute inset-0 bg-black transition-opacity duration-1000 ${fadeIn ? 'opacity-15' : 'opacity-0'}`}></div>
+    <div className="relative h-screen flex items-center justify-center overflow-hidden">
+      <div className="absolute inset-0 flex transition-transform duration-1000 ease-in-out" style={{ transform: `translateX(${currentIndex * -100}%)` }}>
+        {carouselData.map((slide, index) => (
+          <div key={index} className="min-w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${slide.imageUrl})` }}></div>
+        ))}
+      </div>
+      <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="absolute top-4 right-4 z-20">
         <MenuIcon className="h-8 w-8 text-white cursor-pointer" onClick={handleMenuClick} />
       </div>
       {isOverlayVisible && (
-        <div className="fixed inset-0 bg-black bg-opacity-100 flex items-center justify-center z-50 transition-opacity duration-500">
-          <div className="absolute top-4 right-4 z-60 text-white">
+        <div className="fixed inset-0 bg-black bg-opacity-100 flex items-center justify-center z-50">
+          <div className="absolute top-4 right-4 text-white">
             <button onClick={handleMenuClick}>
               <XIcon className="h-8 w-8" />
             </button>
           </div>
-          <div className="max-w-96 mx-auto text-center"> {/* Adjusted to center the list */}
+          <div className="max-w-96 mx-auto text-center">
             {titles.map((rw) => (
               <div key={rw.id}>
                 <Link href={`${rw.link}`}>
@@ -113,7 +107,7 @@ const Hero = () => {
           </div>
         </div>
       )}
-      <section className={`relative text-white p-10 md:p-20 text-center md:text-left transition-opacity duration-1000 ${fadeIn ? 'opacity-100' : 'opacity-0'}`}>
+      <section className="relative text-white p-10 md:p-20 text-center md:text-left">
         <h1 className="text-4xl md:text-5xl font-thin font-sans">{currentSlide.title}</h1>
         <p className="mt-4 text-sm md:text-xl text-thin font-sans">{currentSlide.description}</p>
       </section>

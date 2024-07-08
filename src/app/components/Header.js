@@ -73,7 +73,8 @@ const Header = () => {
     >
       <nav className="max-w-4xl mx-auto flex justify-between items-center">
         <div className={`flex items-center space-x-2 ${isOpen ? 'hidden md:flex' : 'block'} `}>
-          <Link href='/' className={`${!isSticky ? 'hidden': ''}`}>
+          <div className={`${!isSticky ? 'hidden': ''} `}>
+          <Link href='/' >
             <Image
               src="/images/logo.png"
               alt="Logo"
@@ -83,6 +84,7 @@ const Header = () => {
             />
           </Link>
           <h1 className="text-sm md:text-2xl font-normal uppercase">GlenView 2 High</h1>
+          </div>
         </div>
         {isSticky && (
           <div className="md:hidden"> {/* Display menu icon on mobile */}
@@ -97,7 +99,7 @@ const Header = () => {
             </button>
           </div>
         )}
-        <ul className={`md:hidden ${isOpen ? 'flex' : 'flex'} mt-4`} onClick={toggleMenu}>
+        <ul className={`md:hidden ${isOpen ? 'flex' : 'flex'} ${isSticky ? 'hidden': 'flex'} mt-4`} onClick={toggleMenu}>
           {titles.map((rw) => (
             <li key={rw.id} className="py-2 px-4 hover:text-gray-300 font-sans font-thin">
               <Link href={`${rw.link}`}>

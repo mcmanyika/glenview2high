@@ -73,7 +73,7 @@ const Header = () => {
     >
       <nav className="max-w-4xl mx-auto flex justify-between items-center">
         <div className={`flex items-center space-x-2 ${isOpen ? 'hidden md:flex' : 'block'} `}>
-          <Link href='/'>
+          <Link href='/' className={`${!isSticky ? 'hidden': ''}`}>
             <Image
               src="/images/logo.png"
               alt="Logo"

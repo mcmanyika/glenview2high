@@ -82,7 +82,7 @@ const Header = () => {
               className={`rounded `}
             />
           </Link>
-          <h1 className={`text-sm md:text-2xl font-normal uppercase ${isSticky ? 'hidden': ''}`}>GlenView 2 High</h1>
+          <h1 className={`text-sm md:text-2xl font-normal uppercase ${isSticky ? 'flex': 'flex'}`}>GlenView 2 High</h1>
         </div>
         {isSticky && (
           <div className="md:hidden"> {/* Display menu icon on mobile */}

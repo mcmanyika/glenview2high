@@ -97,7 +97,7 @@ const Header = () => {
             </button>
           </div>
         )}
-        <ul className={`md:hidden ${isOpen ? 'flex' : 'hidden'} mt-4`} onClick={toggleMenu}>
+        <ul className={`md:hidden ${isOpen ? 'flex' : 'flex'} mt-4`} onClick={toggleMenu}>
           {titles.map((rw) => (
             <li key={rw.id} className="py-2 px-4 hover:text-gray-300 font-sans font-thin">
               <Link href={`${rw.link}`}>

@@ -99,15 +99,15 @@ const Header = () => {
             </button>
           </div>
         )}
-        <ul className={`md:hidden ${isOpen ? 'flex' : 'flex'} ${isSticky ? 'hidden': 'flex'} mt-4`} onClick={toggleMenu}>
+        <div className={`md:hidden ${isOpen ? 'flex' : 'flex'} ${isSticky ? 'hidden': 'flex'} mt-4`} onClick={toggleMenu}>
           {titles.map((rw) => (
-            <li key={rw.id} className="py-2 px-4 hover:text-gray-300 font-sans font-thin">
+            <div key={rw.id} className="py-2 px-4 hover:text-gray-300 font-sans font-thin">
               <Link href={`${rw.link}`}>
                 <span>{rw.title}</span>
               </Link>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
         <ul className="hidden md:flex space-x-4"> {/* Hide on mobile, show on medium screens and above */}
           {titles.map((rw) => (
             <li key={rw.id}>

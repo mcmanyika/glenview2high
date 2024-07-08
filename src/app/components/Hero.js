@@ -95,12 +95,13 @@ const Hero = () => {
             width={100} // Adjust the width for larger screens
             height={100} // Adjust the height for larger screens
             className="rounded w-12 h-12 md:w-24 md:h-24" // Responsive width and height classes
+            onClick={handleMenuClick}
           />
         </Link>
       </div>
-      <div className="absolute top-4 right-4 z-20">
+      {/* <div className="absolute top-4 right-4 z-20">
         <MenuIcon className="h-8 w-8 text-white cursor-pointer" onClick={handleMenuClick} />
-      </div>
+      </div> */}
       {isOverlayVisible && (
         <div className="fixed inset-0 bg-black bg-opacity-100 flex items-center justify-center z-50">
           <div className="absolute top-4 right-4 text-white">

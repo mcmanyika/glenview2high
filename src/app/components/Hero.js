@@ -87,14 +87,14 @@ const Hero = () => {
         ))}
       </div>
       <div className="absolute inset-0 bg-black opacity-50"></div>
-      <div className="absolute top-5 left-1/2 transform -translate-x-1/2 z-20">
+      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-20">
         <Link href="/">
           <Image
             src="/images/logo.png" // Replace with your logo path
             alt="Logo"
-            width={100} // Adjust the width as needed
-            height={100} // Adjust the height as needed
-            className=" opacity-90"
+            width={100} // Adjust the width for larger screens
+            height={100} // Adjust the height for larger screens
+            className="rounded w-12 h-12 md:w-24 md:h-24" // Responsive width and height classes
           />
         </Link>
       </div>

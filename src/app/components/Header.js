@@ -68,13 +68,12 @@ const Header = () => {
   return (
     <header
       className={`fixed z-50 w-full bg-gray-700 opacity-80 text-white transition-all duration-500 ease-in-out ${
-        isSticky ? 'top-0 p-4 ' : 'bottom-0 border-t-4 border-t-white p-10'
+        isSticky ? 'top-0 p-4 ' : 'bottom-0 border-t-2 border-t-gray-500 p-10'
       }`}
     >
       <nav className="max-w-4xl mx-auto flex justify-between items-center">
-        <div className={`flex items-center space-x-2 ${isOpen ? 'hidden md:flex' : 'block'} `}>
-          <div className={`${!isSticky ? 'hidden': ''} `}>
-          <Link href='/' >
+        <div className={`flex items-center space-x-2 ${isOpen ? 'hidden md:flex' : 'block'}, `}>
+          <Link href='/' className={`${!isSticky ? 'hidden': ''}`}>
             <Image
               src="/images/logo.png"
               alt="Logo"
@@ -84,7 +83,6 @@ const Header = () => {
             />
           </Link>
           <h1 className="text-sm md:text-2xl font-normal uppercase">GlenView 2 High</h1>
-          </div>
         </div>
         {isSticky && (
           <div className="md:hidden"> {/* Display menu icon on mobile */}
@@ -99,15 +97,15 @@ const Header = () => {
             </button>
           </div>
         )}
-        <div className={`md:hidden ${isOpen ? 'flex' : 'flex'} ${isSticky ? 'hidden': 'flex'} mt-4`} onClick={toggleMenu}>
+        <ul className={`md:hidden ${isOpen ? 'flex' : 'flex'} mt-4`} onClick={toggleMenu}>
           {titles.map((rw) => (
-            <div key={rw.id} className="py-2 px-4 hover:text-gray-300 font-sans font-thin">
+            <li key={rw.id} className="py-2 px-4 hover:text-gray-300 font-sans font-thin">
               <Link href={`${rw.link}`}>
                 <span>{rw.title}</span>
               </Link>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
         <ul className="hidden md:flex space-x-4"> {/* Hide on mobile, show on medium screens and above */}
           {titles.map((rw) => (
             <li key={rw.id}>

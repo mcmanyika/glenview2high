@@ -87,7 +87,7 @@ const Hero = () => {
         ))}
       </div>
       <div className="absolute inset-0 bg-black opacity-50"></div>
-      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-20">
+      <div className="absolute top-4  left-1/2 transform -translate-x-1/2 z-20">
         <Link href="/">
           <Image
             src="/images/logo.png" // Replace with your logo path
@@ -97,7 +97,7 @@ const Hero = () => {
             className="rounded w-12 h-12 md:w-24 md:h-24" // Responsive width and height classes
             onClick={handleMenuClick}
           />
-        </Link>
+          </Link>
       </div>
       {/* <div className="absolute top-4 right-4 z-20">
         <MenuIcon className="h-8 w-8 text-white cursor-pointer" onClick={handleMenuClick} />

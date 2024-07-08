@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { MenuIcon, XIcon } from '@heroicons/react/outline'; // Ensure you have heroicons installed
 import { ref, onValue, query, orderByChild, equalTo } from 'firebase/database';
 import { database } from '../../../utils/firebaseConfig'; // Assuming you have database imported from firebaseConfig
+import Image from 'next/image'; // Ensure you have Image component imported from Next.js
 
 const Hero = () => {
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);
@@ -86,6 +87,17 @@ const Hero = () => {
         ))}
       </div>
       <div className="absolute inset-0 bg-black opacity-50"></div>
+      <div className="absolute top-5 left-1/2 transform -translate-x-1/2 z-20">
+        <Link href="/">
+          <Image
+            src="/images/logo.png" // Replace with your logo path
+            alt="Logo"
+            width={100} // Adjust the width as needed
+            height={100} // Adjust the height as needed
+            className=" opacity-90"
+          />
+        </Link>
+      </div>
       <div className="absolute top-4 right-4 z-20">
         <MenuIcon className="h-8 w-8 text-white cursor-pointer" onClick={handleMenuClick} />
       </div>

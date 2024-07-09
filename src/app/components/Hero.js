@@ -19,13 +19,13 @@ const Hero = () => {
     },
     {
       title: "Community Engagement",
-      description: "Building strong connections with the local community.",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2FScreen%20Shot%202024-07-03%20at%208.25.10%20AM.png?alt=media&token=4469729c-2d80-4f2b-bd32-44ff0e032248",
+      description: "Providing state-of-the-art facilities and teaching methods.",
+      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2FScreen%20Shot%202024-07-03%20at%208.26.05%20AM.png?alt=media&token=ac93ba95-d1d1-4dc4-86df-c470cacd25c9",
     },
     {
-      title: "Innovative Learning",
-      description: "Providing state-of-the-art facilities and teaching methods.",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2FScreen%20Shot%202024-07-03%20at%208.21.44%20AM.png?alt=media&token=83040785-e1dc-48e3-817d-9ac9f6b25a62",
+      title: "Cultural Connection",
+      description: "Building strong connections with the local community.",
+      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2FScreen%20Shot%202024-07-03%20at%208.27.53%20AM.png?alt=media&token=c7969d99-083d-47bb-9b26-62397aac1b43",
     },
   ]);
 

@@ -99,7 +99,7 @@ const Header = () => {
         )}
         <ul className={`md:hidden ${isOpen ? 'flex' : 'flex'} mt-4`} onClick={toggleMenu}>
           {titles.map((rw) => (
-            <li key={rw.id} className="py-2 px-4 hover:text-gray-300 font-sans font-thin">
+            <li key={rw.id} className="py-2 px-4 hover:text-gray-300 text-sm font-sans font-thin uppercase">
               <Link href={`${rw.link}`}>
                 <span>{rw.title}</span>
               </Link>
@@ -110,7 +110,7 @@ const Header = () => {
           {titles.map((rw) => (
             <li key={rw.id}>
               <Link href={`${rw.link}`}>
-                <div className="hover:text-gray-300 font-sans font-thin">{rw.title}</div>
+                <div className="hover:text-gray-300 text-sm font-sans font-thin uppercase">{rw.title}</div>
               </Link>
             </li>
           ))}

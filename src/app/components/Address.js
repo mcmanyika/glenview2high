@@ -1,4 +1,4 @@
-import { FaFacebookSquare, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa'; // Importing the icons from react-icons
+import { FaFacebookSquare, FaTwitter, FaInstagram } from 'react-icons/fa'; // Importing the icons from react-icons
 
 const Address = () => {
   return (
@@ -37,14 +37,6 @@ const Address = () => {
                 className="text-gray-300 hover:text-white"
               >
                 <FaInstagram className="h-6 w-6" />
-              </a>
-              <a
-                href="https://www.linkedin.com/your-linkedin-page"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-300 hover:text-white"
-              >
-                <FaLinkedin className="h-6 w-6" />
               </a>
             </div>
           </div>

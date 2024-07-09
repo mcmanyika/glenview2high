@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
 
 const Socials = () => {
   return (
@@ -31,14 +31,6 @@ const Socials = () => {
             className="text-gray-700 hover:text-gray-900"
           >
             <FaInstagram className="h-8 w-8" />
-          </a>
-          <a
-            href="https://www.linkedin.com/company/your-linkedin-page"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-700 hover:text-gray-900"
-          >
-            <FaLinkedin className="h-8 w-8" />
           </a>
         </div>
       </div>

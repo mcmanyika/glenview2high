@@ -80,7 +80,7 @@ const Header2 = () => {
         <ul className={`md:flex ${isOpen ? 'flex' : 'hidden'} md:space-x-4 md:w-full mt-4 md:mt-0 text-right`}>
           {titles.map((rw) => (
             <li key={rw.id}>
-              <div className="cursor-pointer py-2 px-4 hover:text-gray-300 font-sans font-thin" onClick={toggleMenu}>
+              <div className="cursor-pointer py-2 px-4 hover:text-gray-300 text-sm font-sans font-thin uppercase" onClick={toggleMenu}>
                 <Link href={`${rw.link}`}>
                   <span>{rw.title}</span>
                 </Link>

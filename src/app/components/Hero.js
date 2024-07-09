@@ -88,7 +88,7 @@ const Hero = () => {
           <div key={index} className="min-w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${slide.imageUrl})` }}></div>
         ))}
       </div>
-      <div className="absolute inset-0 bg-black opacity-50"></div>
+      <div className="absolute inset-0 bg-black opacity-20"></div>
       <div className="absolute top-4  left-1/2 transform -translate-x-1/2 z-20">
         <Link href="/">
           <Image

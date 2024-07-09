@@ -109,7 +109,7 @@ const Header = () => {
           {titles.map((rw) => (
             <li key={rw.id}>
               <Link href={`${rw.link}`}>
-                <div className="hover:text-gray-300 text-sm font-sans font-thin uppercase border-b-2 border-transparent hover:border-white">{rw.title}</div>
+                <div className="hover:text-gray-300 text-sm font-sans font-thin uppercase pb-2 border-b-2 border-transparent hover:border-blue-200">{rw.title}</div>
               </Link>
             </li>
           ))}

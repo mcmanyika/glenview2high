@@ -84,7 +84,7 @@ const Header = () => {
       {isSticky && (
         <div className='top-0 w-full text-white p-0 text-right'>
           <div className='container mx-auto text-xs p-2 mb-2'>
-            {session ? <span>Hi {session.user.name}</span> : <>Welcome Guest</>}, &nbsp; 
+            {session ? <span>Hi {session.user.name}</span> : <>Welcome Guest </>}, &nbsp; 
             {session ? (
               <button onClick={() => signOut()}> Sign Out</button>
             ) : (

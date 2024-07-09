@@ -10,7 +10,7 @@ const Academics = () => {
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2">
             <div className="relative flex items-center justify-center">
-              <div className="w-full h-96 mb-5 relative">
+              <div className="w-full h-96  relative">
                 <Image 
                   src="/images/students.png" 
                   alt="Academic 1" 

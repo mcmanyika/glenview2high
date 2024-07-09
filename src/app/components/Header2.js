@@ -3,10 +3,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ref, onValue, query, orderByChild, equalTo } from 'firebase/database';
 import { database } from '../../../utils/firebaseConfig'; // Assuming you have firebaseConfig set up properly
+import { useGlobalState, setIsOverlayVisible } from '../store';
 
 const Header2 = () => {
   const [titles, setTitles] = useState([]);
   const [isOpen, setIsOpen] = useState(false); // State to manage mobile menu visibility
+  const [isOverlayVisible] = useGlobalState('isOverlayVisible');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,6 +50,10 @@ const Header2 = () => {
   // Function to toggle mobile menu
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const toggleOverlay = () => {
+    setIsOverlayVisible(!isOverlayVisible);
   };
 
   return (

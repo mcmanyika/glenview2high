@@ -10,7 +10,7 @@ export default function AboutUs() {
           <div className="grid grid-cols-1 md:grid-cols-2">
             {/* Image 1 */}
             <div className="relative flex items-center justify-center">
-              <div className="w-full h-96 mb-5 relative">
+              <div className="w-full h-96  relative">
                 <Image 
                   src="/images/fountain.png" 
                   alt="Fountain" 

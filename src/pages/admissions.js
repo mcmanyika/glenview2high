@@ -11,7 +11,7 @@ const Admissions = () => {
           <div className="grid grid-cols-1 md:grid-cols-2">
             {/* First Image Section */}
             <div className="relative flex items-center justify-center">
-              <div className="w-full h-96 mb-5 relative overflow-hidden">
+              <div className="w-full h-96 relative overflow-hidden">
                 <Image 
                   src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2FScreen%20Shot%202024-07-03%20at%208.20.55%20AM.png?alt=media&token=b60de27d-f07d-41d2-a036-918ee8a64674" 
                   alt="Admissions" 

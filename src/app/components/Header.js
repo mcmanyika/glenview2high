@@ -76,7 +76,7 @@ const Header = () => {
   return (
     <header
       className={`fixed z-50 w-full bg-gray-700 opacity-80 text-white transition-all duration-500 ease-in-out ${
-        isSticky ? 'top-0 p-4 ' : 'bottom-0 border-t-2 border-t-gray-500 p-10'
+        isSticky ? 'top-0 p-4 ' : 'bottom-0 border-t-2 border-t-gray-500 p-5'
       }`}
     >
       <nav className="max-w-4xl mx-auto flex justify-between items-center">

@@ -18,14 +18,14 @@ const Hero = () => {
       imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2FScreen%20Shot%202024-07-03%20at%208.20.55%20AM.png?alt=media&token=b60de27d-f07d-41d2-a036-918ee8a64674",
     },
     {
-      title: "Innovative Learning",
-      description: "Providing state-of-the-art facilities and teaching methods.",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2FScreen%20Shot%202024-07-03%20at%208.20.55%20AM.png?alt=media&token=b60de27d-f07d-41d2-a036-918ee8a64674",
-    },
-    {
       title: "Community Engagement",
       description: "Building strong connections with the local community.",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2FScreen%20Shot%202024-07-03%20at%208.20.55%20AM.png?alt=media&token=b60de27d-f07d-41d2-a036-918ee8a64674",
+      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2FScreen%20Shot%202024-07-03%20at%208.25.10%20AM.png?alt=media&token=4469729c-2d80-4f2b-bd32-44ff0e032248",
+    },
+    {
+      title: "Innovative Learning",
+      description: "Providing state-of-the-art facilities and teaching methods.",
+      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2FScreen%20Shot%202024-07-03%20at%208.21.44%20AM.png?alt=media&token=83040785-e1dc-48e3-817d-9ac9f6b25a62",
     },
   ]);
 

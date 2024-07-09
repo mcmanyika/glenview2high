@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ref, onValue, query, orderByChild, equalTo } from 'firebase/database';
-import { database } from '../../../utils/firebaseConfig'; // Assuming you have firebaseConfig set up properly
+import { database } from '../../../utils/firebaseConfig';
+import { useGlobalState, setIsOverlayVisible } from '../store'; // Import useGlobalState and setIsOverlayVisible
 
 const Header = () => {
   const [titles, setTitles] = useState([]);
   const [isSticky, setIsSticky] = useState(false);
   const [isOpen, setIsOpen] = useState(false); // State to manage mobile menu visibility
+
+  const [isOverlayVisible] = useGlobalState('isOverlayVisible'); // Use global state hook
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,6 +68,11 @@ const Header = () => {
     setIsOpen(!isOpen);
   };
 
+  // Function to toggle overlay visibility
+  const toggleOverlay = () => {
+    setIsOverlayVisible(!isOverlayVisible);
+  };
+
   return (
     <header
       className={`fixed z-50 w-full bg-gray-700 opacity-80 text-white transition-all duration-500 ease-in-out ${
@@ -86,7 +94,7 @@ const Header = () => {
         </div>
         {isSticky && (
           <div className="md:hidden"> {/* Display menu icon on mobile */}
-            <button onClick={toggleMenu} className="text-white focus:outline-none">
+            <button onClick={toggleOverlay} className="text-white focus:outline-none">
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 {isOpen ? (
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -97,30 +105,14 @@ const Header = () => {
             </button>
           </div>
         )}
-        <ul className={`md:hidden ${isOpen ? 'flex' : 'flex'} mt-4`} onClick={toggleMenu}>
-          {titles.map((rw) => (
-            <li key={rw.id} className="py-2 px-4 hover:text-gray-300 text-sm font-sans font-thin uppercase">
-              <Link href={`${rw.link}`}>
-                <span>{rw.title}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
         <ul className="hidden md:flex space-x-4"> {/* Hide on mobile, show on medium screens and above */}
           {titles.map((rw) => (
             <li key={rw.id}>
               <Link href={`${rw.link}`}>
-                <div className="hover:text-gray-300 text-sm font-sans font-thin uppercase">{rw.title}</div>
+                <div className="hover:text-gray-300 text-sm font-sans font-thin uppercase border-b-2 border-transparent hover:border-white">{rw.title}</div>
               </Link>
             </li>
           ))}
-          {/* <li>
-            {session ? (
-              <button onClick={() => signOut('google')}>Sign Out </button>
-            ) : (
-              <button onClick={() => signIn('google')}>Sign In </button>
-            )}
-          </li> */}
         </ul>
       </nav>
     </header>

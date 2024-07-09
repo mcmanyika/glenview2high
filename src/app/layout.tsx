@@ -1,11 +1,8 @@
 import { authOptions } from "../pages/api/auth/[...nextauth]";
-import { getServerSession } from "next-auth";
+import { getServerSession, Session } from "next-auth"; // Import Session type
 import { Inter } from "next/font/google";
 import "./globals.css";
 import SessionProvider from "./SessionProvider";
-import Login from "../pages/login";
-import Home from "./page";
-
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,18 +15,12 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const session = await getServerSession(authOptions);
+  const session = (await getServerSession(authOptions)) as Session | null; // Assert the type
   return (
     <html lang="en">
       <body className={inter.className}>
         <SessionProvider session={session}>
           {children}
-            {/* {!session ? (
-                <Login />
-            ):(
-                <Home/>
-            )
-        } */}
         </SessionProvider>
       </body>
     </html>

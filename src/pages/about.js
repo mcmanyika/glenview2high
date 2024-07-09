@@ -24,14 +24,14 @@ export default function AboutUs() {
             <div className="md:p-10 flex flex-col justify-center">
               <h2 className="text-4xl font-bold mb-4">Our History</h2>
               <p className="text-xl font-thin mb-4">
-                Established in 1990, GlenView 2 High has a rich history of nurturing students and helping them achieve their dreams. Over the years, our school has grown and evolved, but our core values of integrity, respect, and excellence have remained constant.
+              Glen View 2 Secondary School was opened on 01 January, 1984 in the high density residential suburb of Glen View. The school offers learning up to ‘A’ Level and wide range of sporting activities. The school has 90 qualified teachers and 17 student teachers from different Colleges and Universities.
               </p>
             </div>
             {/* Our Vision */}
             <div className="md:p-10 flex flex-col justify-center">
               <h2 className="text-4xl font-bold mb-4">Our Vision</h2>
               <p className="text-xl font-thin mb-4">
-                Our vision is to be a leading educational institution that inspires students to be innovative thinkers, responsible global citizens, and lifelong learners.
+              To be the centre of excellence in the provision of high quality education as well as to develop in the pupils, desire of quality services, courage and usefulness to the school and ready to accept responsibility in pursuance of our aspirations and cherished goals.
               </p>
             </div>
             {/* Image 2 */}

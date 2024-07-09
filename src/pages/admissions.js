@@ -15,9 +15,8 @@ const Admissions = () => {
                 <Image 
                   src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2FScreen%20Shot%202024-07-03%20at%208.20.55%20AM.png?alt=media&token=b60de27d-f07d-41d2-a036-918ee8a64674" 
                   alt="Admissions" 
-                  layout="fill"
-                  objectFit="cover"
-                  objectPosition="top"
+                  fill
+                  className="opacity-95 object-cover object-top"
                 />
               </div>
             </div>
@@ -41,9 +40,8 @@ const Admissions = () => {
                 <Image 
                   src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2FScreen%20Shot%202024-07-03%20at%208.22.01%20AM.png?alt=media&token=7c2fb70f-bf2f-4b14-bbe4-fcb44575844c" 
                   alt="Enrollment" 
-                  layout="fill"
-                  objectFit="cover"
-                  objectPosition="top"
+                  fill
+                  className="opacity-95 object-cover object-top"
                 />
               </div>
             </div>

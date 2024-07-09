@@ -41,8 +41,8 @@ const Projects = () => {
                 <Image
                   src={project.imageUrl}
                   alt={project.title}
-                  layout="fill"
-                  objectFit="cover"
+                  fill
+                  className="opacity-95 object-cover"
                 />
               </div>
               <div className="p-6">

@@ -14,9 +14,8 @@ const Clubs = () => {
               <Image 
                   src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2FScreen%20Shot%202024-07-03%20at%208.26.05%20AM.png?alt=media&token=ac93ba95-d1d1-4dc4-86df-c470cacd25c9" 
                   alt="Clubs 1" 
-                  layout="fill"
-                  objectFit="cover"
-                  objectPosition="top"
+                  fill
+                  className="opacity-95 object-cover object-top"
                 />
               </div>
             </div>

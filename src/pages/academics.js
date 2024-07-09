@@ -14,8 +14,8 @@ const Academics = () => {
                 <Image 
                   src="/images/students.png" 
                   alt="Academic 1" 
-                  layout="fill"
-                  objectFit="cover"
+                  fill
+                  className="opacity-95 object-cover object-top"
                 />
               </div>
             </div>
@@ -36,8 +36,8 @@ const Academics = () => {
                 <Image 
                   src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2FScreen%20Shot%202024-07-03%20at%208.22.33%20AM.png?alt=media&token=016853a8-7561-4395-9efb-93286fd2a8d8" 
                   alt="Academic 2" 
-                  layout="fill"
-                  objectFit="cover"
+                  fill
+                  className="opacity-95 object-cover object-top"
                 />
               </div>
             </div>

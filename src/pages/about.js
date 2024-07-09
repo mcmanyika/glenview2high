@@ -14,9 +14,8 @@ export default function AboutUs() {
                 <Image 
                   src="/images/fountain.png" 
                   alt="Fountain" 
-                  layout="fill"
-                  objectFit="cover"
-                  objectPosition="top"
+                  fill
+                  className="opacity-95 object-cover object-top"
                 />
               </div>
             </div>
@@ -40,9 +39,8 @@ export default function AboutUs() {
                 <Image 
                   src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2FScreen%20Shot%202024-07-03%20at%208.24.30%20AM.png?alt=media&token=d64b4cc3-fe2b-4e43-a50a-7f5b555755c8" 
                   alt="Project 1" 
-                  layout="fill"
-                  objectFit="cover"
-                  objectPosition="top"
+                  fill
+                  className="opacity-95 object-cover object-top"
                 />
               </div>
             </div>

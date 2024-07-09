@@ -4,8 +4,10 @@ import Image from 'next/image';
 import { ref, onValue, query, orderByChild, equalTo } from 'firebase/database';
 import { database } from '../../../utils/firebaseConfig';
 import { useGlobalState, setIsOverlayVisible } from '../store'; // Import useGlobalState and setIsOverlayVisible
+import { useSession, signIn, signOut } from 'next-auth/react';
 
 const Header = () => {
+  const { data: session } = useSession();
   const [titles, setTitles] = useState([]);
   const [isSticky, setIsSticky] = useState(false);
   const [isOpen, setIsOpen] = useState(false); // State to manage mobile menu visibility
@@ -75,11 +77,23 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed z-50 w-full bg-gray-700 opacity-50 text-white transition-all duration-500 ease-in-out ${
-        isSticky ? 'top-0 p-4' : 'bottom-0 border-t-2 border-t-gray-500 p-5'
+      className={`fixed z-50 w-full bg-blue-400  text-white transition-all duration-500 ease-in-out ${
+        isSticky ? 'top-0 ' : 'bottom-0 border-t-2 border-t-white p-5'
       } ${!isSticky && 'hidden md:block'}`} // Hide on mobile screens when !isSticky
     >
-      <nav className="max-w-4xl mx-auto flex justify-between items-center">
+      {isSticky && (
+        <div className='top-0 w-full text-white p-0 text-right'>
+          <div className='container mx-auto text-xs p-2 mb-2'>
+            {session ? <span>Hi {session.user.name}</span> : <>Welcome Guest</>} , &nbsp; 
+            {session ? (
+              <button onClick={() => signOut()}> Sign Out</button>
+            ) : (
+              <button onClick={() => signIn('google')}> Sign In</button>
+            )}
+          </div>
+        </div>
+      )}
+      <nav className="max-w-4xl mx-auto flex justify-between items-center p-4">
         <div className={`flex items-center space-x-2 ${isOpen ? 'hidden md:flex' : 'block'}`}>
           <Link href='/'>
             <Image

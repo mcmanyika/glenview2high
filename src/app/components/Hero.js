@@ -18,9 +18,9 @@ const Hero = () => {
       imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2FScreen%20Shot%202024-07-03%20at%208.20.55%20AM.png?alt=media&token=b60de27d-f07d-41d2-a036-918ee8a64674",
     },
     {
-      title: "Community Engagement",
+      title: "Innovative Teaching",
       description: "Providing state-of-the-art facilities and teaching methods.",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2FScreen%20Shot%202024-07-03%20at%208.26.05%20AM.png?alt=media&token=ac93ba95-d1d1-4dc4-86df-c470cacd25c9",
+      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2FScreen%20Shot%202024-07-03%20at%208.22.33%20AM.png?alt=media&token=016853a8-7561-4395-9efb-93286fd2a8d8",
     },
     {
       title: "Cultural Connection",

@@ -76,21 +76,21 @@ const Header = () => {
   return (
     <header
       className={`fixed z-50 w-full bg-gray-700 opacity-80 text-white transition-all duration-500 ease-in-out ${
-        isSticky ? 'top-0 p-4 ' : 'bottom-0 border-t-2 border-t-gray-500 p-5'
-      }`}
+        isSticky ? 'top-0 p-4' : 'bottom-0 border-t-2 border-t-gray-500 p-5'
+      } ${!isSticky && 'hidden md:block'}`} // Hide on mobile screens when !isSticky
     >
       <nav className="max-w-4xl mx-auto flex justify-between items-center">
-        <div className={`flex items-center space-x-2 ${isOpen ? 'hidden md:flex' : 'block'}, `}>
+        <div className={`flex items-center space-x-2 ${isOpen ? 'hidden md:flex' : 'block'}`}>
           <Link href='/'>
             <Image
               src="/images/logo.png"
               alt="Logo"
               width={isSticky ? 50 : 70} // Adjusted width based on sticky state
               height={isSticky ? 50 : 80} // Adjusted height based on sticky state
-              className={`rounded `}
+              className="rounded"
             />
           </Link>
-          <h1 className={`text-sm md:text-2xl font-normal uppercase ${isSticky ? 'flex': 'flex'}`}>GlenView 2 High</h1>
+          <h1 className="text-sm md:text-2xl font-normal uppercase flex">GlenView 2 High</h1>
         </div>
         {isSticky && (
           <div className="md:hidden"> {/* Display menu icon on mobile */}

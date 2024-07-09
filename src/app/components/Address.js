@@ -7,7 +7,7 @@ const Address = () => {
         <div className="flex flex-col md:flex-row justify-between">
           <div className="mb-4 md:mb-0">
             <h2 className="text-lg font-bold mb-2">Our Address</h2>
-            <p className="text-sm text-white font-sans">
+            <p className="text-sm font-thin text-white font-sans">
               Address: 9480 1st Drive, <br />Glenview 3, <br /> PO Box GV 41, Glen View
             </p>
           </div>

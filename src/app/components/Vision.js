@@ -3,8 +3,8 @@ import React from 'react';
 
 const Vision = () => {
   return (
-    <section className="bg-white py-12">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="container mx-auto bg-white py-12">
+      <div className=" px-4 sm:px-6 lg:px-8">
         <div className="mt-1">
           <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10">
             <div className="relative">

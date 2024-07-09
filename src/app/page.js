@@ -9,11 +9,20 @@ import Address from "./components/Address";
 import MissionStatement from "./components/MissionStatement";
 import Fountain from "./components/Fountain";
 import Placeholder from "./components/Placeholder";
+import NewStudents from '../app/components/NewStudents';
+import About from '../app/components/About';
+import Socials from '../app/components/Socials';
+import Vision from '../app/components/Vision'
 
 export default function Home() {
   return (
     <Layout>
+      <Hero />
+      <About />
+      <Socials />
       <Features />
+      <Vision />
+      <NewStudents />
     </Layout>
   );
 }

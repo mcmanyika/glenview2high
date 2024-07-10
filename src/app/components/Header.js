@@ -78,7 +78,7 @@ const Header = () => {
       {isSticky && (
         <div className='top-0 w-full text-white p-0'>
           <div className='container mx-auto flex text-sm font-thin p-2 mb-2 justify-between'>
-            <div className='flex-1 flex space-x-2'><span>Follow Us</span>
+            <div className='flex-1 md:flex space-x-2 hidden'><span>Follow Us</span>
               <a
                 href="https://www.facebook.com/"
                 target="_blank"

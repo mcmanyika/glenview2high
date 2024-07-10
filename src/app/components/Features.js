@@ -5,17 +5,17 @@ const Features = () => {
   const features = [
     {
       title: 'Our Vision',
-      image: '/images/classrooms.png',
+      image: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fclassroms.jpeg?alt=media&token=e989df51-cc5e-4306-943d-cb06d197c209',
       description: 'To be the centre of excellence in the provision of high quality education as well as to develop in the pupils, desire of quality services, courage and usefulness to the school and ready to accept responsibility in pursuance of our aspirations and cherished goals.',
     },
     {
       title: 'Our School Tone',
-      image: '/images/students.png',
+      image: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fprefects.jpeg?alt=media&token=59735498-0229-4a0b-8669-3410f69a407f',
       description: 'We have committees such as Disciplinary and Guidance and Counselling that work with the Prefects Body to ensure maximum discipline',
     },
     {
       title: 'In Class',
-      image: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2FScreen%20Shot%202024-07-03%20at%208.22.33%20AM.png?alt=media&token=016853a8-7561-4395-9efb-93286fd2a8d8',
+      image: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Felectronics.jpeg?alt=media&token=356cac23-0bae-4eb3-bcd8-26b1b1af9b68',
       description: 'In support of STEM in the 21st Century. `A` Level chemistry practical in progress',
     },
   ];

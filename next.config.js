@@ -1,5 +1,6 @@
 module.exports = {
     images: {
+      domains: ['firebasestorage.googleapis.com'],
       remotePatterns: [
         {
           protocol: 'https',
@@ -7,6 +8,7 @@ module.exports = {
           port: '',
           pathname: '/v0/b/glenview2-b3d45.appspot.com/o/**',
         },
+        
       ],
     },
   }

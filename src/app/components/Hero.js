@@ -15,17 +15,17 @@ const Hero = () => {
     {
       title: "Excellence in Education",
       description: "Empowering students to reach their full potential.",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2FScreen%20Shot%202024-07-03%20at%208.20.55%20AM.png?alt=media&token=b60de27d-f07d-41d2-a036-918ee8a64674",
+      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents3.jpeg?alt=media&token=368a73f2-a805-4330-85b6-24be48315e97",
     },
     {
       title: "Innovative Teaching",
       description: "Providing state-of-the-art facilities and teaching methods.",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2FScreen%20Shot%202024-07-03%20at%208.22.33%20AM.png?alt=media&token=016853a8-7561-4395-9efb-93286fd2a8d8",
+      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fcomputerlab.jpeg?alt=media&token=af04fc07-062b-412c-a9ce-a17bed728757",
     },
     {
-      title: "Cultural Connection",
+      title: "Sporting Activities",
       description: "Building strong connections with the local community.",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2FScreen%20Shot%202024-07-03%20at%208.27.53%20AM.png?alt=media&token=c7969d99-083d-47bb-9b26-62397aac1b43",
+      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fnetball.jpeg?alt=media&token=af4ee37f-7f9e-46d1-b823-d7ece81bcac8",
     },
   ]);
 

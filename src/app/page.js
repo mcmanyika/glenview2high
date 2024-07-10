@@ -6,7 +6,7 @@ import Features from "./components/Features";
 import NewStudents from '../app/components/NewStudents';
 import About from '../app/components/About';
 import Socials from '../app/components/Socials';
-import Vision from '../app/components/Vision'
+import Vision from '../app/components/Vision';
 
 export default function Home() {
   return (

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { FaFacebook, FaInstagram } from 'react-icons/fa';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ref, onValue, query, orderByChild, equalTo } from 'firebase/database';
@@ -75,14 +76,34 @@ const Header = () => {
       } ${!isSticky && 'hidden md:block'}`}
     >
       {isSticky && (
-        <div className='top-0 w-full text-white p-0 text-right'>
-          <div className='container mx-auto text-xs p-2 mb-2'>
-            {session ? <span>Hi {session.user.name}</span> : <>Welcome Guest </>}, &nbsp;
-            {session ? (
-              <button onClick={() => signOut()}> Sign Out</button>
-            ) : (
-              <button onClick={() => signIn('google')}> Sign In</button>
-            )}
+        <div className='top-0 w-full text-white p-0'>
+          <div className='container mx-auto flex text-sm font-thin p-2 mb-2 justify-between'>
+            <div className='flex-1 flex space-x-2'><span>Follow Us</span>
+              <a
+                href="https://www.facebook.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-gray-900"
+              >
+                <FaFacebook className="h-5 w-5" />
+              </a>
+              <a
+                href="https://www.instagram.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-gray-900"
+              >
+                <FaInstagram className="h-5 w-5" />
+              </a>
+            </div>
+            <div className='flex-1 text-right'>
+              {session ? <span>Hi {session.user.name}</span> : <>Welcome Guest </>}, &nbsp;
+              {session ? (
+                <button onClick={() => signOut()}> Sign Out</button>
+              ) : (
+                <button onClick={() => signIn('google')}> Sign In</button>
+              )}
+            </div>
           </div>
         </div>
       )}

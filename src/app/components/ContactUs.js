@@ -46,9 +46,9 @@ const ContactUs = () => {
       <div className="container mx-auto flex flex-col md:flex-row text-gray-500 font-thin">
         <div className="p-8 flex-1 flex flex-col  ">
           <div className="w-full">
-            <h2 className="text-2xl mb-10">Contact Info</h2>
-            <div className='items-start justify-center'>
-            <div className="w-full mb-4 flex items-start justify-center">
+            <h2 className="text-2xl mb-10 mb:mb-20">Contact Info</h2>
+            <div className=''>
+            <div className="w-full mb-4 flex md:ml-52">
               <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-4 mt-1" />
               <span>
                 <strong>Address:</strong><br />
@@ -57,14 +57,14 @@ const ContactUs = () => {
                 Harare, Zimbabwe
               </span>
             </div>
-            <div className="w-full mb-4 flex items-start justify-center">
+            <div className="w-full mb-4 flex md:ml-52">
               <FontAwesomeIcon icon={faPhone} className="mr-4 mt-1" />
               <span>
                 <strong>Phone:</strong><br />
                 +263 123 456 789
               </span>
             </div>
-            <div className="w-full mb-4 flex items-start justify-center">
+            <div className="w-full mb-4 flex md:ml-52">
               <FontAwesomeIcon icon={faEnvelope} className="mr-4 mt-1" />
               <span>
                 <strong>Email:</strong><br />

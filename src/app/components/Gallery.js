@@ -83,7 +83,7 @@ const Gallery = () => {
         isOpen={isOpen}
         onRequestClose={closeModal}
         contentLabel="Image Modal"
-        className="max-w-7xl mx-auto p-4"
+        className="max-w-7xl mx-auto"
         overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
       >
         {currentImage && (

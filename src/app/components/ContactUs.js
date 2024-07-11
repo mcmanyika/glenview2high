@@ -44,13 +44,13 @@ const ContactUs = () => {
   return (
     <div className=" bg-blue-50 p-10">
       <div className='container mx-auto flex flex-col md:flex-row'>
-      <div className="p-8 text-black flex-1">
+      <div className="p-8 text-gray-500 font-thin flex-1">
         <h2 className="text-2xl mb-4">Contact Info</h2>
-        <div className="w-full text-lg font-thin font-sans pb-5">
+        {/* <div className="w-full text-lg font-thin font-sans pb-5">
         We are dedicated to providing quality education and fostering a supportive learning environment for our students.
-        </div>
+        </div> */}
         <p className="mb-4 flex items-start">
-          <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-2 mt-1" />
+          <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-4 mt-1" />
           <span>
             <strong>Address:</strong><br />
             GlenView 2 High School,<br />
@@ -59,17 +59,17 @@ const ContactUs = () => {
           </span>
         </p>
         <p className="mb-4 flex items-start">
-          <FontAwesomeIcon icon={faPhone} className="mr-2 mt-1" />
+          <FontAwesomeIcon icon={faPhone} className="mr-4 mt-1" />
           <span>
             <strong>Phone:</strong><br />
             +263 123 456 789
           </span>
         </p>
         <p className="mb-4 flex items-start">
-          <FontAwesomeIcon icon={faEnvelope} className="mr-2 mt-1" />
+          <FontAwesomeIcon icon={faEnvelope} className="mr-4 mt-1" />
           <span>
             <strong>Email:</strong><br />
-            info@glenview2high.co.zw
+            info@glenview2high.com
           </span>
         </p>
       </div>

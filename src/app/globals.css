@@ -14,3 +14,13 @@ body {
   .bg-blue2{
     background-color: #85b6fb36;
   }
+
+  .no-hover-overlay {
+    pointer-events: none;
+  }
+  
+  .map-container {
+    height: 50vh;
+    width: 100%;
+  }
+  

@@ -13,12 +13,16 @@ const center = {
 
 const Map = () => {
   return (
-    <div style={{ height: '50vh', width: '100%' }}>
+    <div className="map-container">
       <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
           center={center}
           zoom={16}
+          options={{
+            disableDefaultUI: true,
+            draggable: true,
+          }}
         >
           <Marker position={center} title="Glenview 2 High School" />
         </GoogleMap>

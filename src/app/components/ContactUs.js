@@ -42,8 +42,8 @@ const ContactUs = () => {
   }
 
   return (
-    <div className="flex flex-col md:flex-row bg-blue-50 p-10">
-      {/* Contact Information */}
+    <div className=" bg-blue-50 p-10">
+      <div className='container mx-auto flex flex-col md:flex-row'>
       <div className="p-8 text-black flex-1">
         <h2 className="text-2xl mb-4">Contact Info</h2>
         <div className="w-full text-lg font-thin font-sans pb-5">
@@ -117,6 +117,7 @@ const ContactUs = () => {
           </button>
         </form>
         <ToastContainer position="bottom-center" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="dark" />
+      </div>
       </div>
     </div>
   );

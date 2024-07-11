@@ -10,7 +10,7 @@ const Features = () => {
     },
     {
       title: 'Our School Tone',
-      image: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fprefects.jpeg?alt=media&token=59735498-0229-4a0b-8669-3410f69a407f',
+      image: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fprefects2.jpeg?alt=media&token=20a488a0-faad-402d-9640-5ddea7f08e40',
       description: 'We have committees such as Disciplinary and Guidance and Counselling that work with the Prefects Body to ensure maximum discipline',
     },
     {

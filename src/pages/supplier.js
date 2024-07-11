@@ -15,7 +15,7 @@ const SupplierInvitation = () => {
   };
 
   return (
-    <Layout templateText="Supplier Opportunities">
+    <Layout templateText="Business Opportunities">
       <div className="relative flex items-center justify-center">
         <div
           className="absolute inset-0 bg-cover"

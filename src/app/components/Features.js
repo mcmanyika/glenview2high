@@ -24,9 +24,9 @@ const Features = () => {
     <section className="container mx-auto px-4 md:px-0">
       <div className="flex flex-col md:flex-row justify-around items-center md:items-start space-y-4 md:space-y-0 md:space-x-4">
         {features.map((feature, index) => (
-          <div key={index} className="text-center rounded-lg w-full p-4 md:w-1/3 relative group">
-            <h3 className="text-2xl p-4">{feature.title}</h3>
-            <hr /> <br/>
+          <div key={index} className="pt-10 text-center rounded-lg w-full p-4 md:w-1/3 relative group">
+            {/* <h3 className="text-2xl p-4">{feature.title}</h3>
+            <hr /> <br/> */}
             <div className="relative h-64 overflow-hidden">
               <div className="h-full w-full transform transition-transform duration-500 group-hover:scale-105">
                 <Image 

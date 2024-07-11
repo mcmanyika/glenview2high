@@ -6,19 +6,16 @@ const staffMembers = [
     name: 'Owen Nhire',
     position: 'Principal',
     imageUrl: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstaff%2Fprincipal.png?alt=media&token=22d34ad3-a64c-488c-afcc-cdd2ab8bcb25',
-    bio: 'John has been the principal of GlenView 2 High for 5 years, bringing over 20 years of educational experience.',
   },
   {
     name: 'Skumbuzo Jemwa',
     position: 'Vice Principal',
     imageUrl: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstaff%2Fstaff1.jpeg?alt=media&token=dcbcee5b-c6d1-499d-a54a-bab633d5a9f8',
-    bio: 'Jane is passionate about student success and has been with GlenView for over 10 years.',
   },
   {
     name: 'Charles Matimba',
-    position: 'Senior Teacher',
+    position: 'Vice Principal',
     imageUrl: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstaff%2Fstaff2.jpeg?alt=media&token=2500b9f3-4252-4233-8781-4c1e0d17ef90',
-    bio: 'Michael loves teaching science and inspiring students to explore the world around them.',
   }
 ];
 

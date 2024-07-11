@@ -16,6 +16,31 @@ const images = [
     src: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fbuilding.jpeg?alt=media&token=98f47f53-c61b-4d40-a4ab-3eeddd07d39a',
     alt: 'Image 4',
   },
+  {
+    src: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstaff%2FstaffTeam.jpeg?alt=media&token=8d810f99-400f-4e23-ba3e-c8ba0b54300c',
+    alt: 'Image 4',
+  },
+
+  {
+    src: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstaff%2Fteachers.jpeg?alt=media&token=d3703446-9fae-4fa0-b074-514419291de9',
+    alt: 'Image 4',
+  },
+  {
+    src: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2Fstudents5.jpeg?alt=media&token=2d12da7d-0ba0-4362-887e-515927b369ef',
+    alt: 'Image 4',
+  },
+  {
+    src: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FAlevelStudents.jpeg?alt=media&token=e1b49d87-2675-4e83-81e9-72681b27d48b',
+    alt: 'Image 4',
+  },
+  {
+    src: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fdrummies.jpeg?alt=media&token=452d07f1-d6b9-48cc-a5be-fa69396f6583',
+    alt: 'Image 4',
+  },
+  {
+    src: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstaff%2Fstaff6.jpeg?alt=media&token=d1f882d2-5520-45c6-a657-7013ee761651',
+    alt: 'Image 4',
+  },
   // Add more images as needed
 ];
 

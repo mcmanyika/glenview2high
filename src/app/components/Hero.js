@@ -120,7 +120,7 @@ const Hero = () => {
         </div>
       )}
       <section className="relative text-white p-10 md:p-20 text-center">
-        <h1 className="text-4xl md:text-5xl font-thin font-sans">{currentSlide.title}</h1>
+        <h1 className="text-3xl md:text-5xl font-thin font-sans">{currentSlide.title}</h1>
         <p className="mt-4 text-sm md:text-xl text-thin font-sans">{currentSlide.description}</p>
       </section>
     </div>

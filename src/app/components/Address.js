@@ -15,7 +15,7 @@ const Address = () => {
             <h2 className="text-lg font-bold mb-2">Stay Connected</h2>
             <div className="flex space-x-2">
               <a
-                href="https://www.facebook.com/your-school-page"
+                href="https://www.facebook.com/groups/497811331424773/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white"

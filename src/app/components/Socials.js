@@ -9,7 +9,7 @@ const Socials = () => {
       <div className="max-w-3xl mx-auto p-8">
         <div className="flex justify-center space-x-6">
           <a
-            href="https://www.facebook.com/"
+            href="https://www.facebook.com/groups/497811331424773/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-gray-700 hover:text-gray-900"

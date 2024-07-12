@@ -53,7 +53,7 @@ const ContactUs = () => {
                 <FontAwesomeIcon icon={faPhone} className="mr-4 mt-1" />
                 <span>
                   <strong>Phone:</strong><br />
-                  +263 123 456 789
+                  +263 04692501, +263 04690070
                 </span>
               </div>
               <div className="w-full mb-4 flex">

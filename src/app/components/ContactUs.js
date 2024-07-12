@@ -10,10 +10,10 @@ const ContactUs = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
-  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const contactData = {
       name,
       email,
@@ -23,56 +23,48 @@ const ContactUs = () => {
 
     try {
       await push(ref(database, 'contacts'), contactData);
-      setSubmitted(true);
       toast.success('Form submitted successfully!');
+      setName('');
+      setEmail('');
+      setMessage('');
     } catch (error) {
       console.error('Error submitting form: ', error);
       toast.error('Failed to submit form. Please try again.');
     }
   };
 
-  if (submitted) {
-    return (
-      <div className="p-4 text-center text-white">
-        <h2 className="text-2xl">Thank you for contacting us!</h2>
-        <p>We will get back to you soon.</p>
-        <ToastContainer position="bottom-center" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="dark" />
-      </div>
-    );
-  }
-
   return (
     <div className="bg-blue-50 p-10">
       <div className="md:container mx-auto flex flex-col md:flex-row text-gray-500 font-thin">
-        <div className="md:p-8 flex-1 flex flex-col  ">
+        <div className="md:p-8 flex-1 flex flex-col">
           <div className="w-full">
-            <h2 className="text-2xl mb-10 mb:mb-20">Contact Info</h2>
+            <h2 className="text-2xl mb-10">Contact Info</h2>
             <div className=''>
-            <div className="w-full mb-4 flex md:ml-52">
-              <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-4 mt-1" />
-              <span>
-                <strong>Address:</strong><br />
-                GlenView 2 High School,<br />
-                9480 1st Drive, Glenview 3,<br />
-                Harare, Zimbabwe
-              </span>
-            </div>
-            <div className="w-full mb-4 flex md:ml-52">
-              <FontAwesomeIcon icon={faPhone} className="mr-4 mt-1" />
-              <span>
-                <strong>Phone:</strong><br />
-                +263 123 456 789
-              </span>
-            </div>
-            <div className="w-full mb-4 flex md:ml-52">
-              <FontAwesomeIcon icon={faEnvelope} className="mr-4 mt-1" />
-              <span>
-                <strong>Email:</strong><br />
-                info@glenview2high.com
-              </span>
+              <div className="w-full mb-4 flex justify-center">
+                <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-4 mt-1" />
+                <span>
+                  <strong>Address:</strong><br />
+                  GlenView 2 High School,<br />
+                  9480 1st Drive, Glenview 3,<br />
+                  Harare, Zimbabwe
+                </span>
+              </div>
+              <div className="w-full mb-4 flex justify-center">
+                <FontAwesomeIcon icon={faPhone} className="mr-4 mt-1" />
+                <span>
+                  <strong>Phone:</strong><br />
+                  +263 123 456 789
+                </span>
+              </div>
+              <div className="w-full mb-4 flex justify-center">
+                <FontAwesomeIcon icon={faEnvelope} className="mr-4 mt-1" />
+                <span>
+                  <strong>Email:</strong><br />
+                  info@glenview2high.com
+                </span>
+              </div>
             </div>
           </div>
-        </div>
         </div>
 
         <div className="flex-1 flex flex-col justify-center">
@@ -117,7 +109,18 @@ const ContactUs = () => {
               Submit
             </button>
           </form>
-          <ToastContainer position="bottom-center" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="dark" />
+          <ToastContainer 
+            position="bottom-center" 
+            autoClose={5000} 
+            hideProgressBar={false} 
+            newestOnTop={false} 
+            closeOnClick 
+            rtl={false} 
+            pauseOnFocusLoss 
+            draggable 
+            pauseOnHover 
+            theme="dark" 
+          />
         </div>
       </div>
     </div>

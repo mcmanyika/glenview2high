@@ -2,6 +2,7 @@
 import React from 'react';
 import Layout from '../app/components/Layout2';
 import Image from 'next/image';
+import Subjects from '../app/components/Subjects';
 
 const Academics = () => {
   return (
@@ -44,6 +45,8 @@ const Academics = () => {
           </div>
         </div>
       </section>
+
+      <Subjects />
     </Layout>
   );
 };

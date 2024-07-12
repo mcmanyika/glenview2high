@@ -18,7 +18,6 @@ export default function Home() {
       <Socials />
       <Features />
       <Vision />
-
       <NewStudents />
       <Map />
       <ContactUs />

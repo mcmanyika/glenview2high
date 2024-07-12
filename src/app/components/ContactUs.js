@@ -39,8 +39,8 @@ const ContactUs = () => {
         <div className="md:p-8 flex-1 flex flex-col">
           <div className="w-full">
             <h2 className="text-2xl mb-10">Contact Info</h2>
-            <div className=''>
-              <div className="w-full mb-4 flex justify-center">
+            <div className='md:pl-40'>
+              <div className="w-full mb-4 flex">
                 <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-4 mt-1" />
                 <span>
                   <strong>Address:</strong><br />
@@ -49,14 +49,14 @@ const ContactUs = () => {
                   Harare, Zimbabwe
                 </span>
               </div>
-              <div className="w-full mb-4 flex justify-center">
+              <div className="w-full mb-4 flex">
                 <FontAwesomeIcon icon={faPhone} className="mr-4 mt-1" />
                 <span>
                   <strong>Phone:</strong><br />
                   +263 123 456 789
                 </span>
               </div>
-              <div className="w-full mb-4 flex justify-center">
+              <div className="w-full mb-4 flex">
                 <FontAwesomeIcon icon={faEnvelope} className="mr-4 mt-1" />
                 <span>
                   <strong>Email:</strong><br />
@@ -119,7 +119,7 @@ const ContactUs = () => {
             pauseOnFocusLoss 
             draggable 
             pauseOnHover 
-            theme="dark" 
+            theme="dark"
           />
         </div>
       </div>

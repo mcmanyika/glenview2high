@@ -1,5 +1,6 @@
 import { FaFacebookSquare, FaInstagram } from 'react-icons/fa';
 import Link from 'next/link'; // Import Link from next/link for client-side navigation
+import ItemList from '../components/ItemsList'
 
 const Address = () => {
   return (
@@ -11,6 +12,10 @@ const Address = () => {
             <p className="text-sm font-thin text-white font-sans">
               Address: 9480 1st Drive, <br />Glenview 3, <br /> PO Box GV 41, Glen View
             </p>
+          </div>
+          <div className="flex flex-col items-start">
+            <h2 className="text-lg font-bold mb-2">Links</h2>
+              <ItemList />
           </div>
           <div className="flex flex-col items-start">
             <h2 className="text-lg font-bold mb-2">Opportunities</h2>

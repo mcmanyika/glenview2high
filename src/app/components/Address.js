@@ -1,4 +1,5 @@
-import { FaFacebookSquare, FaInstagram } from 'react-icons/fa'; // Importing the icons from react-icons
+import { FaFacebookSquare, FaInstagram } from 'react-icons/fa';
+import Link from 'next/link'; // Import Link from next/link for client-side navigation
 
 const Address = () => {
   return (
@@ -12,11 +13,11 @@ const Address = () => {
             </p>
           </div>
           <div className="flex flex-col items-start">
-          <h2 className="text-lg font-bold mb-2">Opportunities</h2>
-          <p className="text-sm font-thin text-white font-sans">
-            <a href='/supplier'>
-              Suppliers Registration
-            </a>
+            <h2 className="text-lg font-bold mb-2">Opportunities</h2>
+            <p className="text-sm font-thin text-white font-sans">
+              <Link href="/supplier">
+                Suppliers Registration
+              </Link>
             </p>
           </div>
           <div className="flex flex-col items-start md:items-end">

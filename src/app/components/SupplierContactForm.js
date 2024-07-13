@@ -39,7 +39,6 @@ const SupplierContactForm = () => {
       <form onSubmit={handleSubmit} className="bg-blue-300 p-8 rounded shadow-md text-black w-full max-w-md">
         <h2 className="text-2xl mb-4">Supplier Contact Form</h2>
         <div className="mb-4">
-          <label className="block text-sm font-bold mb-2" htmlFor="name">Name</label>
           <input
             id="name"
             type="text"
@@ -51,7 +50,6 @@ const SupplierContactForm = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-bold mb-2" htmlFor="email">Email</label>
           <input
             id="email"
             type="email"
@@ -63,7 +61,6 @@ const SupplierContactForm = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-bold mb-2" htmlFor="phone">Phone</label>
           <input
             id="phone"
             type="tel"
@@ -75,7 +72,6 @@ const SupplierContactForm = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-bold mb-2" htmlFor="message">Services or Products</label>
           <textarea
             id="message"
             value={message}

@@ -11,6 +11,14 @@ const Address = () => {
               Address: 9480 1st Drive, <br />Glenview 3, <br /> PO Box GV 41, Glen View
             </p>
           </div>
+          <div className="flex flex-col items-start">
+          <h2 className="text-lg font-bold mb-2">Opportunities</h2>
+          <p className="text-sm font-thin text-white font-sans">
+            <a href='/supplier'>
+              Suppliers Registration
+            </a>
+            </p>
+          </div>
           <div className="flex flex-col items-start md:items-end">
             <h2 className="text-lg font-bold mb-2">Stay Connected</h2>
             <div className="flex space-x-2">

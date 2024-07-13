@@ -4,6 +4,7 @@ import Layout from '../app/components/Layout2';
 import Image from 'next/image';
 import Subjects from '../app/components/Subjects'
 
+
 const Academics = () => {
   return (
     <Layout templateText="Academics">

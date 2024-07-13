@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { FaFacebook, FaInstagram } from 'react-icons/fa';
+import { useEffect, useState, useRef } from 'react';
+import { FaFacebook, FaInstagram, FaHome } from 'react-icons/fa';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ref, onValue, query, orderByChild, equalTo } from 'firebase/database';
@@ -12,6 +12,8 @@ const Header = () => {
   const [titles, setTitles] = useState([]);
   const [isSticky, setIsSticky] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [showPopover, setShowPopover] = useState(false);
+  const popoverRef = useRef(null);
 
   const [isOverlayVisible] = useGlobalState('isOverlayVisible');
 
@@ -70,6 +72,28 @@ const Header = () => {
     setIsOverlayVisible(!isOverlayVisible);
   };
 
+  const togglePopover = () => {
+    setShowPopover(!showPopover);
+  };
+
+  const handleClickOutside = (event) => {
+    if (popoverRef.current && !popoverRef.current.contains(event.target)) {
+      setShowPopover(false);
+    }
+  };
+
+  useEffect(() => {
+    if (showPopover) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showPopover]);
+
   return (
     <header
       className={`fixed z-50 w-full bg-blue-400 text-white transition-all duration-500 ease-in-out ${
@@ -97,12 +121,41 @@ const Header = () => {
                 <FaInstagram className="h-5 w-5" />
               </a>
             </div>
-            <div className='flex-1 text-right'>
-              {session ? <span>Hi {session.user.name}</span> : <>Welcome Guest </>}, &nbsp;
+            <div className='flex-1 text-right relative'>
               {session ? (
-                <button onClick={() => signOut()}> Sign Out</button>
+                <>
+                  <span onClick={togglePopover} className="cursor-pointer">
+                    Hi {session.user.name}
+                  </span>
+                  {showPopover && (
+                    <div ref={popoverRef} className="absolute right-0 mt-2 w-48 bg-white text-black p-2 rounded shadow-md">
+                      <Link href="/dashboard">
+                        <p
+                          className="text-sm text-left flex items-center cursor-pointer"
+                          onClick={() => setShowPopover(false)}
+                        >
+                          <FaHome className="mr-2" /> Dashboard
+                        </p>
+                      </Link>
+                      <button
+                        onClick={() => signOut()}
+                        className="mt-4 w-full bg-blue-400 text-white p-1 rounded hover:bg-blue-500"
+                      >
+                        Sign Out
+                      </button>
+                    </div>
+                  )}
+                </>
               ) : (
-                <button onClick={() => signIn('google')}> Sign In</button>
+                <>
+                  Welcome Guest, &nbsp;
+                  <button
+                    onClick={() => signIn('google')}
+                    className="bg-blue-500 text-white p-1 rounded hover:bg-blue-600"
+                  >
+                    Sign In
+                  </button>
+                </>
               )}
             </div>
           </div>

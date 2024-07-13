@@ -1,28 +1,19 @@
-// utils/withAuth.js
-import { useEffect, useState } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { auth } from './firebaseConfig';
+import { useEffect } from 'react';
 
 const withAuth = (WrappedComponent) => {
   return (props) => {
+    const { data: session, status } = useSession();
     const router = useRouter();
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-      const unsubscribe = onAuthStateChanged(auth, (user) => {
-        if (!user) {
-          router.push('/login');
-        } else {
-          setLoading(false);
-        }
-      });
+      if (status === 'loading') return; // Do nothing while loading
+      if (!session) router.push('/'); // Redirect to signin if not authenticated
+    }, [session, status]);
 
-      return () => unsubscribe();
-    }, [router]);
-
-    if (loading) {
-      return <p>Loading...</p>;
+    if (status === 'loading' || !session) {
+      return <div>Loading...</div>; // Or a loading spinner
     }
 
     return <WrappedComponent {...props} />;

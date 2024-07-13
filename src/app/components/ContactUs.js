@@ -38,7 +38,7 @@ const ContactUs = () => {
       <div className="md:container mx-auto flex flex-col md:flex-row text-gray-500 font-thin">
         <div className="md:p-8 flex-1 flex flex-col">
           <div className="w-full">
-            <h2 className="text-2xl mb-10">Contact Info</h2>
+            <h2 className="text-2xl  mb-10">Contact Info</h2>
             <div className='md:pl-40'>
               <div className="w-full mb-4 flex">
                 <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-4 mt-1" />
@@ -68,7 +68,7 @@ const ContactUs = () => {
         </div>
 
         <div className="flex-1 flex flex-col justify-center">
-          <form onSubmit={handleSubmit} className="md:p-8 text-black w-full">
+          <form onSubmit={handleSubmit} className="md:p-8 ttext-gray-500 font-thin w-full">
             <h2 className="text-2xl mb-4">Contact Us</h2>
             <div className="mb-4">
               <label className="block text-sm font-bold mb-2" htmlFor="name">Name</label>

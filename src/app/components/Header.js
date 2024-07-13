@@ -31,6 +31,7 @@ const Header = () => {
                 link: data[key].link,
                 status: data[key].status,
               }))
+              .filter(a => a.title !== 'Projects')
               .sort((a, b) => {
                 if (a.title === 'Admissions') return 1;
                 if (b.title === 'Admissions') return -1;

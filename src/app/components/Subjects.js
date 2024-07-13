@@ -8,7 +8,7 @@ const Subjects = () => {
         
       {/* 'A' LEVEL */}
       <div className="w-full md:w-1/3 bg-white rounded-lg border border-gray-300 shadow-md p-4">
-        <h3 className="text-xl font-bold mb-2">A' LEVEL</h3>
+        <h3 className="text-xl font-bold mb-2">A LEVEL</h3>
         <ul className="list-disc ml-4">
           <li>General Paper</li>
           <li>Literature in English</li>
@@ -32,7 +32,7 @@ const Subjects = () => {
 
       {/* 'O' LEVEL */}
       <div className="w-full md:w-1/3 bg-white rounded-lg border border-gray-300 shadow-md p-4 mt-4 md:mt-0">
-        <h3 className="text-xl font-bold mb-2">'O' LEVEL</h3>
+        <h3 className="text-xl font-bold mb-2">O LEVEL</h3>
         <ul className="list-disc ml-4">
           <li>English Language</li>
           <li>Literature in English</li>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
-import { FaBars, FaTachometerAlt, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import { FaBars, FaTachometerAlt, FaCog, FaSignOutAlt, FaHome } from 'react-icons/fa';
 import Image from 'next/image';
 import '../../app/globals.css';
 import { ToastContainer, toast } from 'react-toastify';
@@ -75,7 +75,7 @@ const AdminLayout = ({ children }) => {
       )}
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col md:ml-4 transition-all duration-300 ease-in-out">
+      <div className="flex-1 flex flex-col  transition-all duration-300 ease-in-out">
         <header className="flex items-center justify-between bg-blue-400 text-white p-4 md:hidden">
           <div className="flex items-center">
             <FaBars className="cursor-pointer text-2xl mr-4" onClick={toggleMobileSidebar} />
@@ -98,10 +98,18 @@ const AdminLayout = ({ children }) => {
                 </div>
                 {isPopoverOpen && (
                   <div className="absolute right-0 mt-40 w-48 bg-white shadow-lg rounded-lg p-4">
-                    <div className="flex items-center text-sm text-left cursor-pointer hover:bg-gray-200 rounded p-2">
-                      <FaCog className="mr-2" />
-                      <span>Settings</span>
-                    </div>
+                    <Link href="/">
+                      <div className="flex items-center text-sm text-left cursor-pointer hover:bg-gray-200 rounded p-2">
+                        <FaHome className="mr-2" />
+                        <span>Home</span>
+                      </div>
+                    </Link>
+                    <Link href="/admin/settings">
+                      <div className="flex items-center text-sm text-left cursor-pointer hover:bg-gray-200 rounded p-2">
+                        <FaCog className="mr-2" />
+                        <span>Settings</span>
+                      </div>
+                    </Link>
                     <button
                       onClick={() => signOut()}
                       className="mt-2 flex items-center w-full text-left p-2 hover:bg-gray-200 rounded text-sm text-blue-700"
@@ -117,7 +125,18 @@ const AdminLayout = ({ children }) => {
           {children}
         </main>
       </div>
-      
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   );
 };

@@ -5,8 +5,9 @@ import withAuth from '../../utils/withAuth';
 import AdminLayout from './admin/adminLayout';
 import fetchUserType from '../../utils/fetchUserType';
 import UserProfile from '../app/components/user/UserProfile';
+import ProfileDetails from '../app/components/user/ProfileDetails';
 
-const Dashboard = () => {
+const UserDashboard = () => {
   const { data: session } = useSession();
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -29,9 +30,14 @@ const Dashboard = () => {
 
   return (
     <AdminLayout>
-      <UserProfile />
+        <div className='flex flex-row'>
+            <div className='flex-1'>
+                <ProfileDetails />
+            </div>
+            <div className='flex-1'></div>
+        </div>
     </AdminLayout>
   );
 };
 
-export default withAuth(Dashboard);
+export default withAuth(UserDashboard);

@@ -4,11 +4,14 @@ import Link from 'next/link';
 import { FaBars, FaTachometerAlt, FaCog, FaSignOutAlt } from 'react-icons/fa';
 import Image from 'next/image';
 import '../../app/globals.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AdminLayout = ({ children }) => {
   const { data: session } = useSession();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const toggleSidebar = () => {
     setIsExpanded(!isExpanded);
@@ -16,6 +19,10 @@ const AdminLayout = ({ children }) => {
 
   const toggleMobileSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const togglePopover = () => {
+    setIsPopoverOpen(!isPopoverOpen);
   };
 
   return (
@@ -74,13 +81,13 @@ const AdminLayout = ({ children }) => {
             <FaBars className="cursor-pointer text-2xl mr-4" onClick={toggleMobileSidebar} />
             <h1 className="text-lg">Admin Dashboard</h1>
           </div>
-         
         </header>
         <main className="flex-1 p-6">
-          <div className='w-full text-right p-2 border shadow-sm rounded-md flex items-center justify-end'>
+          <div className="w-full text-right p-2 border shadow-sm rounded-md flex items-center justify-end relative">
             {session && (
               <div className="flex items-center">
-                <div className="rounded-full overflow-hidden h-10 w-10 relative">
+                <span className="text-sm mr-2">{session.user.name}</span>
+                <div className="rounded-full overflow-hidden h-10 w-10 relative cursor-pointer" onClick={togglePopover}>
                   <Image
                     src={session.user.image}
                     alt="Profile"
@@ -89,13 +96,28 @@ const AdminLayout = ({ children }) => {
                     className="object-cover"
                   />
                 </div>
-                {/* <span className="text-sm mr-2">{session.user.name}</span> */}
+                {isPopoverOpen && (
+                  <div className="absolute right-0 mt-40 w-48 bg-white shadow-lg rounded-lg p-4">
+                    <div className="flex items-center text-sm text-left cursor-pointer hover:bg-gray-200 rounded p-2">
+                      <FaCog className="mr-2" />
+                      <span>Settings</span>
+                    </div>
+                    <button
+                      onClick={() => signOut()}
+                      className="mt-2 flex items-center w-full text-left p-2 hover:bg-gray-200 rounded text-sm text-blue-700"
+                    >
+                      <FaSignOutAlt className="mr-2" />
+                      Sign Out
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>
           {children}
         </main>
       </div>
+      
     </div>
   );
 };

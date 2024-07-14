@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { FaBars, FaTachometerAlt, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import Image from 'next/image';
 import '../../app/globals.css';
 
 const AdminLayout = ({ children }) => {
@@ -67,12 +68,31 @@ const AdminLayout = ({ children }) => {
       )}
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col md:ml-16 transition-all duration-300 ease-in-out">
-        <header className="flex items-center bg-blue-400 text-white p-4 md:hidden">
-          <FaBars className="cursor-pointer text-2xl" onClick={toggleMobileSidebar} />
-          <h1 className="text-lg ml-4">Admin Dashboard</h1>
+      <div className="flex-1 flex flex-col md:ml-4 transition-all duration-300 ease-in-out">
+        <header className="flex items-center justify-between bg-blue-400 text-white p-4 md:hidden">
+          <div className="flex items-center">
+            <FaBars className="cursor-pointer text-2xl mr-4" onClick={toggleMobileSidebar} />
+            <h1 className="text-lg">Admin Dashboard</h1>
+          </div>
+         
         </header>
         <main className="flex-1 p-6">
+          <div className='w-full text-right p-2 border shadow-sm rounded-md flex items-center justify-end'>
+            {session && (
+              <div className="flex items-center">
+                <div className="rounded-full overflow-hidden h-10 w-10 relative">
+                  <Image
+                    src={session.user.image}
+                    alt="Profile"
+                    width={50}
+                    height={50}
+                    className="object-cover"
+                  />
+                </div>
+                {/* <span className="text-sm mr-2">{session.user.name}</span> */}
+              </div>
+            )}
+          </div>
           {children}
         </main>
       </div>

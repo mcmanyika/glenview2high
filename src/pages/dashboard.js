@@ -8,8 +8,8 @@ const Dashboard = () => {
 
   return (
     <AdminLayout>
-      <h1>Welcome to your Dashboard, {session?.user?.name}</h1>
-      {/* Add your dashboard content here */}
+      {/* <h1>Welcome to your Dashboard, {session?.user?.name}</h1> */}
+     
     </AdminLayout>
   );
 };

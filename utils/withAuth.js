@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -10,7 +11,7 @@ const withAuth = (WrappedComponent) => {
     useEffect(() => {
       if (status === 'loading') return; // Do nothing while loading
       if (!session) router.push('/'); // Redirect to signin if not authenticated
-    }, [session, status]);
+    }, [router, session, status]);
 
     if (status === 'loading' || !session) {
       return <div>Loading...</div>; // Or a loading spinner

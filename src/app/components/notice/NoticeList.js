@@ -34,17 +34,30 @@ const NoticeList = () => {
     return () => unsubscribe();
   }, []);
 
+  // Function to format date to "day, month year"
+  const formatDate = (dateString) => {
+    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', options);
+  };
+
+  // Function to generate a random color from a predefined list
+  const getRandomColor = () => {
+    const colors = ['bg-blue-400', 'bg-green-400', 'bg-yellow-400', 'bg-purple-400', 'bg-red-400', 'bg-indigo-400'];
+    const randomIndex = Math.floor(Math.random() * colors.length);
+    return colors[randomIndex];
+  };
+
   return (
     <div className="space-y-4 p-4 m-2">
-        <div className=''>
+      <div className="">
         {notices.length > 0 ? (
           <ul className="space-y-2">
             {notices.map((notice) => (
-              <li key={notice.id} className="p-1 pt-4 pb-4 border-b">
-                <h3 className="text-xl font-medium">{notice.title}</h3>
+              <li key={notice.id} className="p-1 pt-2 pb-4 border-b">
+                <button className={`text-sm ${getRandomColor()} p-2 mb-3 pl-6 pr-6 rounded-2xl text-white`}>{formatDate(notice.date)}</button>
                 <p className="text-base text-gray-700">{notice.details}</p>
-                <p className="text-sm text-gray-500">Posted by: {notice.postedBy}</p>
-                <p className="text-sm text-gray-500">Date: {notice.date}</p>
+                <p className="text-sm text-gray-500">{notice.postedBy}</p>
               </li>
             ))}
           </ul>

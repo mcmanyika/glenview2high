@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ref, get } from 'firebase/database';
 import { database } from '../../../../../utils/firebaseConfig';
+import { FaSpinner } from 'react-icons/fa'; // Import the spinner icon
 
 const UserProfileDisplay = ({ userEmail }) => {
   const [profileData, setProfileData] = useState(null);
@@ -31,7 +32,11 @@ const UserProfileDisplay = ({ userEmail }) => {
   }, [userEmail]);
 
   if (isLoading) {
-    return <div className="text-center mt-4">Loading...</div>;
+    return (
+      <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-200 bg-opacity-75 z-50">
+        <FaSpinner className="animate-spin text-4xl text-gray-500" />
+      </div>
+    );
   }
 
   if (!profileData) {
@@ -39,9 +44,16 @@ const UserProfileDisplay = ({ userEmail }) => {
   }
 
   return (
-    <div className="text-sm w-full md:text-lg font-thin p-4 md:p-8">
-      <h1 className="text-xl md:text-2xl pb-4">About Me</h1>
+    <div className="text-sm w-full md:text-base font-thin font-sans p-4 md:p-8">
       <div className="flex flex-col mb-4">
+        <div className="flex items-center mb-2">
+          <div className="w-2/4">Student ID:</div>
+          <div className="w-2/4 capitalize font-semibold">{profileData.studentId}</div>
+        </div>
+        <div className="flex items-center mb-2">
+          <div className="w-2/4">Level:</div>
+          <div className="w-2/4 capitalize">{profileData.level}</div>
+        </div>
         <div className="flex items-center mb-2">
           <div className="w-2/4">Name:</div>
           <div className="w-2/4 capitalize">{profileData.firstName} {profileData.lastName}</div>

@@ -1,33 +1,36 @@
-'use client'
+'use client';
 import { useState } from "react";
 import { ref, push } from "firebase/database";
 import { database } from "../../../utils/firebaseConfig";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSession } from 'next-auth/react';
 
 const AddNoticeForm = () => {
+  const { data: session } = useSession();
+  const postedBy = session.user.name;
+
   const [title, setTitle] = useState("");
   const [details, setDetails] = useState("");
-  const [postedBy, setPostedBy] = useState("");
+  const [postedByState, setPostedBy] = useState(postedBy); // Corrected state name
   const [date, setDate] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const noticeData = {
-        title,
-        details,
-        postedBy,
-        date
-      };
+      title,
+      details,
+      postedBy: postedByState, // Using correct state variable
+      date
+    };
 
     try {
-      await push( ref(database, "notices"), noticeData);
-      
+      await push(ref(database, "notices"), noticeData);
       toast.success("Notice added successfully!");
       // Clear the form
       setTitle("");
       setDetails("");
-      setPostedBy("");
+      setPostedBy(postedBy); // Reset postedBy to session user's name
       setDate("");
     } catch (error) {
       console.error("Error adding notice: ", error);
@@ -37,7 +40,7 @@ const AddNoticeForm = () => {
 
   return (
     <div className="bg-white border shadow-sm rounded p-4 ml-0 m-2">
-        <div className="text-2xl text-bold pb-4">Create A Notice</div>
+      <div className="text-2xl font-bold pb-4">Create A Notice</div>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">
@@ -61,12 +64,9 @@ const AddNoticeForm = () => {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Posted By
-          </label>
           <input
-            type="text"
-            value={postedBy}
+            type="hidden"
+            value={postedByState} // Use postedByState here
             onChange={(e) => setPostedBy(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
           />

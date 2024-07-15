@@ -16,8 +16,8 @@ const NoticeList = () => {
           ...data[key],
         }));
 
-        // Sort notices by index in descending order
-        noticesArray.sort((a, b) => b.id.localeCompare(a.id));
+        // Sort notices by date in descending order
+        noticesArray.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         // Limit to 10 notices
         const limitedNotices = noticesArray.slice(0, 10);
@@ -56,8 +56,8 @@ const NoticeList = () => {
             {notices.map((notice) => (
               <li key={notice.id} className="p-1 pt-2 pb-4 border-b">
                 <button className={`text-sm ${getRandomColor()} p-2 mb-3 pl-6 pr-6 rounded-2xl text-white`}>{formatDate(notice.date)}</button>
-                <p className="text-base text-gray-700">{notice.details}</p>
-                <p className="text-sm text-gray-500">{notice.postedBy}</p>
+                <p className="text-base text-gray-700 capitalize">{notice.details}</p>
+                <p className="text-sm text-gray-500 capitalize">{notice.postedBy}</p>
               </li>
             ))}
           </ul>

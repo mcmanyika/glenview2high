@@ -8,8 +8,6 @@ import { IoPeopleOutline } from "react-icons/io5";
 import { RiAdminFill } from "react-icons/ri";
 import Image from 'next/image';
 import '../../app/globals.css';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import Breadcrumb from '../utils/Breadcrumb';
 
 const AdminLayout = ({ children }) => {
@@ -33,7 +31,7 @@ const AdminLayout = ({ children }) => {
   return (
     <div className="flex min-h-screen text-base bg-gray-100 relative">
       {/* Sidebar */}
-      <aside className={`fixed z-40 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 md:relative md:translate-x-0 ${isExpanded ? 'w-64' : 'w-16'} bg-blue-400 text-white p-4 h-screen`}>
+      <aside className={`fixed z-40 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 md:relative md:translate-x-0 ${isExpanded ? 'w-64' : 'w-16'} bg-blue-400 text-white p-4 min-w-h-screen`}>
         <div className="flex justify-between items-center mb-6">
           {isExpanded && <h2 className="text-xl font-semibold">Admin Dashboard</h2>}
           <FaBars className="cursor-pointer text-2xl" onClick={toggleSidebar} />
@@ -105,19 +103,11 @@ const AdminLayout = ({ children }) => {
             <li className="mb-4 flex items-center">
               <MdOutlineLibraryBooks className="mr-2 text-2xl" />
               {isExpanded && (
-                <Link href="">
+                <Link href="/notices">
                   <div className="block p-2 hover:bg-blue-500 rounded cursor-pointer">Notice</div>
                 </Link>
               )}
             </li>
-            {/* <li className="mb-4 flex items-center">
-              <FaCog className="mr-2 text-2xl" />
-              {isExpanded && (
-                <Link href="">
-                  <div className="block p-2 hover:bg-blue-500 rounded cursor-pointer">Settings</div>
-                </Link>
-              )}
-            </li> */}
             <li className="mb-4 flex items-center">
               <FaSignOutAlt className="mr-2 text-2xl" />
               {isExpanded && (
@@ -193,18 +183,6 @@ const AdminLayout = ({ children }) => {
           {children}
         </main>
       </div>
-      <ToastContainer
-        position="bottom-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
     </div>
   );
 };

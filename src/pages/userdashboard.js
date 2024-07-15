@@ -5,7 +5,6 @@ import withAuth from '../../utils/withAuth';
 import AdminLayout from './admin/adminLayout';
 import fetchUserType from '../../utils/fetchUserType';
 import StudentProfileDisplay from '../app/components/user/utils/StudentProfileDisplay';
-import Breadcrumb from './utils/Breadcrumb';
 import { FaSpinner } from 'react-icons/fa'; // Import FaSpinner
 
 const UserDashboard = () => {
@@ -37,9 +36,8 @@ const UserDashboard = () => {
 
   return (
     <AdminLayout>
-      <div className="w-full"><Breadcrumb /></div>
       <div className="flex flex-col md:flex-row">
-        <div className="w-full md:w-1/2 lg:w-1/3 border shadow-sm rounded p-4">
+        <div className="w-full md:w-1/2 lg:w-1/3 bg-white border shadow-sm rounded p-4">
           <StudentProfileDisplay userEmail={session.user.email} />
         </div>
         <div className="w-full md:w-1/2 lg:w-2/3 mt-3 p-4">

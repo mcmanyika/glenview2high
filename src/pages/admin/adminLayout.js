@@ -1,11 +1,16 @@
 import { useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
-import { FaBars, FaTachometerAlt, FaCog, FaSignOutAlt, FaHome } from 'react-icons/fa';
+import { FaBars, FaTachometerAlt, FaCog, FaSignOutAlt, FaHome, FaPencilRuler, FaCalendarAlt, FaClipboardList, FaUserGraduate } from 'react-icons/fa';
+import { MdOutlineLibraryBooks } from "react-icons/md";
+import { LiaChalkboardTeacherSolid } from "react-icons/lia";
+import { IoPeopleOutline } from "react-icons/io5";
+import { RiAdminFill } from "react-icons/ri";
 import Image from 'next/image';
 import '../../app/globals.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Breadcrumb from '../utils/Breadcrumb';
 
 const AdminLayout = ({ children }) => {
   const { data: session } = useSession();
@@ -26,7 +31,7 @@ const AdminLayout = ({ children }) => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-100 relative">
+    <div className="flex min-h-screen text-base bg-gray-100 relative">
       {/* Sidebar */}
       <aside className={`fixed z-40 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 md:relative md:translate-x-0 ${isExpanded ? 'w-64' : 'w-16'} bg-blue-400 text-white p-4 h-screen`}>
         <div className="flex justify-between items-center mb-6">
@@ -44,13 +49,75 @@ const AdminLayout = ({ children }) => {
               )}
             </li>
             <li className="mb-4 flex items-center">
-              <FaCog className="mr-2 text-2xl" />
+              <RiAdminFill className="mr-2 text-2xl" />
               {isExpanded && (
-                <Link href="/admin/settings">
-                  <div className="block p-2 hover:bg-blue-500 rounded cursor-pointer">Settings</div>
+                <Link href="">
+                  <div className="block p-2 hover:bg-blue-500 rounded cursor-pointer">Admin</div>
+                </Link>
+              )}
+            </li><li className="mb-4 flex items-center">
+              <FaUserGraduate className="mr-2 text-2xl" />
+              {isExpanded && (
+                <Link href="">
+                  <div className="block p-2 hover:bg-blue-500 rounded cursor-pointer">Students</div>
+                </Link>
+              )}
+            </li><li className="mb-4 flex items-center">
+              <LiaChalkboardTeacherSolid className="mr-2 text-2xl" />
+              {isExpanded && (
+                <Link href="">
+                  <div className="block p-2 hover:bg-blue-500 rounded cursor-pointer">Teachers</div>
                 </Link>
               )}
             </li>
+            <li className="mb-4 flex items-center">
+              <IoPeopleOutline className="mr-2 text-2xl" />
+              {isExpanded && (
+                <Link href="">
+                  <div className="block p-2 hover:bg-blue-500 rounded cursor-pointer">Parents</div>
+                </Link>
+              )}
+            </li>
+            <li className="mb-4 flex items-center">
+              <FaPencilRuler className="mr-2 text-2xl" />
+              {isExpanded && (
+                <Link href="">
+                  <div className="block p-2 hover:bg-blue-500 rounded cursor-pointer">Class</div>
+                </Link>
+              )}
+            </li>
+            <li className="mb-4 flex items-center">
+              <FaCalendarAlt className="mr-2 text-2xl" />
+              {isExpanded && (
+                <Link href="">
+                  <div className="block p-2 hover:bg-blue-500 rounded cursor-pointer">Class Routine</div>
+                </Link>
+              )}
+            </li>
+            <li className="mb-4 flex items-center">
+              <FaClipboardList className="mr-2 text-2xl" />
+              {isExpanded && (
+                <Link href="">
+                  <div className="block p-2 hover:bg-blue-500 rounded cursor-pointer">Exam</div>
+                </Link>
+              )}
+            </li>
+            <li className="mb-4 flex items-center">
+              <MdOutlineLibraryBooks className="mr-2 text-2xl" />
+              {isExpanded && (
+                <Link href="">
+                  <div className="block p-2 hover:bg-blue-500 rounded cursor-pointer">Notice</div>
+                </Link>
+              )}
+            </li>
+            {/* <li className="mb-4 flex items-center">
+              <FaCog className="mr-2 text-2xl" />
+              {isExpanded && (
+                <Link href="">
+                  <div className="block p-2 hover:bg-blue-500 rounded cursor-pointer">Settings</div>
+                </Link>
+              )}
+            </li> */}
             <li className="mb-4 flex items-center">
               <FaSignOutAlt className="mr-2 text-2xl" />
               {isExpanded && (
@@ -104,7 +171,7 @@ const AdminLayout = ({ children }) => {
                         <span>Home</span>
                       </div>
                     </Link>
-                    <Link href="/admin/settings">
+                    <Link href="">
                       <div className="flex items-center text-sm text-left cursor-pointer hover:bg-gray-200 rounded p-2">
                         <FaCog className="mr-2" />
                         <span>Settings</span>
@@ -122,6 +189,7 @@ const AdminLayout = ({ children }) => {
               </div>
             )}
           </div>
+          <Breadcrumb />
           {children}
         </main>
       </div>

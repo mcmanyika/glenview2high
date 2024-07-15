@@ -38,7 +38,7 @@ const AdminLayout = ({ children }) => {
             <li className="mb-4 flex items-center">
               <FaTachometerAlt className="mr-2 text-2xl" />
               {isExpanded && (
-                <Link href="/admin/dashboard">
+                <Link href="/userdashboard">
                   <div className="block p-2 hover:bg-blue-500 rounded cursor-pointer">Dashboard</div>
                 </Link>
               )}

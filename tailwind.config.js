@@ -10,6 +10,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      transitionProperty: {
+        'width': 'width',
+        'spacing': 'margin, padding',
+      },
       fontFamily: {
         sans: ['Inter', 'Roboto', 'Montserrat', 'sans-serif'],
       },

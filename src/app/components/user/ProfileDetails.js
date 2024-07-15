@@ -4,6 +4,8 @@ import { ref, get } from 'firebase/database';
 import { database } from '../../../../utils/firebaseConfig';
 import fetchUserType from '../../../../utils/fetchUserType';
 import { useRouter } from 'next/router';
+import UserProfile from './UserProfile';
+import ProfileCard from '../student/ProfileCard';
 
 const ProfileDetails = () => {
   const { data: session } = useSession();
@@ -11,6 +13,7 @@ const ProfileDetails = () => {
   const [userType, setUserType] = useState('');
   const [profileData, setProfileData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [showOverlay, setShowOverlay] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -32,24 +35,40 @@ const ProfileDetails = () => {
     fetchProfile();
   }, [session, router]);
 
+  const handleEditProfile = () => {
+    setShowOverlay(true);
+  };
+
   const renderProfileDetails = () => {
     switch (userType) {
       case 'student':
         return (
           <>
-            <div>
-              <strong>Student ID:</strong> {profileData.studentId}
+            <div className="flex items-center justify-between">
+              <strong>Student ID:</strong>
+              <span 
+                className="font-medium text-blue-500 cursor-pointer" 
+                onClick={handleEditProfile}
+              >
+                {profileData.studentId}
+              </span>
             </div>
             <div>
-              <strong>Level:</strong> {profileData.course}
+              <strong>Course:</strong> {profileData.course}
             </div>
           </>
         );
       case 'teacher':
         return (
           <>
-            <div>
-              <strong>Employee ID:</strong> {profileData.employeeId}
+            <div className="flex items-center justify-between">
+              <strong>Employee ID:</strong>
+              <span 
+                className="font-medium text-blue-500 cursor-pointer" 
+                onClick={handleEditProfile}
+              >
+                {profileData.employeeId}
+              </span>
             </div>
             <div>
               <strong>Subject:</strong> {profileData.subject}
@@ -59,8 +78,14 @@ const ProfileDetails = () => {
       case 'staff':
         return (
           <>
-            <div>
-              <strong>Employee ID:</strong> {profileData.employeeId}
+            <div className="flex items-center justify-between">
+              <strong>Employee ID:</strong>
+              <span 
+                className="font-medium text-blue-500 cursor-pointer" 
+                onClick={handleEditProfile}
+              >
+                {profileData.employeeId}
+              </span>
             </div>
             <div>
               <strong>Department:</strong> {profileData.department}
@@ -95,7 +120,7 @@ const ProfileDetails = () => {
   };
 
   if (isLoading) {
-    return <div></div>;
+    return <div>Loading...</div>;
   }
 
   return (
@@ -103,6 +128,22 @@ const ProfileDetails = () => {
       <div className="p-4 border rounded-md">
         {renderProfileDetails()}
       </div>
+
+      {showOverlay && (
+        <div className="fixed inset-0 bg-blue-400 z-50 flex items-center justify-center transition-transform transform translate-x-0 duration-500">
+          <div className="absolute top-0 right-0 p-4">
+            <button
+              className="text-2xl"
+              onClick={() => setShowOverlay(false)}
+            >
+              &times;
+            </button>
+          </div>
+          <div className="w-full max-w-3xl p-8 bg-white shadow-lg rounded-lg">
+            <ProfileCard />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

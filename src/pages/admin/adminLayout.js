@@ -1,20 +1,70 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
-import { FaBars, FaTachometerAlt, FaCog, FaSignOutAlt, FaHome, FaPencilRuler, FaCalendarAlt, FaClipboardList, FaUserGraduate } from 'react-icons/fa';
+import { FaBars, FaSignOutAlt, FaHome, FaCog } from 'react-icons/fa';
+import Image from 'next/image';
+import { ref, onValue, query, orderByChild, equalTo } from 'firebase/database';
+import { database } from '../../../utils/firebaseConfig';
+import Breadcrumb from '../utils/Breadcrumb';
+import '../../app/globals.css';
+
+// Import all potential icons
+import { FaTachometerAlt, FaPencilRuler, FaCalendarAlt, FaClipboardList, FaUserGraduate } from 'react-icons/fa';
 import { MdOutlineLibraryBooks } from "react-icons/md";
 import { LiaChalkboardTeacherSolid } from "react-icons/lia";
 import { IoPeopleOutline } from "react-icons/io5";
 import { RiAdminFill } from "react-icons/ri";
-import Image from 'next/image';
-import '../../app/globals.css';
-import Breadcrumb from '../utils/Breadcrumb';
+
+const iconMapping = {
+  FaTachometerAlt: FaTachometerAlt,
+  FaPencilRuler: FaPencilRuler,
+  FaCalendarAlt: FaCalendarAlt,
+  FaClipboardList: FaClipboardList,
+  FaUserGraduate: FaUserGraduate,
+  MdOutlineLibraryBooks: MdOutlineLibraryBooks,
+  LiaChalkboardTeacherSolid: LiaChalkboardTeacherSolid,
+  IoPeopleOutline: IoPeopleOutline,
+  RiAdminFill: RiAdminFill,
+};
 
 const AdminLayout = ({ children }) => {
   const { data: session } = useSession();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [titles, setTitles] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const titleRef = ref(database, 'title');
+        const statusQuery = query(titleRef, orderByChild('status'), equalTo('Active'));
+
+        onValue(statusQuery, (snapshot) => {
+          const data = snapshot.val();
+          if (data) {
+            const titlesArray = Object.keys(data)
+              .map((key) => ({
+                id: key,
+                title: data[key].title,
+                link: data[key].link,
+                status: data[key].status,
+                category: data[key].category,
+                icon: data[key].icon,
+              }))
+              .filter(a => a.category === 'dashboard') 
+            setTitles(titlesArray);
+          } else {
+            setTitles([]);
+          }
+        });
+      } catch (error) {
+        console.error('Firebase Error:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const toggleSidebar = () => {
     setIsExpanded(!isExpanded);
@@ -38,76 +88,19 @@ const AdminLayout = ({ children }) => {
         </div>
         <nav>
           <ul>
-            <li className="mb-4 flex items-center">
-              <FaTachometerAlt className="mr-2 text-2xl" />
-              {isExpanded && (
-                <Link href="/userdashboard">
-                  <div className="block p-2 hover:bg-blue-500 rounded cursor-pointer">Dashboard</div>
-                </Link>
-              )}
-            </li>
-            <li className="mb-4 flex items-center">
-              <RiAdminFill className="mr-2 text-2xl" />
-              {isExpanded && (
-                <Link href="">
-                  <div className="block p-2 hover:bg-blue-500 rounded cursor-pointer">Admin</div>
-                </Link>
-              )}
-            </li><li className="mb-4 flex items-center">
-              <FaUserGraduate className="mr-2 text-2xl" />
-              {isExpanded && (
-                <Link href="">
-                  <div className="block p-2 hover:bg-blue-500 rounded cursor-pointer">Students</div>
-                </Link>
-              )}
-            </li><li className="mb-4 flex items-center">
-              <LiaChalkboardTeacherSolid className="mr-2 text-2xl" />
-              {isExpanded && (
-                <Link href="">
-                  <div className="block p-2 hover:bg-blue-500 rounded cursor-pointer">Teachers</div>
-                </Link>
-              )}
-            </li>
-            <li className="mb-4 flex items-center">
-              <IoPeopleOutline className="mr-2 text-2xl" />
-              {isExpanded && (
-                <Link href="">
-                  <div className="block p-2 hover:bg-blue-500 rounded cursor-pointer">Parents</div>
-                </Link>
-              )}
-            </li>
-            <li className="mb-4 flex items-center">
-              <FaPencilRuler className="mr-2 text-2xl" />
-              {isExpanded && (
-                <Link href="">
-                  <div className="block p-2 hover:bg-blue-500 rounded cursor-pointer">Class</div>
-                </Link>
-              )}
-            </li>
-            <li className="mb-4 flex items-center">
-              <FaCalendarAlt className="mr-2 text-2xl" />
-              {isExpanded && (
-                <Link href="">
-                  <div className="block p-2 hover:bg-blue-500 rounded cursor-pointer">Class Routine</div>
-                </Link>
-              )}
-            </li>
-            <li className="mb-4 flex items-center">
-              <FaClipboardList className="mr-2 text-2xl" />
-              {isExpanded && (
-                <Link href="">
-                  <div className="block p-2 hover:bg-blue-500 rounded cursor-pointer">Exam</div>
-                </Link>
-              )}
-            </li>
-            <li className="mb-4 flex items-center">
-              <MdOutlineLibraryBooks className="mr-2 text-2xl" />
-              {isExpanded && (
-                <Link href="/notices">
-                  <div className="block p-2 hover:bg-blue-500 rounded cursor-pointer">Notice</div>
-                </Link>
-              )}
-            </li>
+            {titles.length > 0 && titles.map((rw) => {
+              const IconComponent = iconMapping[rw.icon];
+              return (
+                <li key={rw.id} className="mb-4 flex items-center">
+                  <IconComponent className="mr-2 text-2xl" />
+                  {isExpanded && (
+                    <Link href={rw.link}>
+                      <div className="block p-2 hover:bg-blue-500 rounded cursor-pointer">{rw.title}</div>
+                    </Link>
+                  )}
+                </li>
+              );
+            })}
             <li className="mb-4 flex items-center">
               <FaSignOutAlt className="mr-2 text-2xl" />
               {isExpanded && (
@@ -132,7 +125,7 @@ const AdminLayout = ({ children }) => {
       )}
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col  transition-all duration-300 ease-in-out">
+      <div className="flex-1 flex flex-col transition-all duration-300 ease-in-out">
         <header className="flex items-center justify-between bg-blue-400 text-white p-4 md:hidden">
           <div className="flex items-center">
             <FaBars className="cursor-pointer text-2xl mr-4" onClick={toggleMobileSidebar} />

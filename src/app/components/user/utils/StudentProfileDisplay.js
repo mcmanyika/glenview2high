@@ -44,7 +44,7 @@ const UserProfileDisplay = ({ userEmail }) => {
   }
 
   return (
-    <div className="text-sm w-full md:text-base font-thin font-sans p-4 md:p-8">
+    <div className="text-sm w-full md:text-base font-thin font-sans p-4 bg-white border shadow-sm rounded">
       <div className="flex flex-col mb-4">
         <div className="flex items-center mb-2">
           <div className="w-2/4">Student ID:</div>

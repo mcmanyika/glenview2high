@@ -4,6 +4,7 @@ import { database } from '../../../../utils/firebaseConfig';
 
 const NoticeList = () => {
   const [notices, setNotices] = useState([]);
+  const [totalNotices, setTotalNotices] = useState(0);
 
   useEffect(() => {
     const noticesRef = ref(database, 'notices');
@@ -23,8 +24,10 @@ const NoticeList = () => {
         const limitedNotices = noticesArray.slice(0, 10);
 
         setNotices(limitedNotices);
+        setTotalNotices(limitedNotices.length); // Update total notices count
       } else {
         setNotices([]);
+        setTotalNotices(0);
       }
     }, (error) => {
       console.error(`Error fetching notices: ${error.message}`);
@@ -56,8 +59,8 @@ const NoticeList = () => {
             {notices.map((notice) => (
               <li key={notice.id} className="p-1 pt-2 pb-4 border-b">
                 <button className={`text-sm ${getRandomColor()} p-2 mb-3 pl-6 pr-6 rounded-2xl text-white`}>{formatDate(notice.date)}</button>
-                <p className="text-base text-gray-700 capitalize">{notice.details}</p>
-                <p className="text-sm text-gray-500 capitalize">{notice.postedBy}</p>
+                <p className="text-base text-gray-700">{notice.details}</p>
+                <p className="text-sm text-gray-500">{notice.postedBy}</p>
               </li>
             ))}
           </ul>

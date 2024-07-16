@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { ref, onValue } from 'firebase/database';
 import { database } from '../../../../utils/firebaseConfig';
 import { MdOutlineLibraryBooks } from "react-icons/md";
-import { FaCalendarAlt } from 'react-icons/fa';
+import { FaCalendarAlt, FaClipboardList } from 'react-icons/fa';
 
 const NoticeCount = () => {
   const [totalNotices, setTotalNotices] = useState(0);
@@ -51,10 +51,10 @@ const NoticeCount = () => {
       </div>
       <div className="w-full md:w-1/3 flex bg-white border shadow-sm rounded m-2 mt-0 ml-0 mr-2">
         <div className='w-1/2 flex items-center justify-center p-4 md:p-2'>
-          <MdOutlineLibraryBooks className='w-16 h-16 rounded-full bg-purple-300 text-white p-2' />
+          <FaClipboardList className='w-16 h-16 rounded-full bg-purple-300 text-white p-2' />
         </div>
         <div className="w-1/2 text-base p-4 md:p-6 text-right">
-          Notifications <br />{totalNotices}
+          Exams <br />{totalNotices}
         </div>
       </div>
     </div>

@@ -32,7 +32,9 @@ const Header = () => {
                 title: data[key].title,
                 link: data[key].link,
                 status: data[key].status,
+                category: data[key].category,
               }))
+              .filter(a => a.category === 'title') // Filter where category is equal to title
               .filter(a => a.title !== 'Projects')
               .sort((a, b) => {
                 if (a.title === 'Admissions') return 1;

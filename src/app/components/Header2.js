@@ -27,7 +27,9 @@ const Header2 = () => {
                 title: data[key].title,
                 link: data[key].link,
                 status: data[key].status,
+                category: data[key].category,
               }))
+              .filter(a => a.category === 'title')
               .sort((a, b) => {
                 if (a.title === 'Admissions') return 1; // Move 'Admissions' to the end
                 if (b.title === 'Admissions') return -1; // Move 'Admissions' to the end

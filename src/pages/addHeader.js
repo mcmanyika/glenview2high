@@ -11,9 +11,10 @@ export default function AddHeader() {
     const [category, setCategory] = useState("");
     const [status, setStatus] = useState("");
     const [link, setLink] = useState("");
+    const [icon, setIcon] = useState("");
 
     const handleAddData = async () => {
-        if (title.trim() === "" || category.trim() === "" || status.trim() === "") {
+        if (title.trim() === "" || category.trim() === "" || status.trim() === "" || icon.trim() === "") {
             toast.error('All fields are required.');
             return;
         }
@@ -27,6 +28,7 @@ export default function AddHeader() {
                 category: category,
                 status: status,
                 link: link,
+                icon: icon, // Add icon to the data
             });
 
             // Clear input fields after successful data addition
@@ -34,6 +36,7 @@ export default function AddHeader() {
             setCategory("");
             setStatus("");
             setLink("");
+            setIcon("");
 
             toast.success("Data added successfully!");
         } catch (error) {
@@ -92,10 +95,21 @@ export default function AddHeader() {
                             className='w-full border p-2 rounded-md focus:outline-none focus:border-blue-500'
                         />
                     </div>
+                    <div className='mb-2'>
+                        <label htmlFor='icon' className='block mb-1 text-sm'>Icon</label>
+                        <input 
+                            type='text'
+                            id='icon'
+                            placeholder='Enter icon name'
+                            value={icon}
+                            onChange={(e) => setIcon(e.target.value)}
+                            className='w-full border p-2 rounded-md focus:outline-none focus:border-blue-500'
+                        />
+                    </div>
                 </div>
                 <button 
                     onClick={handleAddData} 
-                    className='bg-blue text-white p-2 rounded w-full max-w-xs hover:bg-blue-600 transition duration-200'
+                    className='bg-blue-500 text-white p-2 rounded w-full max-w-xs hover:bg-blue-600 transition duration-200'
                 >
                     Add Data
                 </button>

@@ -8,10 +8,9 @@ import Image from 'next/image';
 
 const Hero = () => {
   const [isOverlayVisible] = useGlobalState('isOverlayVisible');
-  const [, setUser] = useGlobalState('user'); // Using setUser to demonstrate setting user globally
   const [titles, setTitles] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [carouselData, setCarouselData] = useState([
+  const carouselData = [
     {
       title: "Excellence in Education",
       description: "Empowering students to reach their full potential.",
@@ -27,7 +26,7 @@ const Hero = () => {
       description: "Building strong connections with the local community.",
       imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fnetball.jpeg?alt=media&token=af4ee37f-7f9e-46d1-b823-d7ece81bcac8",
     },
-  ]);
+  ];
 
   // Function to handle menu click and toggle overlay visibility
   const handleMenuClick = () => {
@@ -50,7 +49,9 @@ const Hero = () => {
                 title: data[key].title,
                 link: data[key].link,
                 status: data[key].status,
+                category: data[key].category,
               }))
+              .filter(a => a.category === 'title')
               .sort((a, b) => {
                 if (a.title === 'Admissions') return 1;
                 if (b.title === 'Admissions') return -1;
@@ -89,7 +90,7 @@ const Hero = () => {
         ))}
       </div>
       <div className="absolute inset-0 bg-blue-500 opacity-20"></div>
-      <div className="absolute top-4  left-1/2 transform -translate-x-1/2 z-20">
+      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-20">
         <Link href="/">
           <Image
             src="/images/logo.png" // Replace with your logo path

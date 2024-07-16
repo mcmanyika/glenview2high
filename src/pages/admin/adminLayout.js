@@ -52,7 +52,7 @@ const AdminLayout = ({ children }) => {
                 category: data[key].category,
                 icon: data[key].icon,
               }))
-              .filter(a => a.category === 'dashboard') 
+              .filter(a => a.category === 'dashboard' && a.status === 'Active') 
             setTitles(titlesArray);
           } else {
             setTitles([]);

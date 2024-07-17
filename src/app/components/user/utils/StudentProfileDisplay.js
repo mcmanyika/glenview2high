@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { ref, get } from 'firebase/database';
 import { database } from '../../../../../utils/firebaseConfig';
 import { FaSpinner } from 'react-icons/fa'; // Import the spinner icon
+import { useGlobalState, setStudentClass } from '../../../store'; // Update import statement
 
 const UserProfileDisplay = ({ userEmail }) => {
   const [profileData, setProfileData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [, setGlobalStudentClass] = useGlobalState('studentClass'); // Access setGlobalState for studentClass
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -16,6 +18,9 @@ const UserProfileDisplay = ({ userEmail }) => {
           const data = snapshot.val();
           console.log('Fetched profile data:', data); // Debug message
           setProfileData(data);
+          if (data.studentclass) {
+            setGlobalStudentClass(data.studentclass); // Update studentClass in global state if available
+          }
         } else {
           console.log('No profile data found.');
         }
@@ -29,7 +34,7 @@ const UserProfileDisplay = ({ userEmail }) => {
     if (userEmail) {
       fetchUserProfile();
     }
-  }, [userEmail]);
+  }, [userEmail, setGlobalStudentClass]);
 
   if (isLoading) {
     return (
@@ -53,6 +58,10 @@ const UserProfileDisplay = ({ userEmail }) => {
         <div className="flex items-center mb-2">
           <div className="w-2/4">Level:</div>
           <div className="w-2/4 capitalize">{profileData.level}</div>
+        </div>
+        <div className="flex items-center mb-2">
+          <div className="w-2/4">Class:</div>
+          <div className="w-2/4 capitalize">{profileData.studentclass}</div>
         </div>
         <div className="flex items-center mb-2">
           <div className="w-2/4">Name:</div>

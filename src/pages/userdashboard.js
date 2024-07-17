@@ -6,10 +6,8 @@ import AdminLayout from './admin/adminLayout';
 import fetchUserType from '../../utils/fetchUserType';
 import StudentProfileDisplay from '../app/components/user/utils/StudentProfileDisplay';
 import { FaSpinner } from 'react-icons/fa'; // Import FaSpinner
-import NoticeList from '../app/components/notice/NoticeList';
 import NoticeCount from '../app/components/notice/NoticeCount';
 import ClassRoutine from '../app/components/student/ClassRoutine';
-import ClassRoutineForm from '../app/components/student/ClassRoutineForm';
 
 const UserDashboard = () => {
   const { data: session } = useSession();
@@ -49,7 +47,6 @@ const UserDashboard = () => {
           <div className="w-full flex flex-col md:flex-row mt-4">
             <div className="w-full bg-white border shadow-sm rounded  m-2 mt-0 ml-0">
               <ClassRoutine />
-              {/* <ClassRoutineForm /> */}
             </div>
           </div>
         </div>

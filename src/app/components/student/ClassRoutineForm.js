@@ -52,23 +52,15 @@ const ClassRoutineForm = () => {
       <form onSubmit={handleSubmit}>
         <div className='grid grid-cols-2'>
           <div className="m-4">
-            <label className="block text-gray-700">Day</label>
-            <select
-              name="day"
-              value={formData.day}
+          <label className="block text-gray-700">Date</label>
+            <input
+              type="date"
+              name="date"
+              value={formData.date}
               onChange={handleChange}
               className="mt-1 block w-full p-2 border border-gray-300 rounded"
               required
-            >
-              <option value="">Select Day</option>
-              <option value="Monday">Monday</option>
-              <option value="Tuesday">Tuesday</option>
-              <option value="Wednesday">Wednesday</option>
-              <option value="Thursday">Thursday</option>
-              <option value="Friday">Friday</option>
-              <option value="Saturday">Saturday</option>
-              <option value="Sunday">Sunday</option>
-            </select>
+            />
           </div>
           <div className="m-4">
             <label className="block text-gray-700">Time</label>

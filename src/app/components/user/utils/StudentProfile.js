@@ -42,6 +42,30 @@ const StudentProfile = ({ profileData, handleChange }) => (
       </select>
     </div>
     <div>
+      <label htmlFor="studentclass">Class</label>
+      <select
+        id="studentclass"
+        name="studentclass"
+        value={profileData.studentclass || ''}
+        onChange={handleChange}
+        className="block w-full mt-1 p-2 border rounded-md"
+      >
+        <option value="">Select Class</option>
+        <option value="1A">1A</option>
+        <option value="1B">1B</option>
+        <option value="1C">1C</option>
+        <option value="2A">2A</option>
+        <option value="2B">2B</option>
+        <option value="2C">2C</option>
+        <option value="3A">3A</option>
+        <option value="3B">3B</option>
+        <option value="3C">3C</option>
+        <option value="4A">4A</option>
+        <option value="4B">4B</option>
+        <option value="4C">4C</option>
+      </select>
+    </div>
+    <div>
       <label htmlFor="firstName">First Name</label>
       <input
         id="firstName"
@@ -121,6 +145,7 @@ const StudentProfile = ({ profileData, handleChange }) => (
         className="block w-full mt-1 p-2 border rounded-md"
       />
     </div>
+    
   </>
 );
 

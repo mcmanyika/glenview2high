@@ -21,9 +21,9 @@ const ClassRoutine = () => {
 
   return (
     <div className="w-full text-sm p-6 ">
-      <h2 className="text-xl font-semibold mb-4">Class Routine</h2>
+      <h2 className="text-xl font-semibold text-center mb-4">Class Routine</h2>
       <div className="overflow-x-auto">
-        <table className="min-w-full border-collapse">
+        <table className="min-w-full text-left border-collapse">
           <thead>
             <tr>
               <th className="p-2 border-b">Day</th>

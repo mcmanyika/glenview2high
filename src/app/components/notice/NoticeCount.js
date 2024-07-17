@@ -32,12 +32,12 @@ const NoticeCount = () => {
   }, []);
 
   return (
-    <div className="w-full flex flex-col md:flex-row text-center md:ml-4">
+    <div className="w-full flex flex-col md:flex-row text-center">
       <div className="w-full md:w-1/3 flex bg-white border shadow-sm rounded m-2 mt-0 ml-0">
         <div className='w-1/2 flex items-center justify-center p-4 md:p-2'>
           <MdOutlineLibraryBooks className='w-16 h-16 rounded-full bg-blue-300 text-white p-2' />
         </div>
-        <div className="w-1/2 text-base p-4 md:p-6 text-right">
+        <div className="w-1/2 text-sm p-4 md:p-6 text-right">
           Notifications <br />{totalNotices}
         </div>
       </div>
@@ -45,7 +45,7 @@ const NoticeCount = () => {
         <div className='w-1/2 flex items-center justify-center p-4 md:p-2'>
           <FaCalendarAlt className='w-16 h-16 rounded-full bg-orange-300 text-white p-2' />
         </div>
-        <div className="w-1/2 text-base p-4 md:p-6 text-right">
+        <div className="w-1/2 text-sm p-4 md:p-6 text-right">
           Events <br />{totalNotices}
         </div>
       </div>
@@ -53,7 +53,7 @@ const NoticeCount = () => {
         <div className='w-1/2 flex items-center justify-center p-4 md:p-2'>
           <FaClipboardList className='w-16 h-16 rounded-full bg-purple-300 text-white p-2' />
         </div>
-        <div className="w-1/2 text-base p-4 md:p-6 text-right">
+        <div className="w-1/2 text-sm p-4 md:p-6 text-right">
           Exams <br />{totalNotices}
         </div>
       </div>

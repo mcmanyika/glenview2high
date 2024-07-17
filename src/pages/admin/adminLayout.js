@@ -10,10 +10,11 @@ import '../../app/globals.css';
 
 // Import all potential icons
 import { FaTachometerAlt, FaPencilRuler, FaCalendarAlt, FaClipboardList, FaUserGraduate } from 'react-icons/fa';
-import { MdOutlineLibraryBooks } from "react-icons/md";
-import { LiaChalkboardTeacherSolid } from "react-icons/lia";
-import { IoPeopleOutline } from "react-icons/io5";
-import { RiAdminFill } from "react-icons/ri";
+import { MdOutlineLibraryBooks } from 'react-icons/md';
+import { LiaChalkboardTeacherSolid } from 'react-icons/lia';
+import { IoPeopleOutline } from 'react-icons/io5';
+import { RiAdminFill } from 'react-icons/ri';
+import Footer from '../../app/components/DashFooter';
 
 const iconMapping = {
   FaTachometerAlt: FaTachometerAlt,
@@ -52,7 +53,7 @@ const AdminLayout = ({ children }) => {
                 category: data[key].category,
                 icon: data[key].icon,
               }))
-              .filter(a => a.category === 'dashboard' && a.status === 'Active') 
+              .filter(a => a.category === 'dashboard' && a.status === 'Active');
             setTitles(titlesArray);
           } else {
             setTitles([]);
@@ -81,9 +82,9 @@ const AdminLayout = ({ children }) => {
   return (
     <div className="flex min-h-screen text-base bg-gray-100 relative">
       {/* Sidebar */}
-      <aside className={`fixed z-40 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 md:relative md:translate-x-0 ${isExpanded ? 'w-64' : 'w-16'} bg-blue-400 text-white p-4 min-w-h-screen`}>
+      <aside className={`fixed z-40 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 md:relative md:translate-x-0 ${isExpanded ? 'w-52' : 'w-16'} bg-blue-400 text-white p-4 min-w-h-screen`}>
         <div className="flex justify-between items-center mb-6">
-          {isExpanded && <h2 className="text-xl font-semibold">Admin Dashboard</h2>}
+          {isExpanded && <h2 className="text-lg font-semibold">Glenview 2 High</h2>}
           <FaBars className="cursor-pointer text-2xl" onClick={toggleSidebar} />
         </div>
         <nav>
@@ -92,7 +93,9 @@ const AdminLayout = ({ children }) => {
               const IconComponent = iconMapping[rw.icon];
               return (
                 <li key={rw.id} className="mb-4 flex items-center">
-                  <IconComponent className="mr-2 text-2xl" />
+                  <Link href={rw.link}>
+                    <IconComponent className="mr-2 text-2xl" />
+                  </Link>
                   {isExpanded && (
                     <Link href={rw.link}>
                       <div className="block p-2 hover:bg-blue-500 rounded cursor-pointer">{rw.title}</div>
@@ -129,7 +132,7 @@ const AdminLayout = ({ children }) => {
         <header className="flex items-center justify-between bg-blue-400 text-white p-4 md:hidden">
           <div className="flex items-center">
             <FaBars className="cursor-pointer text-2xl mr-4" onClick={toggleMobileSidebar} />
-            <h1 className="text-lg">Admin Dashboard</h1>
+            <h1 className="text-lg">Glenview 2 High</h1>
           </div>
         </header>
         <main className="flex-1 p-6">
@@ -174,7 +177,11 @@ const AdminLayout = ({ children }) => {
           </div>
           <Breadcrumb />
           {children}
+          
         </main>
+        <div className='p-6'>
+          <Footer />
+        </div>
       </div>
     </div>
   );

@@ -1,10 +1,9 @@
-import Address from "./Address";
+
 
 const Footer = () => {
     return (
-      <footer className="bg-gray-400 text-white text-sm p-4">
-        <Address />
-        <div className="container mx-auto font-thin text-center">
+      <footer className=" text-gray-400 text-sm p-4">
+        <div className="font-thin">
         &copy; Copyrights reserved {new Date().getFullYear()}. Developed by <b>LEAPFROG</b> 
         </div>
       </footer>

@@ -8,6 +8,8 @@ import StudentProfileDisplay from '../app/components/user/utils/StudentProfileDi
 import { FaSpinner } from 'react-icons/fa'; // Import FaSpinner
 import NoticeList from '../app/components/notice/NoticeList';
 import NoticeCount from '../app/components/notice/NoticeCount';
+import ClassRoutine from '../app/components/student/ClassRoutine';
+import ClassRoutineForm from '../app/components/student/ClassRoutineForm';
 
 const UserDashboard = () => {
   const { data: session } = useSession();
@@ -39,16 +41,17 @@ const UserDashboard = () => {
   return (
     <AdminLayout>
       <div className="flex flex-col md:flex-row">
-        <div className="w-full md:w-1/2 lg:w-1/3 ">
+        <div className="w-full md:w-1/2 lg:w-1/3 mr-4">
           <StudentProfileDisplay userEmail={session.user.email} />
         </div>
-        <div className="w-full md:w-1/2 lg:w-2/3 mt-3 md:mt-0 md:mr-4">
+        <div className="w-full md:w-1/2 lg:w-2/3">
           <NoticeCount />
-          {/* <div className='md:p-4 md:pr-0'>
-            <div className='w-full bg-white border shadow-sm h-96'>
-              &nbsp;
+          <div className="w-full flex flex-col md:flex-row mt-4">
+            <div className="w-full bg-white border shadow-sm rounded  m-2 mt-0 ml-0">
+              <ClassRoutine />
+              {/* <ClassRoutineForm /> */}
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
     </AdminLayout>

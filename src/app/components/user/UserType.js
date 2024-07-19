@@ -16,7 +16,7 @@ const UserTypeSelector = ({ userEmail }) => {
   const handleSubmit = async () => {
     if (userEmail && userType) {
       try {
-        const userRef = ref(database, `users/${userEmail.replace('.', '_')}/userType`);
+        const userRef = ref(database, `userTypes/${userEmail.replace('.', '_')}`);
         await set(userRef, userType);
         toast.success('User type saved successfully');
         setTimeout(() => {

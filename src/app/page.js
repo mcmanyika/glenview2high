@@ -7,6 +7,7 @@ import NewStudents from '../app/components/NewStudents';
 import About from '../app/components/About';
 import Socials from '../app/components/Socials';
 import Vision from '../app/components/Vision';
+import Staff from '../app/components/Staff';
 import ContactUs from '../app/components/ContactUs';
 import Map from '../app/components/Map';
 
@@ -19,6 +20,7 @@ export default function Home() {
       <Features />
       <Vision />
       <NewStudents />
+      <Staff />
       <Map />
       <ContactUs />
     </Layout>

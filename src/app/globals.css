@@ -7,6 +7,10 @@ body {
     font-family: 'sans','Inter', sans-serif; /* Assuming 'Inter' is imported */
     color: #333; /* Example text color */
   }
+  
+  html {
+    scroll-behavior: smooth;
+  }
 
   .bg-blue {
     background-color: #85b6fb

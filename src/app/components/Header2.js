@@ -101,7 +101,7 @@ const Header2 = () => {
           {titles.map((rw) => (
             <li key={rw.id}>
               <div className="cursor-pointer py-2 px-4 hover:text-gray-300 text-sm font-sans font-thin uppercase" onClick={toggleMenu}>
-                <Link href={`${rw.link}`}>
+                <Link href={`${rw.link}`} passHref>
                   <span>{rw.title}</span>
                 </Link>
               </div>

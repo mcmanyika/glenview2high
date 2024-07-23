@@ -48,7 +48,7 @@ const AIAssistantForm = () => {
   return (
     <div className="fixed bottom-0 right-0 m-4 p-4 z-50">
       {isFormVisible ? (
-        <div ref={formRef} className="fixed bottom-0 right-0 m-4 p-4 bg-white shadow-lg rounded-lg w-96">
+        <div ref={formRef} className="fixed bottom-0 right-0 m-4 p-4 bg-white shadow-lg rounded-lg md:w-96">
           <h2 className="text-lg font-bold mb-2">Ask Our Assistant</h2>
           <form onSubmit={handleSubmit}>
             <textarea

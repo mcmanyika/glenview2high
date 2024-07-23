@@ -5,7 +5,7 @@ import ItemList from '../components/ItemsList'
 const Address = () => {
   return (
     <section className="p-4 bg-gray-400 text-white">
-      <div className="container mx-auto">
+      <div className="max-w-4xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between">
           <div className="pb-5">
             <h2 className="text-sm font-bold mb-2 uppercase">Our Address</h2>
@@ -16,14 +16,6 @@ const Address = () => {
           <div className="flex flex-col items-start pb-5">
             <h2 className="text-sm font-bold mb-2 uppercase">Links</h2>
               <ItemList />
-          </div>
-          <div className="flex flex-col items-start pb-5">
-            <h2 className="text-sm font-bold mb-2 uppercase">Opportunities</h2>
-            <p className="text-sm font-thin text-white font-sans">
-              <Link href="/supplier">
-                Suppliers Registration
-              </Link>
-            </p>
           </div>
           <div className="flex flex-col items-start md:items-end pb-5">
             <h2 className="ttext-sm font-bold mb-2 uppercase">Stay Connected</h2>

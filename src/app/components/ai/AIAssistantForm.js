@@ -56,7 +56,7 @@ const AIAssistantForm = () => {
               onChange={(e) => setQuery(e.target.value)}
               rows="3"
               className="w-full p-2 border rounded-md"
-              placeholder="Type your question here..."
+              placeholder="Ask me your question here..."
             />
             <button type="submit" className="mt-2 bg-blue-400 text-white p-2 rounded-md">Ask</button>
           </form>

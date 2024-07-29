@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { FaFacebook, FaInstagram, FaHome } from 'react-icons/fa';
+import { FaFacebook, FaHome } from 'react-icons/fa';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ref, onValue, query, orderByChild, equalTo } from 'firebase/database';
@@ -114,14 +114,7 @@ const Header = () => {
               >
                 <FaFacebook className="h-5 w-5" />
               </a>
-              <a
-                href="https://www.instagram.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white hover:text-gray-900"
-              >
-                <FaInstagram className="h-5 w-5" />
-              </a>
+             
             </div>
             <div className='flex-1 text-right relative'>
               {session ? (

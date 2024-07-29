@@ -1,5 +1,4 @@
-import { FaFacebookSquare, FaInstagram } from 'react-icons/fa';
-import Link from 'next/link'; // Import Link from next/link for client-side navigation
+import { FaFacebookSquare } from 'react-icons/fa';
 import ItemList from '../components/ItemsList'
 
 const Address = () => {
@@ -28,14 +27,7 @@ const Address = () => {
               >
                 <FaFacebookSquare className="h-6 w-6" />
               </a>
-              <a
-                href="https://www.instagram.com/your-instagram-page"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-300 hover:text-white"
-              >
-                <FaInstagram className="h-6 w-6" />
-              </a>
+              
             </div>
           </div>
         </div>

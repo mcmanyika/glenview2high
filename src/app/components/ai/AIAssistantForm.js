@@ -1,5 +1,3 @@
-// components/AIAssistantForm.js
-
 import React, { useState, useEffect, useRef } from 'react';
 import { TiMessages } from 'react-icons/ti';
 
@@ -12,15 +10,20 @@ const AIAssistantForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('/api/ai-assistant', {
+      const res = await fetch('https://shoolschatapi.pythonanywhere.com/api/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ query }),
+        body: JSON.stringify({ question: query }),
       });
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+
       const data = await res.json();
-      setResponse(data.response);
+      setResponse(data.answer || 'No response received.');
     } catch (error) {
       console.error('Error fetching AI response:', error);
       setResponse('Error fetching response. Please try again.');

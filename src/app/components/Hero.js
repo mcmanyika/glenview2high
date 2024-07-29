@@ -122,7 +122,7 @@ const Hero = () => {
       )}
       <section className="relative text-white p-10 md:p-20 text-center">
         <h1 className="text-2xl md:text-5xl font-thin font-sans">{currentSlide.title}</h1>
-        <p className="mt-4 text-sm md:text-xl text-thin font-sans">{currentSlide.description}</p>
+        <p className="mt-4 text-sm md:text-xl text-thin">{currentSlide.description}</p>
       </section>
     </div>
   );

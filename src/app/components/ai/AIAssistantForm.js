@@ -23,7 +23,8 @@ const AIAssistantForm = () => {
       }
 
       const data = await res.json();
-      setResponse(data.answer || 'No response received.');
+      setResponse(data.response || 'No response received.');
+      setQuery('');  // Clear the query after submitting
     } catch (error) {
       console.error('Error fetching AI response:', error);
       setResponse('Error fetching response. Please try again.');
@@ -52,7 +53,7 @@ const AIAssistantForm = () => {
     <div className="fixed bottom-0 right-0 m-4 p-4 z-50">
       {isFormVisible ? (
         <div ref={formRef} className="fixed bottom-0 right-0 m-4 p-4 bg-white shadow-lg rounded-lg md:w-96">
-          <h2 className="text-lg font-bold mb-2">Ask Our Assistant</h2>
+          {response && <p className="p-5 text-sm text-gray-800">{response}</p>}
           <form onSubmit={handleSubmit}>
             <textarea
               value={query}
@@ -63,7 +64,6 @@ const AIAssistantForm = () => {
             />
             <button type="submit" className="mt-2 bg-blue-400 text-white p-2 rounded-md">Ask</button>
           </form>
-          {response && <p className="mt-4 text-gray-800">{response}</p>}
         </div>
       ) : (
         <button onClick={() => setIsFormVisible(true)} className="flex items-center justify-center w-12 h-12 bg-blue-500 text-white rounded-full">

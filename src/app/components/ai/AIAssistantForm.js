@@ -53,7 +53,7 @@ const AIAssistantForm = () => {
     <div className="fixed bottom-0 right-0 m-4 p-4 z-50">
       {isFormVisible ? (
         <div ref={formRef} className="fixed bottom-0 right-0 m-4 p-4 bg-white shadow-lg rounded-lg md:w-96">
-          {response && <p className="p-5 text-sm text-gray-800">{response}</p>}
+          {response && <div className="max-h-72 overflow-y-auto p-5 text-sm text-gray-800 mb-5">{response}</div>}
           <form onSubmit={handleSubmit}>
             <textarea
               value={query}

@@ -9,7 +9,6 @@ const Admissions = () => {
       <section className="p-4 m-0 text-gray-800">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2">
-            {/* First Image Section */}
             <div className="relative flex items-center justify-center">
               <div className="w-full h-96 relative overflow-hidden">
                 <Image 

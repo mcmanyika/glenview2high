@@ -1,10 +1,10 @@
 'use client';
 import { useState } from 'react';
 import { ref, push, set } from 'firebase/database';
-import { database } from '../../utils/firebaseConfig';
+import { database } from '../../../utils/firebaseConfig';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Layout from '../app/components/Layout2';
+import Layout from '../../app/components/Layout2';
 
 export default function AddHeader() {
     const [title, setTitle] = useState("");

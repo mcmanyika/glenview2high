@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import UserTypeSelector from '../app/components/user/UserType'; // Adjust the path to your UserTypeSelector component
-import AdminLayout from './admin/adminLayout';
-import withAuth from '../../utils/withAuth';
+import UserTypeSelector from '../../app/components/user/UserType'; // Adjust the path to your UserTypeSelector component
+import AdminLayout from '../admin/adminLayout';
+import withAuth from '../../../utils/withAuth';
 
 const User = () => {
   const { data: session } = useSession();

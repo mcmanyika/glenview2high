@@ -1,8 +1,8 @@
 import React from 'react';
-import AdminLayout from './admin/adminLayout';
-import AddNoticeForm from '../app/components/AddNoticeForm';
-import NoticeList from '../app/components/notice/NoticeList';
-import withAuth from '../../utils/withAuth';
+import AdminLayout from '../admin/adminLayout';
+import AddNoticeForm from '../../app/components/AddNoticeForm';
+import NoticeList from '../../app/components/notice/NoticeList';
+import withAuth from '../../../utils/withAuth';
 
 function Notices() {
   return (

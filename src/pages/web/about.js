@@ -1,6 +1,6 @@
 import React from 'react';
-import Layout from '../app/components/Layout2';
-import Staff from '../app/components/Staff'
+import Layout from '../../app/components/Layout2';
+import Staff from '../../app/components/Staff'
 
 export default function AboutUs() {
   return (

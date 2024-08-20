@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import withAuth from '../../utils/withAuth';
-import AdminLayout from './admin/adminLayout';
-import fetchUserType from '../../utils/fetchUserType';
-import UserProfile from '../app/components/user/UserProfile';
+import withAuth from '../../../utils/withAuth';
+import AdminLayout from '../admin/adminLayout';
+import fetchUserType from '../../../utils/fetchUserType';
+import UserProfile from '../../app/components/user/UserProfile';
 
 const Dashboard = () => {
   const { data: session } = useSession();

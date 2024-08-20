@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import Layout from '../app/components/Layout2';
-import SupplierContactForm from '../app/components/SupplierContactForm';
+import Layout from '../../app/components/Layout2';
+import SupplierContactForm from '../../app/components/SupplierContactForm';
 
 const SupplierInvitation = () => {
   const [isOverlayVisible, setOverlayVisible] = useState(false);

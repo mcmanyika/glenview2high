@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import Layout from '../app/components/Layout2';
+import Layout from '../../app/components/Layout2';
 
 const projectsData = [
   {

@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSession, getSession } from 'next-auth/react';
-import withAuth from '../../utils/withAuth';
-import AdminLayout from './admin/adminLayout';
-import fetchUserType from '../../utils/fetchUserType';
-import StudentProfileDisplay from '../app/components/user/utils/StudentProfileDisplay';
+import withAuth from '../../../utils/withAuth';
+import AdminLayout from '../admin/adminLayout';
+import fetchUserType from '../../../utils/fetchUserType';
+import StudentProfileDisplay from '../../app/components/user/utils/StudentProfileDisplay';
 import { FaSpinner } from 'react-icons/fa'; // Import FaSpinner
-import NoticeCount from '../app/components/notice/NoticeCount';
-import ClassRoutine from '../app/components/student/ClassRoutine';
+import NoticeCount from '../../app/components/notice/NoticeCount';
+import ClassRoutine from '../../app/components/student/ClassRoutine';
 
 const UserDashboard = () => {
   const { data: session } = useSession();

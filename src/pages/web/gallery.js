@@ -1,6 +1,6 @@
 import React from 'react';
-import Layout from '../app/components/Layout2';
-import Gallery from '../app/components/Gallery'
+import Layout from '../../app/components/Layout2';
+import Gallery from '../../app/components/Gallery'
 
 export default function GalleryInfo() {
   return (

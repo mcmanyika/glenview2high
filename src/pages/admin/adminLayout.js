@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
-import { FaBars, FaSignOutAlt, FaHome, FaSpinner } from 'react-icons/fa';
+import { FaBars, FaSignOutAlt, FaSpinner, FaHome } from 'react-icons/fa';
 import Image from 'next/image';
 import Breadcrumb from '../utils/Breadcrumb';
 import { useGlobalState } from '../../app/store';
@@ -32,7 +32,6 @@ const iconMapping = {
 const AdminLayout = ({ children }) => {
   const { data: session } = useSession();
   const router = useRouter();
-  const [isExpanded, setIsExpanded] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [titles, setTitles] = useState([]);
@@ -98,7 +97,7 @@ const AdminLayout = ({ children }) => {
 
             const filteredTitles = titlesArray.filter(title => {
               if (userType === 'student') {
-                return !['Teachers', 'Class Routine', 'Notice', 'Events', 'Add Class', 'Admmision'].includes(title.title);
+                return !['Teachers', 'Class Routine', 'Notice', 'Events', 'Add Class', 'Admission'].includes(title.title);
               }
               return true;
             });
@@ -115,10 +114,6 @@ const AdminLayout = ({ children }) => {
     fetchData();
   }, [userType]);
 
-  const toggleSidebar = () => {
-    setIsExpanded(!isExpanded);
-  };
-
   const toggleMobileSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -129,10 +124,10 @@ const AdminLayout = ({ children }) => {
 
   return (
     <div className="flex min-h-screen text-base bg-gray-100 relative">
-      <aside className={`fixed z-40 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 md:relative md:translate-x-0 ${isExpanded ? 'w-72' : 'w-16'} bg-blue-400 text-white p-4 min-h-screen`}>
-        <div className="flex justify-between items-center mb-6">
-          {isExpanded && <h2 className="text-lg font-thin">{schoolName}</h2>}
-          <FaBars className="cursor-pointer text-2xl" onClick={toggleSidebar} />
+      <aside className={`fixed z-40 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 md:relative md:translate-x-0 w-42 bg-blue-400 text-white p-4 min-h-screen rounded-tr-xl`}>
+        <div className="flex justify-center items-center pt-10 mb-16">
+          {/* Replace schoolName with logo */}
+          <Image src="/images/logo.png" alt="Logo" width={70} height={60} className='rounded-full' />
         </div>
         <nav>
           {isLoading ? (
@@ -144,26 +139,22 @@ const AdminLayout = ({ children }) => {
               {titles.length > 0 && titles.map((rw) => {
                 const IconComponent = iconMapping[rw.icon];
                 return (
-                  <li key={rw.id} className="mb-4 flex items-center">
-                    <Link href={rw.link} className="flex items-center">
-                      <IconComponent className="mr-2 text-2xl" />
-                      {isExpanded && (
-                        <div className="block p-2 hover:bg-blue-500 rounded cursor-pointer">{rw.title}</div>
-                      )}
+                  <li key={rw.id} className="mb-4 flex flex-col items-center">
+                    <Link href={rw.link} className="flex flex-col items-center">
+                      <IconComponent className="text-2xl" />
+                      <div className="text-center font-thin p-2 cursor-pointer w-full">{rw.title}</div>
                     </Link>
                   </li>
                 );
               })}
-              <li className="mb-4 flex items-center">
-                <FaSignOutAlt className="mr-2 text-2xl" />
-                {isExpanded && (
-                  <button
-                    onClick={() => signOut()}
-                    className="block w-full text-left p-2 hover:bg-blue-500 rounded"
-                  >
-                    Sign Out
-                  </button>
-                )}
+              <li className="mb-4 flex flex-col items-center">
+                <FaSignOutAlt className="text-2xl" />
+                <button
+                  onClick={() => signOut()}
+                  className="text-center font-thin p-2 hover:bg-blue-500 rounded cursor-pointer w-full"
+                >
+                  Sign Out
+                </button>
               </li>
             </ul>
           )}
@@ -178,7 +169,8 @@ const AdminLayout = ({ children }) => {
         <header className="flex items-center justify-between bg-blue-400 text-white p-4 md:hidden">
           <div className="flex items-center">
             <FaBars className="cursor-pointer text-2xl mr-4" onClick={toggleMobileSidebar} />
-            <h1 className="text-lg">{schoolName}</h1>
+            {/* Replace schoolName with logo */}
+            <Image src="/path/to/logo.png" alt="Logo" width={100} height={30} />
           </div>
         </header>
         <main className="flex-1 p-4 md:p-6">

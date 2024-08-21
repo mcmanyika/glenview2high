@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { database } from '../../../../utils/firebaseConfig'; // Adjust the import based on your project structure
-import { ref, onValue } from 'firebase/database';
+import { ref, onValue, update } from 'firebase/database';
+import { useSession } from 'next-auth/react';
 
 const AdmissionList = () => {
+  const { data: session } = useSession();
+  const loggedInUserEmail = session?.user?.email || "unknown@example.com"; // Get the logged-in user's email
+
   const [admissions, setAdmissions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); // Number of admissions per page
+  const [itemsPerPage] = useState(5); // Number of admissions per page
+  const [selectedAdmission, setSelectedAdmission] = useState(null); // For modal data
+  const [modalOpen, setModalOpen] = useState(false); // For modal visibility
+  const [formData, setFormData] = useState({}); // For the form data
+  const [searchQuery, setSearchQuery] = useState(''); // For search query
 
   useEffect(() => {
     const admissionsRef = ref(database, 'admissions');
@@ -23,52 +31,121 @@ const AdmissionList = () => {
     });
   }, []);
 
-  // Get current admissions for the current page
+  // Filter admissions based on search query
+  const filteredAdmissions = admissions.filter((admission) =>
+    Object.values(admission).some((value) =>
+      value.toString().toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  );
+
   const indexOfLastAdmission = currentPage * itemsPerPage;
   const indexOfFirstAdmission = indexOfLastAdmission - itemsPerPage;
-  const currentAdmissions = admissions.slice(indexOfFirstAdmission, indexOfLastAdmission);
+  const currentAdmissions = filteredAdmissions.slice(indexOfFirstAdmission, indexOfLastAdmission);
 
-  // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Calculate total pages
-  const totalPages = Math.ceil(admissions.length / itemsPerPage);
+  const openModal = (admission) => {
+    setSelectedAdmission(admission);
+    setFormData(admission); // Set form data to the selected admission
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setSelectedAdmission(null);
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const updatedData = {
+      ...formData,
+      editorEmail: loggedInUserEmail, // Add the logged-in user's email
+      editedAt: new Date().toISOString(), // Add the current timestamp
+    };
+
+    const admissionsRef = ref(database, `admissions/${selectedAdmission.id}`);
+    update(admissionsRef, updatedData)
+      .then(() => {
+        closeModal(); // Close the modal after successful update
+      })
+      .catch((error) => {
+        console.error("Error updating admission: ", error);
+      });
+  };
+
+  const handleClickOutside = (event) => {
+    const modal = document.getElementById('modal-content');
+    if (modal && !modal.contains(event.target)) {
+      closeModal();
+    }
+  };
+
+  useEffect(() => {
+    if (modalOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [modalOpen]);
 
   return (
     <div className="p-4 bg-white shadow-md rounded-md">
       <h2 className="text-2xl font-semibold mb-4">Admission List</h2>
+
+      {/* Search Bar */}
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Search admissions..."
+          className="border rounded w-full px-3 py-2"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
+
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border">
           <thead>
             <tr>
-              <th className="py-2 px-4 border text-sm">Admission ID</th>
-              <th className="py-2 px-4 border text-sm">First Name</th>
-              <th className="py-2 px-4 border text-sm">Last Name</th>
-              <th className="py-2 px-4 border text-sm">Gender</th>
-              <th className="py-2 px-4 border text-sm">Date of Birth</th>
-              <th className="py-2 px-4 border text-sm">Religion</th>
-              <th className="py-2 px-4 border text-sm">Email</th>
-              <th className="py-2 px-4 border text-sm">Class</th>
-              <th className="py-2 px-4 border text-sm">Phone</th>
-              <th className="py-2 px-4 border text-sm">Status</th>
+              <th className="py-2 px-4  text-sm">Admission ID</th>
+              <th className="py-2 px-4  text-sm">First Name</th>
+              <th className="py-2 px-4  text-sm">Last Name</th>
+              <th className="py-2 px-4  text-sm">Gender</th>
+              <th className="py-2 px-4  text-sm">Date of Birth</th>
+              <th className="py-2 px-4  text-sm">Religion</th>
+              <th className="py-2 px-4  text-sm">Email</th>
+              <th className="py-2 px-4  text-sm">Class</th>
+              <th className="py-2 px-4  text-sm">Phone</th>
+              <th className="py-2 px-4  text-sm">Status</th>
             </tr>
           </thead>
           <tbody>
             {currentAdmissions.map((admission) => (
               <tr
                 key={admission.id}
-                className="hover:bg-gray-100" // Background color on hover
+                className="hover:bg-gray-100 cursor-pointer"
+                onClick={() => openModal(admission)} // Open modal on row click
               >
-                <td className="py-2 px-4 border text-sm">{admission.admissionId}</td>
-                <td className="py-2 px-4 border text-sm">{admission.firstName}</td>
-                <td className="py-2 px-4 border text-sm">{admission.lastName}</td>
-                <td className="py-2 px-4 border text-sm">{admission.gender}</td>
-                <td className="py-2 px-4 border text-sm">{admission.dateOfBirth}</td>
-                <td className="py-2 px-4 border text-sm">{admission.religion}</td>
-                <td className="py-2 px-4 border text-sm">{admission.email}</td>
-                <td className="py-2 px-4 border text-sm">{admission.class}</td>
-                <td className="py-2 px-4 border text-sm">{admission.phone}</td>
-                <td className="py-2 px-4 border text-sm">{admission.status}</td>
+                <td className="py-2 px-4  text-xs">{admission.admissionId}</td>
+                <td className="py-2 px-4  text-sm">{admission.firstName}</td>
+                <td className="py-2 px-4  text-sm">{admission.lastName}</td>
+                <td className="py-2 px-4  text-sm">{admission.gender}</td>
+                <td className="py-2 px-4  text-sm">{admission.dateOfBirth}</td>
+                <td className="py-2 px-4 text-sm">{admission.religion}</td>
+                <td className="py-2 px-4  text-sm">{admission.email}</td>
+                <td className="py-2 px-4  text-sm">{admission.class}</td>
+                <td className="py-2 px-4  text-sm">{admission.phone}</td>
+                <td className="py-2 px-4  text-sm">{admission.status}</td>
               </tr>
             ))}
           </tbody>
@@ -77,24 +154,177 @@ const AdmissionList = () => {
 
       {/* Pagination */}
       <div className="flex justify-between items-center mt-4">
-        <button
-          onClick={() => paginate(currentPage - 1)}
-          disabled={currentPage === 1}
-          className={`px-4 py-2 text-sm ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-500 text-white'} rounded`}
-        >
-          Previous
-        </button>
-        <span className="text-sm">
-          Page {currentPage} of {totalPages}
-        </span>
-        <button
-          onClick={() => paginate(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className={`px-4 py-2 text-sm ${currentPage === totalPages ? 'bg-gray-300' : 'bg-blue-500 text-white'} rounded`}
-        >
-          Next
-        </button>
+        <p className="text-sm">
+          Showing {indexOfFirstAdmission + 1} to{" "}
+          {Math.min(indexOfLastAdmission, filteredAdmissions.length)} of{" "}
+          {filteredAdmissions.length} admissions
+        </p>
+        <div>
+          {Array.from({ length: Math.ceil(filteredAdmissions.length / itemsPerPage) }, (_, i) => (
+            <button
+              key={i + 1}
+              onClick={() => paginate(i + 1)}
+              className={`px-3 py-1 mx-1 text-sm rounded ${currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+            >
+              {i + 1}
+            </button>
+          ))}
+        </div>
       </div>
+
+      {/* Modal */}
+      {modalOpen && selectedAdmission && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div id="modal-content" className="bg-white p-8 rounded-md w-full max-w-4xl mx-4">
+            <h2 className="text-xl font-semibold mb-4">Edit Admission</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div>
+                  <label className="block mb-2">Admission ID</label>
+                  <input
+                    type="text"
+                    name="admissionId"
+                    value={formData.admissionId}
+                    onChange={handleInputChange}
+                    className="border rounded w-full px-3 py-2"
+                    readOnly // Make Admission ID read-only
+                  />
+                </div>
+                <div>
+                  <label className="block mb-2">First Name</label>
+                  <input
+                    type="text"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    className="border rounded w-full px-3 py-2"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block mb-2">Last Name</label>
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    className="border rounded w-full px-3 py-2"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div>
+                  <label className="block mb-2">Gender</label>
+                  <select
+                    name="gender"
+                    value={formData.gender}
+                    onChange={handleInputChange}
+                    className="border rounded w-full px-3 py-2"
+                    required
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block mb-2">Date of Birth</label>
+                  <input
+                    type="date"
+                    name="dateOfBirth"
+                    value={formData.dateOfBirth}
+                    onChange={handleInputChange}
+                    className="border rounded w-full px-3 py-2"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block mb-2">Religion</label>
+                  <input
+                    type="text"
+                    name="religion"
+                    value={formData.religion}
+                    onChange={handleInputChange}
+                    className="border rounded w-full px-3 py-2"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div>
+                  <label className="block mb-2">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="border rounded w-full px-3 py-2"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block mb-2">Class</label>
+                  <input
+                    type="text"
+                    name="class"
+                    value={formData.class}
+                    onChange={handleInputChange}
+                    className="border rounded w-full px-3 py-2"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block mb-2">Phone</label>
+                  <input
+                    type="text"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    className="border rounded w-full px-3 py-2"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div>
+                  <label className="block mb-2">Status</label>
+                  <select
+                    name="status"
+                    value={formData.status}
+                    onChange={handleInputChange}
+                    className="border rounded w-full px-3 py-2"
+                    required
+                  >
+                    <option value="">Select Status</option>
+                    <option value="Accepted">Accepted</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Rejected">Rejected</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex justify-end mt-6">
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  className="px-4 py-2 bg-gray-500 text-white rounded mr-2"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-blue-500 text-white rounded"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

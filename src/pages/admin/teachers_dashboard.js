@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import withAuth from '../../../utils/withAuth';
-import AdminLayout from './adminLayout';
+import AdminLayout from './adminLayout2';
 import NoticeCount from '../../app/components/notice/NoticeCount';
 import Teachers from '../../app/components/teachers/utils/Teachers';
 

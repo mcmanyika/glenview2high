@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { database } from '../../../../utils/firebaseConfig'; // Adjust the import based on your project structure
 import { ref, onValue, update } from 'firebase/database';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+
 
 const AdmissionList = () => {
   const { data: session } = useSession();
-  const loggedInUserEmail = session?.user?.email || "unknown@example.com"; // Get the logged-in user's email
+  const loggedInUserEmail = session?.user?.email || ""; // Get the logged-in user's email
 
   const [admissions, setAdmissions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -100,7 +102,16 @@ const AdmissionList = () => {
 
   return (
     <div className="p-4 bg-white shadow-md rounded-md">
-      <h2 className="text-2xl font-semibold mb-4">Admission List</h2>
+        <div className="flex justify-between items-center w-full">
+            <div className="text-2xl font-semibold mb-4">Admission List</div>
+            <div className="three-dots flex flex-col justify-between h-4 space-y-1">
+                <Link href="/admin/admission">
+                    <div className="w-1 h-1 bg-black rounded-full"></div>
+                </Link>
+            </div>
+            </div>
+
+
 
       {/* Search Bar */}
       <div className="mb-4">
@@ -116,7 +127,7 @@ const AdmissionList = () => {
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border">
           <thead>
-            <tr>
+            <tr className='text-left'>
               <th className="py-2 px-4  text-sm">Admission ID</th>
               <th className="py-2 px-4  text-sm">First Name</th>
               <th className="py-2 px-4  text-sm">Last Name</th>
@@ -136,7 +147,7 @@ const AdmissionList = () => {
                 className="hover:bg-gray-100 cursor-pointer"
                 onClick={() => openModal(admission)} // Open modal on row click
               >
-                <td className="py-2 px-4  text-xs">{admission.admissionId}</td>
+                <td className="py-2 px-4  text-sm">{admission.admissionId}</td>
                 <td className="py-2 px-4  text-sm">{admission.firstName}</td>
                 <td className="py-2 px-4  text-sm">{admission.lastName}</td>
                 <td className="py-2 px-4  text-sm">{admission.gender}</td>

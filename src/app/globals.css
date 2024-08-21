@@ -29,4 +29,22 @@ body {
   }
   
   
+  .three-dots {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 4px;
+    height: 14px;
+  }
+  
+  .three-dots::before,
+  .three-dots::after,
+  .three-dots div {
+    content: '';
+    display: block;
+    width: 4px;
+    height: 4px;
+    background-color: gray;
+    border-radius: 50%;
+  }
   

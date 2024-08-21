@@ -8,6 +8,7 @@ const initialState = {
   teacherId: '',
   userType: '',
   studentId: '',
+  status:'',
   routineCount: 0
 };
 
@@ -16,6 +17,7 @@ const { useGlobalState, getGlobalState, setGlobalState } = createGlobalState(ini
 const setUser = (user) => setGlobalState('user', user);
 const setSchoolName = (schoolName) => setGlobalState('schoolName', schoolName);
 const setStudentClass = (studentClass) => setGlobalState('studentClass', studentClass);
+const setStatus = (status) => setGlobalState('status', status);
 const setStudentId = (studentId) => setGlobalState('studentId', studentId);
 const setTeacherId = (teacherId) => setGlobalState('teacherId', teacherId);
 const setUserType = (userType) => setGlobalState('userType', userType);
@@ -27,6 +29,7 @@ export { useGlobalState,
         setUser,
         setSchoolName,
         setStudentClass,
+        setStatus,
         setUserType,
         setStudentId,
         setTeacherId,

@@ -133,7 +133,7 @@ const AdminLayout = ({ children, studentStatus }) => {
             </div>
           ) : (
             <ul>
-              {studentStatus === "Accepted" && titles.length > 0 && titles.map((rw) => {
+              {titles.length > 0 && titles.map((rw) => {
                 const IconComponent = iconMapping[rw.icon];
                 return (
                   <li key={rw.id} className="mb-4 flex flex-col items-center">

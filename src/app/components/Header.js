@@ -124,7 +124,7 @@ const Header = () => {
                   </span>
                   {showPopover && (
                     <div ref={popoverRef} className="absolute right-0 mt-2 w-48 bg-white text-black p-2 rounded shadow-md">
-                      <Link href="/dashboard">
+                      <Link href="/admin/dashboard">
                         <p
                           className="text-sm text-left flex items-center cursor-pointer"
                           onClick={() => setShowPopover(false)}

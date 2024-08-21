@@ -158,7 +158,7 @@ const Header = () => {
       )}
       <nav className="max-w-4xl mx-auto flex justify-between items-center p-4">
         <div className={`flex items-center space-x-2 ${isOpen ? 'hidden md:flex' : 'block'}`}>
-          <Link href='/'>
+          {/* <Link href='/'>
             <Image
               src="/images/logo.png"
               alt="Logo"
@@ -167,7 +167,7 @@ const Header = () => {
               className="rounded"
               priority
             />
-          </Link>
+          </Link> */}
           <h1 className="text-sm md:text-2xl font-normal uppercase flex">GlenView 2 High</h1>
         </div>
         {isSticky && (

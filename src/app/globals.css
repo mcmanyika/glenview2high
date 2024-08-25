@@ -31,10 +31,10 @@ body {
   
   .three-dots {
     display: flex;
-    flex-direction: column;
+    flex-direction: row; /* Change from column to row */
     justify-content: space-between;
-    width: 4px;
-    height: 14px;
+    width: 14px; /* Adjust the width to accommodate the horizontal layout */
+    height: 4px; /* Adjust the height */
   }
   
   .three-dots::before,
@@ -47,4 +47,5 @@ body {
     background-color: gray;
     border-radius: 50%;
   }
+  
   

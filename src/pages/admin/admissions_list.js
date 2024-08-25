@@ -1,11 +1,13 @@
 import React from 'react'
 import StudentsApplications from '../../app/components/student/StudentsApplications';
-import AdminLayout from './adminLayout2';
+import AdminLayout from './teacherLayout';
+import withAuth from '../../../utils/withAuth';
 
-export default function admissions_list() {
+const admissions_list = () => {
   return (
     <AdminLayout>
         <StudentsApplications />
     </AdminLayout>
   )
 }
+export default withAuth(admissions_list);

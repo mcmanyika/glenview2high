@@ -11,8 +11,8 @@ import TeacherDashboard from './teachers_dashboard';
 const Dashboard = () => {
   const { data: session, status } = useSession();
   const [loading, setLoading] = useState(true);
-  const [userType, setUserType] = useState(null); // State to hold user type
-  const [selectedComponent, setSelectedComponent] = useState(null); // State to hold the selected component
+  const [userType, setUserType] = useState(null);
+  const [selectedComponent, setSelectedComponent] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const Dashboard = () => {
               setSelectedComponent(<TeacherDashboard />);
             } else {
               // Handle other user types or a default component
-              setSelectedComponent(<div>Welcome, {userData.userType}</div>);
+              setSelectedComponent(<StudentDash />);
             }
           } else {
             // Redirect to /user if the user is not found in userTypes

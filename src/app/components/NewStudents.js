@@ -13,7 +13,7 @@ const NewStudents = () => {
         <h1 className="text-xl md:text-3xl font-thin font-sans uppercase">Welcome New Students</h1>
         <p className="mt-4 text-base md:text-lg">
           {/* Use Link component for navigation */}
-          <Link href="/admissions">
+          <Link href="/web/admissions">
             <button className="uppercase p-2 bg-blue-400 text-white hover:bg-blue-500 transition duration-300">
               Find out more
             </button>

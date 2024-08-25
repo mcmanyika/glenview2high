@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import withAuth from '../../../utils/withAuth';
-import AdminLayout from './adminLayout2';
+import AdminLayout from './teacherLayout';
 import NoticeCount from '../../app/components/notice/NoticeCount';
-import Teachers from '../../app/components/teachers/utils/Teachers';
+import Students from '../../app/components/teachers/utils/Students';
 
 const TeacherDashboard = () => {
   const { data: session } = useSession();
@@ -16,7 +16,7 @@ const TeacherDashboard = () => {
           <NoticeCount />
           <div className="w-full flex flex-col mt-4">
             <div className="bg-white border shadow-sm rounded m-2 p-4">
-              <Teachers />
+              <Students />
             </div>
           </div>
         </div>
@@ -27,12 +27,3 @@ const TeacherDashboard = () => {
 
 export default withAuth(TeacherDashboard);
 
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
-
-  return {
-    props: {
-      session
-    }
-  };
-}

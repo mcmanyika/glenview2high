@@ -122,17 +122,17 @@ const AdminLayout = ({ children, studentStatus }) => {
 
   return (
     <div className="flex min-h-screen text-base bg-gray-100 relative">
-      <aside className={`fixed z-40 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 md:relative md:translate-x-0 w-42 bg-blue-400 text-white p-4 min-h-screen rounded-tr-xl`}>
+      <aside className={`fixed z-40 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 md:relative md:translate-x-0 w-42 bg-blue-400 text-white p-4 min-h-screen rounded-tr-xl flex flex-col`}>
         <div className="flex justify-center items-center pt-10 mb-8">
           <Image src="/images/logo.png" alt="Logo" width={70} height={60} className='rounded-full' />
         </div>
-        <nav>
+        <nav className="flex-1">
           {isLoading ? (
             <div className="flex items-center justify-center h-32">
               <FaSpinner className="animate-spin text-blue-500 text-3xl" />
             </div>
           ) : (
-            <ul>
+            <ul className="flex flex-col h-full">
               {titles.length > 0 && titles.map((rw) => {
                 const IconComponent = iconMapping[rw.icon];
                 return (
@@ -144,7 +144,7 @@ const AdminLayout = ({ children, studentStatus }) => {
                   </li>
                 );
               })}
-              <li className="mb-4 flex flex-col items-center">
+              <li className="mb-4 flex flex-col items-center mt-auto">
                 <FaSignOutAlt className="text-2xl" />
                 <button
                   onClick={() => signOut()}
@@ -157,6 +157,7 @@ const AdminLayout = ({ children, studentStatus }) => {
           )}
         </nav>
       </aside>
+
 
       {isSidebarOpen && (
         <div className="fixed inset-0 bg-black opacity-50 z-30 md:hidden" onClick={toggleMobileSidebar}></div>

@@ -50,7 +50,7 @@ const ProfileAttributes = () => {
       const profileRef = ref(database, `profiles/${formData.studentId}`);
       await set(profileRef, formData);
       toast.success('Profile attributes saved successfully');
-      router.push('/student_dash'); // Redirect to student_dashboard
+      router.push('/admin/student_dash'); // Redirect to student_dashboard
     } catch (error) {
       toast.error('Error saving profile attributes');
       console.error('Error saving profile attributes: ', error);

@@ -20,7 +20,7 @@ const UserTypeSelector = ({ userEmail }) => {
         await set(userRef, userType);
         toast.success('User type saved successfully');
         setTimeout(() => {
-          router.push('/dashboard');
+          router.push('/admin/admission');
         }, 2000); // Redirect after 2 seconds to allow the toast message to be shown
       } catch (error) {
         toast.error('Error saving user type');

@@ -52,7 +52,7 @@ const StudentForm = () => {
       setStudentId(formData.studentId); // Save student ID in global state
       // Redirect to profile attributes component
       setTimeout(() => {
-        router.push('/profile_attributes');
+        router.push('/admin/profile_attributes');
       }, 2000); // Redirect after 2 seconds to allow the toast message to be shown
     } catch (error) {
       toast.error('Error saving student information');

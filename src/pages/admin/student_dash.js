@@ -10,6 +10,7 @@ import { ref, get } from 'firebase/database';
 import StudentDetails from '../../app/components/student/StudentDetails';
 import { useRouter } from 'next/router';
 import { useGlobalState, setStudentClass, setStatus } from '../../app/store';
+import Student from '../../app/components/student/Student';
 
 const StudentDash = () => {
   const { data: session, status } = useSession();
@@ -46,11 +47,11 @@ const StudentDash = () => {
           // Fetch admission status using the student's email
           await fetchStudentStatus(email);
         } else {
-          router.push('/student_form');
+          router.push('/admin/student_form');
         }
       } else {
         console.log('No student data found.');
-        router.push('/student_form');
+        router.push('/admin/student_form');
       }
     } catch (error) {
       console.error('Error fetching student data: ', error);
@@ -93,22 +94,16 @@ const StudentDash = () => {
                     <>
                       <NoticeCount />
                       <div className="w-full flex flex-col md:flex-row mt-4">
-                        <div className="w-1/3">
-                          {studentData ? (
-                            <StudentDetails studentData={studentData} />
-                          ) : (
-                            <div className="flex items-center justify-center h-32">
-                              <p>No student data found.</p>
-                            </div>
-                          )}
+                        <div className="w-1/3 mr-1">
+                          <Student />
                         </div>
-                        <div className="w-2/3 bg-white border shadow-sm rounded m-2 mt-0 ml-0">
+                        <div className="w-2/3 bg-white border shadow-sm rounded m-2 mt-0 ml-1">
                           <ClassRoutine />
                         </div>
                       </div>
                     </>
                   ) : (
-                    <div className='w-full border p-4 text-center'>Your account is still pending</div>
+                    <div className='w-full border p-4 text-center'>Your account is under review</div>
                   )}
                 </>
               )}

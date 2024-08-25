@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { database } from '../../../../../utils/firebaseConfig'; // Adjust the import based on your project structure
 import { ref, set } from 'firebase/database';
@@ -7,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const AdmissionForm = () => {
   const { data: session } = useSession();
+  const router = useRouter(); // Initialize the router
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -68,6 +70,9 @@ const AdmissionForm = () => {
         phone: '',
         status: 'Pending', // Reset Status to default value
       });
+
+      // Redirect to the home page after submission
+      router.push('/admin/student_dash'); // Navigate to the home page
     } catch (error) {
       console.error('Error submitting data:', error);
       toast.error('Failed to submit admission data.', {

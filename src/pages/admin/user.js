@@ -16,9 +16,7 @@ const User = () => {
 
   return (
     <SmartBlankLayout>
-    <div>
       {userEmail && <UserTypeSelector userEmail={userEmail} />}
-    </div>
     </SmartBlankLayout>
   );
 };

@@ -21,7 +21,7 @@ const NoticeList = () => {
         noticesArray.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         // Limit to 10 notices
-        const limitedNotices = noticesArray.slice(0, 10);
+        const limitedNotices = noticesArray.slice(0, 3);
 
         setNotices(limitedNotices);
         setTotalNotices(limitedNotices.length); // Update total notices count

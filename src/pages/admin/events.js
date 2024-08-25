@@ -1,5 +1,5 @@
 import React from 'react';
-import AdminLayout from './adminLayout';
+import AdminLayout from './teacherLayout';
 import AddEventsForm from '../../app/components/admin/AddEventsForm';
 import EventsList from '../../app/components/admin/EventsList';
 import withAuth from '../../../utils/withAuth';

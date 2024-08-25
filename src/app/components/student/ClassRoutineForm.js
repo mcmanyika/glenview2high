@@ -1,4 +1,3 @@
-// components/student/ClassRoutineForm.js
 import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { ref, push } from 'firebase/database';
@@ -15,6 +14,7 @@ const ClassRoutineForm = () => {
     teacher: session?.user?.name || '',
     room: '',
     studentclass: '',
+    email: session?.user?.email || '', // Added email field
   });
 
   const handleChange = (e) => {
@@ -38,6 +38,7 @@ const ClassRoutineForm = () => {
           teacher: session?.user?.name || '',
           room: '',
           studentclass: '',
+          email: session?.user?.email || '', // Reset email field
         });
       })
       .catch((error) => {
@@ -48,11 +49,10 @@ const ClassRoutineForm = () => {
 
   return (
     <div className="p-6 bg-white rounded shadow">
-      <h2 className="text-xl font-semibold mb-4">Add Class Routine</h2>
+      <h2 className="text-xl font-semibold">Add Class Routine</h2>
       <form onSubmit={handleSubmit}>
-        <div className='grid grid-cols-2'>
+        <div className='grid grid-cols-1 text-sm'>
           <div className="m-4">
-          <label className="block text-gray-700">Date</label>
             <input
               type="date"
               name="date"
@@ -63,7 +63,6 @@ const ClassRoutineForm = () => {
             />
           </div>
           <div className="m-4">
-            <label className="block text-gray-700">Time</label>
             <select
               name="time"
               value={formData.time}
@@ -83,7 +82,6 @@ const ClassRoutineForm = () => {
             </select>
           </div>
           <div className="m-4">
-            <label className="block text-gray-700">Subject</label>
             <select
               name="subject"
               value={formData.subject}
@@ -103,7 +101,6 @@ const ClassRoutineForm = () => {
             </select>
           </div>
           <div className="m-4">
-            <label className="block text-gray-700">Class</label>
             <select
               name="studentclass"
               value={formData.studentclass}
@@ -127,7 +124,6 @@ const ClassRoutineForm = () => {
             </select>
           </div>
           <div className="m-4">
-            <label className="block text-gray-700">Room</label>
             <select
               name="room"
               value={formData.room}
@@ -143,14 +139,19 @@ const ClassRoutineForm = () => {
               ))}
             </select>
           </div>
-          <div className='m-5'>
+          <div className="m-4">
             <input
               type="hidden"
               name="teacher"
               value={formData.teacher}
               onChange={handleChange}
             />
-            <label className="block text-gray-700">&nbsp;</label>
+            <input
+              type="hidden"
+              name="email"
+              value={formData.email} // Hidden email field
+              onChange={handleChange}
+            />
             <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
               Add Routine
             </button>

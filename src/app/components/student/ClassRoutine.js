@@ -3,6 +3,8 @@ import { ref, onValue } from 'firebase/database';
 import { database } from '../../../../utils/firebaseConfig';
 import { useGlobalState } from '../../store';
 
+import withAuth from '../../../../utils/withAuth';
+
 const ClassRoutine = () => {
   const [routine, setRoutine] = useState([]);
   const [studentClass] = useGlobalState('studentClass');
@@ -113,4 +115,4 @@ const ClassRoutine = () => {
   );
 };
 
-export default ClassRoutine;
+export default withAuth(ClassRoutine)

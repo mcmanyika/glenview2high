@@ -5,6 +5,7 @@ import { FaBars, FaSignOutAlt, FaSpinner } from 'react-icons/fa';
 import Image from 'next/image';
 import Breadcrumb from '../utils/Breadcrumb';
 import { useGlobalState } from '../../app/store';
+import withAuth from '../../../utils/withAuth';
 import '../../app/globals.css';
 import AIAssistantForm from '../../app/components/ai/AIAssistantForm';
 import Footer from '../../app/components/DashFooter';
@@ -123,7 +124,7 @@ const AdminLayout = ({ children, studentStatus }) => {
   return (
     <div className="flex min-h-screen text-base bg-gray-100 relative">
       <aside className={`fixed z-40 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 md:relative md:translate-x-0 w-42 bg-blue-400 text-white p-4 min-h-screen rounded-tr-xl flex flex-col`}>
-        <div className="flex justify-center items-center pt-10 mb-8">
+        <div className="flex justify-center items-center pt-10 mb-20">
           <Image src="/images/logo.png" alt="Logo" width={70} height={60} className='rounded-full' />
         </div>
         <nav className="flex-1">
@@ -207,4 +208,4 @@ const AdminLayout = ({ children, studentStatus }) => {
   );
 };
 
-export default AdminLayout;
+export default  withAuth(AdminLayout)

@@ -31,7 +31,7 @@ const StudentDash = () => {
 
   const fetchStudentData = async (email) => {
     try {
-      const studentRef = ref(database, 'students');
+      const studentRef = ref(database, 'admissions');
       const studentSnapshot = await get(studentRef);
 
       if (studentSnapshot.exists()) {
@@ -41,7 +41,7 @@ const StudentDash = () => {
         if (matchedStudent) {
           const [studentId, studentInfo] = matchedStudent;
           setStudentData(studentInfo);
-          setStudentClass(studentInfo.studentClass);
+          setStudentClass(studentInfo.class);
           localStorage.setItem('studentId', studentId);
 
           // Fetch admission status using the student's email

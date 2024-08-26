@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { ref, onValue, remove, update } from 'firebase/database';
+import { ref, onValue, remove } from 'firebase/database';
 import { database } from '../../../../utils/firebaseConfig';
+import { FaTrashAlt } from 'react-icons/fa';
 
 const ClassRoutineList = () => {
   const { data: session } = useSession();
@@ -55,12 +56,6 @@ const ClassRoutineList = () => {
     setCurrentPage(pageNumber);
   };
 
-  const handleSort = (field) => {
-    const newDirection = sortField === field && sortDirection === 'asc' ? 'desc' : 'asc';
-    setSortField(field);
-    setSortDirection(newDirection);
-  };
-
   const handleDelete = (id) => {
     const routineRef = ref(database, `classRoutine/${id}`);
     remove(routineRef)
@@ -70,23 +65,6 @@ const ClassRoutineList = () => {
       .catch((error) => {
         console.error('Error deleting routine:', error);
       });
-  };
-
-  const handleEdit = (id) => {
-    const updatedRoutine = prompt('Enter the updated routine details (comma-separated: date, time, subject, class, room)');
-    if (updatedRoutine) {
-      const [date, time, subject, studentclass, room] = updatedRoutine.split(',');
-      const routineRef = ref(database, `classRoutine/${id}`);
-      update(routineRef, { date, time, subject, studentclass, room })
-        .then(() => {
-          setClassRoutines(classRoutines.map(routine => 
-            routine.id === id ? { ...routine, date, time, subject, studentclass, room } : routine
-          ));
-        })
-        .catch((error) => {
-          console.error('Error updating routine:', error);
-        });
-    }
   };
 
   return (
@@ -127,16 +105,10 @@ const ClassRoutineList = () => {
                   <td className="py-2 px-4 border-b">{routine.room}</td>
                   <td className="py-2 px-4 border-b">
                     <button 
-                      className="text-blue-500 hover:underline mr-2" 
-                      onClick={() => handleEdit(routine.id)}
-                    >
-                      Edit
-                    </button>
-                    <button 
                       className="text-red-500 hover:underline" 
                       onClick={() => handleDelete(routine.id)}
                     >
-                      Delete
+                      <FaTrashAlt className="w-5 h-5" />
                     </button>
                   </td>
                 </tr>

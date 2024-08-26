@@ -7,6 +7,7 @@ import { database } from '../../../utils/firebaseConfig';
 import { ref, get } from 'firebase/database';
 import StudentDash from './student_dash';
 import TeacherDashboard from './teachers_dashboard';
+import AdminDashboard from './admin_dashboard'; // Import the AdminDashboard component
 
 const Dashboard = () => {
   const { data: session, status } = useSession();
@@ -29,6 +30,8 @@ const Dashboard = () => {
               setSelectedComponent(<StudentDash />);
             } else if (userData.userType === 'teacher') {
               setSelectedComponent(<TeacherDashboard />);
+            } else if (userData.userType === 'administrator') {
+              setSelectedComponent(<AdminDashboard />); // Set AdminDashboard for administrator
             } else {
               // Handle other user types or a default component
               setSelectedComponent(<StudentDash />);

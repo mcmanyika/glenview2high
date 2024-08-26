@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ref, onValue } from 'firebase/database';
-import { database } from '../../../../../utils/firebaseConfig';
+import { database } from '../../../../utils/firebaseConfig';
 import { FaSpinner } from 'react-icons/fa';
 import { useSession } from 'next-auth/react';
 
-const Students = () => {
+const AllStudents = () => {
   const { data: session, status } = useSession();
   const [admissions, setAdmissions] = useState([]);
   const [classes, setClasses] = useState([]);
@@ -12,15 +12,11 @@ const Students = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortColumn, setSortColumn] = useState('');
   const [sortOrder, setSortOrder] = useState('asc');
-  const [selectedStudent, setSelectedStudent] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const modalRef = useRef(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
 
   useEffect(() => {
     if (status === 'authenticated') {
-      const userEmail = session.user.email;
-      
       const fetchAdmissionsAndClasses = async () => {
         try {
           const admissionsRef = ref(database, 'admissions');
@@ -29,11 +25,10 @@ const Students = () => {
           onValue(admissionsRef, (snapshot) => {
             const admissionsData = snapshot.val();
             if (admissionsData) {
-              const admissionsArray = Object.keys(admissionsData)
-                .map(key => ({
-                  id: key,
-                  ...admissionsData[key]
-                }))
+              const admissionsArray = Object.keys(admissionsData).map(key => ({
+                id: key,
+                ...admissionsData[key]
+              }));
               setAdmissions(admissionsArray);
             } else {
               console.log('No admissions data found.');
@@ -92,39 +87,26 @@ const Students = () => {
     return 0;
   });
 
+  const paginatedStudents = sortedStudents.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const totalPages = Math.ceil(sortedStudents.length / itemsPerPage);
+
   const handleSort = (column) => {
     const order = sortColumn === column && sortOrder === 'asc' ? 'desc' : 'asc';
     setSortColumn(column);
     setSortOrder(order);
   };
 
-  const openModal = (student) => {
-    setSelectedStudent(student);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedStudent(null);
-  };
-
-  const handleClickOutside = (e) => {
-    if (modalRef.current && !modalRef.current.contains(e.target)) {
-      closeModal();
-    }
-  };
-
-  useEffect(() => {
-    if (isModalOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isModalOpen]);
-
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
+    setCurrentPage(1); // Reset to first page on search
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
 
   if (isLoading) {
@@ -141,7 +123,7 @@ const Students = () => {
 
   return (
     <div className="w-full text-sm p-4 bg-white">
-      <h2 className="text-xl font-semibold mb-4">My Students</h2>
+      <h2 className="text-xl font-semibold mb-4">All Students</h2>
       <input
         type="text"
         placeholder="Search by Student ID, First Name, Last Name, Email, or Class"
@@ -153,7 +135,7 @@ const Students = () => {
         <table className="min-w-full text-left border-collapse">
           <thead>
             <tr>
-              {['studentNumber', 'firstName', 'lastName', 'class name', 'gender', 'phone', 'email'].map((column) => (
+              {['studentNumber', 'firstName', 'lastName', 'class name', 'phone'].map((column) => (
                 <th
                   key={column}
                   className="p-2 border-b cursor-pointer text-blue-400 uppercase text-xs"
@@ -168,70 +150,32 @@ const Students = () => {
             </tr>
           </thead>
           <tbody>
-            {sortedStudents.map(student => (
-              <tr key={student.id} className="hover:bg-gray-100 cursor-pointer" onClick={() => openModal(student)}>
+            {paginatedStudents.map(student => (
+              <tr key={student.id} className="hover:bg-gray-100 cursor-pointer">
                 <td className="p-2 border-b">{student.studentNumber || 'N/A'}</td>
                 <td className="p-2 border-b">{student.firstName || 'N/A'}</td>
                 <td className="p-2 border-b">{student.lastName || 'N/A'}</td>
                 <td className="p-2 border-b">{student.class || 'N/A'}</td>
-                <td className="p-2 border-b capitalize">{student.gender || 'N/A'}</td>
                 <td className="p-2 border-b">{student.phone || 'N/A'}</td>
-                <td className="p-2 border-b">{student.email || 'N/A'}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      {isModalOpen && selectedStudent && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div ref={modalRef} className="bg-white p-6 rounded-lg max-w-md w-full">
-          <h3 className="text-xl font-semibold mb-4">Student Details</h3>
-          
-          <div className="flex mb-2">
-            <div className="flex-1 font-semibold">Student Number:</div>
-            <div className="flex-1">{selectedStudent.studentNumber}</div>
-          </div>
-          
-          <div className="flex mb-2">
-            <div className="flex-1 font-semibold">First Name:</div>
-            <div className="flex-1">{selectedStudent.firstName}</div>
-          </div>
-          
-          <div className="flex mb-2">
-            <div className="flex-1 font-semibold">Last Name:</div>
-            <div className="flex-1">{selectedStudent.lastName}</div>
-          </div>
-          
-          <div className="flex mb-2">
-            <div className="flex-1 font-semibold">Class:</div>
-            <div className="flex-1">{selectedStudent.class}</div>
-          </div>
-          
-          <div className="flex mb-2">
-            <div className="flex-1 font-semibold">Gender:</div>
-            <div className="flex-1">{selectedStudent.gender}</div>
-          </div>
-          
-          <div className="flex mb-2">
-            <div className="flex-1 font-semibold">Phone:</div>
-            <div className="flex-1">{selectedStudent.phone}</div>
-          </div>
-          
-          <div className="flex mb-2">
-            <div className="flex-1 font-semibold">Email:</div>
-            <div className="flex-1">{selectedStudent.email}</div>
-          </div>
-          
-          <button onClick={closeModal} className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-            Close
+      <div className="mt-4 flex">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index + 1}
+            onClick={() => handlePageChange(index + 1)}
+            className={`px-4 py-2 border ${currentPage === index + 1 ? 'bg-blue-400 text-white' : 'bg-white text-blue-400'} mx-1`}
+          >
+            {index + 1}
           </button>
-        </div>
+        ))}
       </div>
-      
-      )}
     </div>
   );
 };
 
-export default Students;
+export default AllStudents;

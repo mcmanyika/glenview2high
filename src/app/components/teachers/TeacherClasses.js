@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ref, onValue } from 'firebase/database';
-import { database } from '../../../../../utils/firebaseConfig';
+import { database } from '../../../../utils/firebaseConfig';
 import { FaSpinner } from 'react-icons/fa';
 
 const Students = ({ userEmail }) => {

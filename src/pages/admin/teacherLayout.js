@@ -149,7 +149,7 @@ const AdminLayout = ({ children, studentStatus }) => {
                 <FaSignOutAlt className="text-2xl" />
                 <button
                   onClick={() => signOut()}
-                  className="text-center font-thin p-2 hover:bg-blue-500 rounded cursor-pointer w-full"
+                  className="text-center font-thin p-2 rounded cursor-pointer w-full"
                 >
                   Sign Out
                 </button>
@@ -187,7 +187,7 @@ const AdminLayout = ({ children, studentStatus }) => {
                         <span>Home</span>
                       </div>
                     </Link>
-                    <button onClick={() => signOut()} className="mt-2 flex items-center w-full text-left p-2 hover:bg-gray-200 rounded text-sm text-blue-700">
+                    <button onClick={() => signOut()} className="mt-2 flex items-center w-full text-left p-2 hover:bg-gray-200 rounded text-sm">
                       <FaSignOutAlt className="mr-2" />
                       Sign Out
                     </button>

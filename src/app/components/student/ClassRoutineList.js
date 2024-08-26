@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { ref, onValue } from 'firebase/database';
+import { ref, onValue, remove, update } from 'firebase/database';
 import { database } from '../../../../utils/firebaseConfig';
 
 const ClassRoutineList = () => {
@@ -8,6 +8,8 @@ const ClassRoutineList = () => {
   const [classRoutines, setClassRoutines] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10); // Number of items to display per page
+  const [sortField, setSortField] = useState('date'); // Default sorting field
+  const [sortDirection, setSortDirection] = useState('asc'); // Default sorting direction
 
   useEffect(() => {
     if (!session?.user?.email) return;
@@ -29,16 +31,62 @@ const ClassRoutineList = () => {
     });
   }, [session?.user?.email]);
 
+  // Sort routines based on the selected field and direction
+  const sortedRoutines = [...classRoutines].sort((a, b) => {
+    const aValue = a[sortField];
+    const bValue = b[sortField];
+
+    if (sortDirection === 'asc') {
+      return aValue > bValue ? 1 : -1;
+    } else {
+      return aValue < bValue ? 1 : -1;
+    }
+  });
+
   // Calculate the routines to be displayed on the current page
   const indexOfLastRoutine = currentPage * itemsPerPage;
   const indexOfFirstRoutine = indexOfLastRoutine - itemsPerPage;
-  const currentRoutines = classRoutines.slice(indexOfFirstRoutine, indexOfLastRoutine);
+  const currentRoutines = sortedRoutines.slice(indexOfFirstRoutine, indexOfLastRoutine);
 
   // Calculate the total number of pages
-  const totalPages = Math.ceil(classRoutines.length / itemsPerPage);
+  const totalPages = Math.ceil(sortedRoutines.length / itemsPerPage);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+  };
+
+  const handleSort = (field) => {
+    const newDirection = sortField === field && sortDirection === 'asc' ? 'desc' : 'asc';
+    setSortField(field);
+    setSortDirection(newDirection);
+  };
+
+  const handleDelete = (id) => {
+    const routineRef = ref(database, `classRoutine/${id}`);
+    remove(routineRef)
+      .then(() => {
+        setClassRoutines(classRoutines.filter(routine => routine.id !== id));
+      })
+      .catch((error) => {
+        console.error('Error deleting routine:', error);
+      });
+  };
+
+  const handleEdit = (id) => {
+    const updatedRoutine = prompt('Enter the updated routine details (comma-separated: date, time, subject, class, room)');
+    if (updatedRoutine) {
+      const [date, time, subject, studentclass, room] = updatedRoutine.split(',');
+      const routineRef = ref(database, `classRoutine/${id}`);
+      update(routineRef, { date, time, subject, studentclass, room })
+        .then(() => {
+          setClassRoutines(classRoutines.map(routine => 
+            routine.id === id ? { ...routine, date, time, subject, studentclass, room } : routine
+          ));
+        })
+        .catch((error) => {
+          console.error('Error updating routine:', error);
+        });
+    }
   };
 
   return (
@@ -51,11 +99,22 @@ const ClassRoutineList = () => {
           <table className="min-w-full text-sm bg-white text-left">
             <thead>
               <tr>
-                <th className="py-2 px-4 border-b">Date</th>
-                <th className="py-2 px-4 border-b">Time</th>
-                <th className="py-2 px-4 border-b">Subject</th>
-                <th className="py-2 px-4 border-b">Class</th>
-                <th className="py-2 px-4 border-b">Room</th>
+                <th className="py-2 px-4 border-b cursor-pointer" onClick={() => handleSort('date')}>
+                  Date {sortField === 'date' && (sortDirection === 'asc' ? '↑' : '↓')}
+                </th>
+                <th className="py-2 px-4 border-b cursor-pointer" onClick={() => handleSort('time')}>
+                  Time {sortField === 'time' && (sortDirection === 'asc' ? '↑' : '↓')}
+                </th>
+                <th className="py-2 px-4 border-b cursor-pointer" onClick={() => handleSort('subject')}>
+                  Subject {sortField === 'subject' && (sortDirection === 'asc' ? '↑' : '↓')}
+                </th>
+                <th className="py-2 px-4 border-b cursor-pointer" onClick={() => handleSort('studentclass')}>
+                  Class {sortField === 'studentclass' && (sortDirection === 'asc' ? '↑' : '↓')}
+                </th>
+                <th className="py-2 px-4 border-b cursor-pointer" onClick={() => handleSort('room')}>
+                  Room {sortField === 'room' && (sortDirection === 'asc' ? '↑' : '↓')}
+                </th>
+                <th className="py-2 px-4 border-b">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -66,11 +125,25 @@ const ClassRoutineList = () => {
                   <td className="py-2 px-4 border-b">{routine.subject}</td>
                   <td className="py-2 px-4 border-b">{routine.studentclass}</td>
                   <td className="py-2 px-4 border-b">{routine.room}</td>
+                  <td className="py-2 px-4 border-b">
+                    <button 
+                      className="text-blue-500 hover:underline mr-2" 
+                      onClick={() => handleEdit(routine.id)}
+                    >
+                      Edit
+                    </button>
+                    <button 
+                      className="text-red-500 hover:underline" 
+                      onClick={() => handleDelete(routine.id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
-          
+
           {/* Pagination Controls */}
           <div className="mt-4 flex justify-end space-x-2">
             {Array.from({ length: totalPages }, (_, i) => (

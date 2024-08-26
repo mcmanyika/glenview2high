@@ -5,11 +5,10 @@ import { MdOutlineLibraryBooks } from "react-icons/md";
 import { FaCalendarAlt, FaClipboardList } from 'react-icons/fa';
 import { useGlobalState } from '../../store';
 import TeacherRoutineCount from './TeacherRoutineCount';
+import Link from 'next/link';
 
-const NoticeCount = () => {
+const TeacherCounts = () => {
   const [totalNotices, setTotalNotices] = useState(0);
-  const [routineCount] = useGlobalState('routineCount'); // Access routineCount from global state
-  const [userType] = useGlobalState('userType'); // Access userType from global state
 
   useEffect(() => {
     const noticesRef = ref(database, 'notices');
@@ -58,12 +57,14 @@ const NoticeCount = () => {
           <FaClipboardList className='w-16 h-16 rounded-full bg-purple-300 text-white p-2' />
         </div>
         <div className="w-2/3 text-sm p-4 md:p-6 text-right">
-          Upcoming Classes <br />
-          {routineCount}
+        <Link href='/admin/class_routine'>
+            Upcoming Classes <br />
+            <TeacherRoutineCount />
+          </Link>
         </div>
       </div>
     </div>
   );
 };
 
-export default NoticeCount;
+export default TeacherCounts;

@@ -2,8 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ref, onValue } from 'firebase/database';
 import { database } from '../../../../../utils/firebaseConfig';
 import { FaSpinner } from 'react-icons/fa';
+import { useSession } from 'next-auth/react';
 
 const Students = () => {
+  const { data: session, status } = useSession();
   const [admissions, setAdmissions] = useState([]);
   const [classes, setClasses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -16,48 +18,59 @@ const Students = () => {
   const modalRef = useRef(null);
 
   useEffect(() => {
-    const fetchAdmissionsAndClasses = async () => {
-      try {
-        const admissionsRef = ref(database, 'admissions');
-        const classesRef = ref(database, 'classes');
+    if (status === 'authenticated') {
+      const userEmail = session.user.email;
+      
+      const fetchAdmissionsAndClasses = async () => {
+        try {
+          const admissionsRef = ref(database, 'admissions');
+          const classesRef = ref(database, 'classes');
 
-        onValue(admissionsRef, (snapshot) => {
-          const admissionsData = snapshot.val();
-          if (admissionsData) {
-            const admissionsArray = Object.keys(admissionsData).map(key => ({
-              id: key,
-              ...admissionsData[key]
-            }));
-            setAdmissions(admissionsArray);
-          } else {
-            console.log('No admissions data found.');
-          }
-        });
+          onValue(admissionsRef, (snapshot) => {
+            const admissionsData = snapshot.val();
+            if (admissionsData) {
+              const admissionsArray = Object.keys(admissionsData)
+                .map(key => ({
+                  id: key,
+                  ...admissionsData[key]
+                }))
+              setAdmissions(admissionsArray);
+            } else {
+              console.log('No admissions data found.');
+            }
+          });
 
-        onValue(classesRef, (snapshot) => {
-          const classesData = snapshot.val();
-          if (classesData) {
-            const classesArray = Object.keys(classesData).map(key => ({
-              id: key,
-              ...classesData[key]
-            }));
-            setClasses(classesArray);
-          } else {
-            console.log('No classes data found.');
-          }
-        });
+          onValue(classesRef, (snapshot) => {
+            const classesData = snapshot.val();
+            if (classesData) {
+              const classesArray = Object.keys(classesData).map(key => ({
+                id: key,
+                ...classesData[key]
+              }));
+              setClasses(classesArray);
+            } else {
+              console.log('No classes data found.');
+            }
+          });
 
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
 
-    fetchAdmissionsAndClasses();
-  }, []);
+      fetchAdmissionsAndClasses();
+    } else {
+      setIsLoading(false);
+    }
+  }, [session, status]);
 
   const filteredStudents = admissions.filter((student) => {
+    // Check if the student's class exists in the classes list
+    const isClassValid = classes.some(cls => cls.className === student.class);
+    if (!isClassValid) return false;
+
     const term = searchTerm.toLowerCase();
     return (
       student.admissionId?.toLowerCase().includes(term) ||

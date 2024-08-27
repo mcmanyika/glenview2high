@@ -53,6 +53,7 @@ const NoticeList = () => {
 
   return (
     <div className="space-y-4 p-4 m-2">
+<h2 className="text-xl font-semibold mb-4">Events Board</h2>
       <div className="">
         {notices.length > 0 ? (
           <ul className="space-y-2">

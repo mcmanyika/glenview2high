@@ -4,6 +4,9 @@ import withAuth from '../../../utils/withAuth';
 import AdminLayout from './teacherLayout';
 import Students from '../../app/components/teachers/utils/Students';
 import TeacherCounts from '../../app/components/notice/TeacherCounts';
+import StatusPieChart from '../../app/components/exams/StatusPieChart';
+import CompletedExamsPassRatePieChart from '../../app/components/exams/CompletedExamsPassRatePieChart';
+import Link from 'next/link';
 
 const TeacherDashboard = () => {
 
@@ -12,10 +15,30 @@ const TeacherDashboard = () => {
       <div className="flex flex-col">
         <div className="w-full px-2">
           <TeacherCounts />
-          <div className="w-full flex flex-col mt-4">
-            <div className="bg-white border shadow-sm rounded m-2 p-4">
-              <Students />
+          <div className="w-full flex mt-4">
+            <div className="bg-white flex-1 border shadow-sm rounded m-2 p-4 relative">
+              <div className="absolute top-2 right-2">
+                <Link href="/admin/exams">
+                  <div className="three-dots flex flex-col items-center space-y-1">
+                    <div className="w-1 h-1 bg-black rounded-full"></div>
+                  </div>
+                </Link>
+              </div>
+              <StatusPieChart />
             </div>
+            <div className="bg-white flex-1 border shadow-sm rounded m-2 p-4 relative">
+              <div className="absolute top-2 right-2">
+                <Link href="/admin/exams">
+                  <div className="three-dots flex flex-col items-center space-y-1">
+                    <div className="w-1 h-1 bg-black rounded-full"></div>
+                  </div>
+                </Link>
+              </div>
+              <CompletedExamsPassRatePieChart />
+            </div>
+          </div>
+          <div className="bg-white border shadow-sm rounded m-2 p-4">
+            <Students />
           </div>
         </div>
       </div>
@@ -24,4 +47,3 @@ const TeacherDashboard = () => {
 };
 
 export default withAuth(TeacherDashboard);
-

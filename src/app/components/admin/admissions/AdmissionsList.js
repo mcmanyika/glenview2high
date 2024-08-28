@@ -163,7 +163,7 @@ const AdmissionsList = () => {
             <button
               key={i + 1}
               onClick={() => paginate(i + 1)}
-              className={`px-3 py-1 mx-1 text-sm rounded ${currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+              className={`px-3 py-1 mx-1 text-sm rounded ${currentPage === i + 1 ? "bg-blue-400 text-white" : "bg-gray-200"}`}
             >
               {i + 1}
             </button>

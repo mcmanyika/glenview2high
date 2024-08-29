@@ -7,8 +7,8 @@ const Breadcrumb = () => {
   const pathnames = router.asPath.split('/').filter((x) => x);
 
   return (
-    <nav className="flex items-center text-sm capitalize font-thin space-x-2 pl-1 p-5">
-      <Link href="/">
+    <nav className="flex items-center text-sm capitalize font-thin space-x-2 p-4">
+      <Link href="/admin/dashboard">
         <span className="cursor-pointer hover:underline">Home</span>
       </Link>
       {pathnames.map((path, index) => {

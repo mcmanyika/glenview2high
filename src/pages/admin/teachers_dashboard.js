@@ -13,10 +13,10 @@ const TeacherDashboard = () => {
   return (
     <AdminLayout>
       <div className="flex flex-col">
-        <div className="w-full px-2">
+        <div className="w-full">
           <TeacherCounts />
           <div className="w-full flex mt-4">
-            <div className="bg-white flex-1 border shadow-sm rounded m-2 p-4 relative">
+            <div className="bg-white flex-1 border shadow-sm rounded mr-1 p-4 relative">
               <div className="absolute top-2 right-2">
                 <Link href="/admin/exams">
                   <div className="three-dots flex flex-col items-center space-y-1">
@@ -26,7 +26,7 @@ const TeacherDashboard = () => {
               </div>
               <StatusPieChart />
             </div>
-            <div className="bg-white flex-1 border shadow-sm rounded m-2 p-4 relative">
+            <div className="bg-white flex-1 border shadow-sm rounded ml-1 p-4 relative">
               <div className="absolute top-2 right-2">
                 <Link href="/admin/exams">
                   <div className="three-dots flex flex-col items-center space-y-1">
@@ -37,7 +37,7 @@ const TeacherDashboard = () => {
               <CompletedExamsPassRatePieChart />
             </div>
           </div>
-          <div className="bg-white border shadow-sm rounded m-2 p-4">
+          <div className="bg-white border shadow-sm rounded mt-4 p-4">
             <Students />
           </div>
         </div>

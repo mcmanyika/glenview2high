@@ -65,11 +65,11 @@ const AdmissionsList = () => {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full text-sm">
       <div className="w-full">
         {admissions.map((admission) => (
-          <div key={admission.id} className="border w-full p-4 rounded shadow-sm bg-white mb-4">
-            <div className="relative  w-full pl-0 p-4 rounded shadow-sm bg-white mb-4">
+          <div key={admission.id} className="w-full p-4 rounded  bg-white mb-4">
+            <div className="relative  w-full pl-0 p-4 mb-4">
               <div className='text-xl font-bold'>My Details</div>
               <div 
                 className="three-dots absolute top-4 right-4 flex flex-col space-y-1 cursor-pointer"

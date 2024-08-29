@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 
 const ResultsModal = ({ student, examId, onClose }) => {
   const [score, setScore] = useState('');
+  const [comment, setComment] = useState(''); // State for the comment
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleScoreSubmit = async () => {
@@ -19,9 +20,10 @@ const ResultsModal = ({ student, examId, onClose }) => {
       const resultRef = ref(database, `examResults/${student.id}_${examId}`);
       const examRef = ref(database, `admissions/${student.id}/exams/${examId}`);
 
-      // Update the exam results
+      // Update the exam results with score and comment
       await update(resultRef, {
         score: parseFloat(score),
+        comment: comment, // Add the comment to the database
       });
 
       // Update the status to "Completed"
@@ -29,7 +31,7 @@ const ResultsModal = ({ student, examId, onClose }) => {
         status: 'Completed',
       });
 
-      toast.success("Score submitted successfully!");
+      toast.success("Score and comment submitted successfully!");
       onClose(); // Close the modal after successful submission
     } catch (error) {
       console.error("Error submitting score:", error);
@@ -43,7 +45,6 @@ const ResultsModal = ({ student, examId, onClose }) => {
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
       <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
         <h2 className="text-xl font-semibold mb-4">Enter Score for {student.firstName} {student.lastName}</h2>
-        <p>Exam ID: {examId}</p>
         
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">Score</label>
@@ -55,6 +56,17 @@ const ResultsModal = ({ student, examId, onClose }) => {
             min="0"
             max="100"
             step="0.01" // Allow decimal scores
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">Comment</label>
+          <textarea
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            rows="3" // Allow multiple lines of text
+            placeholder="Add a comment (optional)"
           />
         </div>
 

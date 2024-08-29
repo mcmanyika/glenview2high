@@ -133,7 +133,7 @@ const AdminLayout = ({ children, studentStatus }) => {
               <FaSpinner className="animate-spin text-blue-500 text-3xl" />
             </div>
           ) : (
-            <ul className="flex flex-col h-full">
+            <ul className="flex flex-col">
               {titles.length > 0 && titles.map((rw) => {
                 const IconComponent = iconMapping[rw.icon];
                 return (
@@ -145,7 +145,7 @@ const AdminLayout = ({ children, studentStatus }) => {
                   </li>
                 );
               })}
-              <li className="mb-4 flex flex-col items-center mt-auto">
+              <li className="mb-4 flex flex-col items-center mt-20">
                 <FaSignOutAlt className="text-2xl" />
                 <button
                   onClick={() => signOut()}
@@ -196,8 +196,10 @@ const AdminLayout = ({ children, studentStatus }) => {
               </div>
             )}
           </div>
-          <Breadcrumb />
-          {children}
+          <div className=''>
+            <Breadcrumb />
+            {children}
+          </div>
         </main>
         <div className='p-4 md:p-6'>
           <Footer />

@@ -7,16 +7,20 @@ import NoticeCount from '../../app/components/notice/NoticeCount';
 import ClassRoutine from '../../app/components/student/ClassRoutine';
 import { database } from '../../../utils/firebaseConfig';
 import { ref, get } from 'firebase/database';
-import StudentDetails from '../../app/components/student/StudentDetails';
 import { useRouter } from 'next/router';
 import { useGlobalState, setStudentClass, setStatus } from '../../app/store';
 import Student from '../../app/components/student/Student';
+import StudentExamResults from '../../app/components/student/StudentExamResults';
+import UserExamsList from '../../app/components/exams/UserExamsList';
+import StudentExamsList from '../../app/components/exams/StudentExamsList';
+import CombinedExamsList from '../../app/components/exams/CombinedExamsList';
 
 const StudentDash = () => {
   const { data: session, status } = useSession();
   const [loading, setLoading] = useState(true);
   const [studentData, setStudentData] = useState(null);
   const [studentStatus, setGlobalStatus] = useGlobalState('status');
+  const [studentId, setStudentId] = useGlobalState('studentId');
   const router = useRouter();
 
   useEffect(() => {
@@ -69,6 +73,7 @@ const StudentDash = () => {
         if (userStatusEntry) {
           const [, admissionInfo] = userStatusEntry;
           setGlobalStatus(admissionInfo.status);
+          setStudentId(admissionInfo.admissionId);
         } else {
           setGlobalStatus("Status not found"); // Optional handling
         }
@@ -89,23 +94,26 @@ const StudentDash = () => {
                   <FaSpinner className="animate-spin text-blue-500 text-3xl" />
                 </div>
               ) : (
-                <>
+                <div>
                   {studentStatus === "Accepted" ? (
-                    <>
+                    <div className=''>
                       <NoticeCount />
                       <div className="w-full flex flex-col md:flex-row mt-4">
-                        <div className="w-1/3 mr-1">
-                          <Student />
+                      <div className="w-2/4 bg-white    mt-0 mr-1">
+                         <Student />
                         </div>
-                        <div className="w-2/3 bg-white border shadow-sm rounded m-2 mt-0 ml-1">
-                          <ClassRoutine />
+                        <div className="w-2/4 bg-white   mt-0 ml-1">
+                        <ClassRoutine />
                         </div>
                       </div>
-                    </>
+                      <div className='w-full mt-4'>
+                        <CombinedExamsList />
+                        </div>
+                    </div>
                   ) : (
                     <div className='w-full border p-4 text-center'>Your account is under review</div>
                   )}
-                </>
+                </div>
               )}
             </div>
           </div>

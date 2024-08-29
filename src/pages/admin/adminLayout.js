@@ -132,7 +132,7 @@ const AdminLayout = ({ children, studentStatus }) => {
               <FaSpinner className="animate-spin text-blue-500 text-3xl" />
             </div>
           ) : (
-            <ul className="flex flex-col h-full">
+            <ul className="flex flex-col min-h-52 ">
               {studentStatus === "Accepted" && titles.length > 0 && titles.map((rw) => {
                 const IconComponent = iconMapping[rw.icon];
                 return (

@@ -12,6 +12,7 @@ import Footer from '../../app/components/DashFooter';
 import { database } from '../../../utils/firebaseConfig';
 import TitleList from '../../app/components/TitleList';
 import { ref, onValue, query, orderByChild, equalTo, get } from 'firebase/database';
+import TeacherCounts from '../../app/components/notice/TeacherCounts';
 
 const AdminLayout = ({ children }) => {
   const { data: session, status } = useSession();

@@ -85,7 +85,6 @@ const StudentDash = () => {
 
   return (
     <>
-      {session && (
         <AdminLayout>
           <div className="flex flex-col md:flex-row">
             <div className="w-full">
@@ -118,7 +117,6 @@ const StudentDash = () => {
             </div>
           </div>
         </AdminLayout>
-      )}
     </>
   );
 };

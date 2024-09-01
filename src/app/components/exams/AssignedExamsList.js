@@ -99,7 +99,7 @@ const AssignedExamsList = () => {
   const currentStudents = filteredStudents.slice(startIndex, startIndex + itemsPerPage);
 
   return (
-    <div className="w-full max-w-4xl mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <div className="w-full bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
       <h2 className="text-2xl font-semibold mb-4">Students Assigned Exams</h2>
       
       <div className="mb-4">

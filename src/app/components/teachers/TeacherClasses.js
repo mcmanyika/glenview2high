@@ -2,8 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ref, onValue } from 'firebase/database';
 import { database } from '../../../../utils/firebaseConfig';
 import { FaSpinner } from 'react-icons/fa';
+import { useSession } from 'next-auth/react';
 
-const Students = ({ userEmail }) => {
+const Students = () => {
+  const { data: session, status } = useSession();
   const [admissions, setAdmissions] = useState([]);
   const [classes, setClasses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -16,51 +18,55 @@ const Students = ({ userEmail }) => {
   const modalRef = useRef(null);
 
   useEffect(() => {
-    const fetchAdmissionsAndClasses = async () => {
-      try {
-        const admissionsRef = ref(database, 'admissions');
-        const classesRef = ref(database, 'classes');
+    if (status === 'authenticated') {
+      const userEmail = session.user.email;
+      
+      const fetchAdmissionsAndClasses = async () => {
+        try {
+          const admissionsRef = ref(database, 'admissions');
+          const classesRef = ref(database, 'classes');
 
-        onValue(admissionsRef, (snapshot) => {
-          const admissionsData = snapshot.val();
-          if (admissionsData) {
-            const admissionsArray = Object.keys(admissionsData)
-              .map(key => ({
+          onValue(admissionsRef, (snapshot) => {
+            const admissionsData = snapshot.val();
+            if (admissionsData) {
+              const admissionsArray = Object.keys(admissionsData)
+                .map(key => ({
+                  id: key,
+                  ...admissionsData[key]
+                }))
+              setAdmissions(admissionsArray);
+            } else {
+              console.log('No admissions data found.');
+            }
+          });
+
+          onValue(classesRef, (snapshot) => {
+            const classesData = snapshot.val();
+            if (classesData) {
+              const classesArray = Object.keys(classesData).map(key => ({
                 id: key,
-                ...admissionsData[key]
-              }))
-              .filter(student => student.email === userEmail); // Filter by logged-in user's email
-            setAdmissions(admissionsArray);
-          } else {
-            console.log('No admissions data found.');
-          }
-        });
+                ...classesData[key]
+              }));
+              setClasses(classesArray);
+            } else {
+              console.log('No classes data found.');
+            }
+          });
 
-        onValue(classesRef, (snapshot) => {
-          const classesData = snapshot.val();
-          if (classesData) {
-            const classesArray = Object.keys(classesData).map(key => ({
-              id: key,
-              ...classesData[key]
-            }));
-            setClasses(classesArray);
-          } else {
-            console.log('No classes data found.');
-          }
-        });
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
 
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchAdmissionsAndClasses();
-  }, [userEmail]);
+      fetchAdmissionsAndClasses();
+    } else {
+      setIsLoading(false);
+    }
+  }, [session, status]);
 
   const filteredStudents = admissions.filter((student) => {
-    // Check if the student's class exists in the classes list
     const isClassValid = classes.some(cls => cls.className === student.class);
     if (!isClassValid) return false;
 
@@ -153,8 +159,10 @@ const Students = ({ userEmail }) => {
                   className="p-2 border-b cursor-pointer text-blue-400 uppercase text-xs"
                   onClick={() => handleSort(column)}
                 >
-                  {column.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
-                  {sortColumn === column && (sortOrder === 'asc' ? ' ▲' : ' ▼')}
+                  <div>
+                    {column.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                    {sortColumn === column && (sortOrder === 'asc' ? ' ▲' : ' ▼')}
+                  </div>
                 </th>
               ))}
             </tr>
@@ -177,18 +185,50 @@ const Students = ({ userEmail }) => {
 
       {isModalOpen && selectedStudent && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div ref={modalRef} className="bg-white p-6 rounded-lg max-w-md w-full">
-            <h3 className="text-xl font-semibold mb-4">Student Details</h3>
-            <p><strong>Student Number:</strong> {selectedStudent.studentNumber}</p>
-            <p><strong>First Name:</strong> {selectedStudent.firstName}</p>
-            <p><strong>Last Name:</strong> {selectedStudent.lastName}</p>
-            <p><strong>Class:</strong> {selectedStudent.class}</p>
-            <p><strong>Gender:</strong> {selectedStudent.gender}</p>
-            <p><strong>Phone:</strong> {selectedStudent.phone}</p>
-            <p><strong>Email:</strong> {selectedStudent.email}</p>
-            <button onClick={closeModal} className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Close</button>
+        <div ref={modalRef} className="bg-white p-6 rounded-lg max-w-md w-full">
+          <h3 className="text-xl font-semibold mb-4">Student Details</h3>
+          
+          <div className="flex mb-2">
+            <div className="flex-1 font-semibold">Student Number:</div>
+            <div className="flex-1">{selectedStudent.studentNumber}</div>
           </div>
+          
+          <div className="flex mb-2">
+            <div className="flex-1 font-semibold">First Name:</div>
+            <div className="flex-1">{selectedStudent.firstName}</div>
+          </div>
+          
+          <div className="flex mb-2">
+            <div className="flex-1 font-semibold">Last Name:</div>
+            <div className="flex-1">{selectedStudent.lastName}</div>
+          </div>
+          
+          <div className="flex mb-2">
+            <div className="flex-1 font-semibold">Class:</div>
+            <div className="flex-1">{selectedStudent.class}</div>
+          </div>
+          
+          <div className="flex mb-2">
+            <div className="flex-1 font-semibold">Gender:</div>
+            <div className="flex-1">{selectedStudent.gender}</div>
+          </div>
+          
+          <div className="flex mb-2">
+            <div className="flex-1 font-semibold">Phone:</div>
+            <div className="flex-1">{selectedStudent.phone}</div>
+          </div>
+          
+          <div className="flex mb-2">
+            <div className="flex-1 font-semibold">Email:</div>
+            <div className="flex-1">{selectedStudent.email}</div>
+          </div>
+          
+          <button onClick={closeModal} className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+            Close
+          </button>
         </div>
+      </div>
+      
       )}
     </div>
   );

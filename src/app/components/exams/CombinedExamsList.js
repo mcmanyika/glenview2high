@@ -56,29 +56,29 @@ const CombinedExamsList = () => {
   const filteredExams = Object.keys(student?.exams || {}).map((examId) => {
     const examName = examsMap[examId] || 'Unknown Exam';
     const score = examResults[`${student?.id}_${examId}`]?.score || 0;
-    const comment = examResults[`${student?.id}_${examId}`]?.comment || 'No comment'; // Fetching the comment
+    const comment = examResults[`${student?.id}_${examId}`]?.comment || 'No comment';
     return { examName, score, comment };
   });
 
   return (
-    <div className="w-full bg-white rounded px-8 pt-6 pb-8 mt-4 mb-4">
-      <h2 className="text-2xl font-semibold mb-8 text-center">Recent Exams Results</h2>
+    <div className="w-full bg-white rounded px-4 sm:px-8 pt-6 pb-8 mt-4 mb-4">
+      <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-8 text-center">Recent Exams Results</h2>
 
       {filteredExams.length === 0 ? (
         <p>No exams found.</p>
       ) : (
-        <div className='flex'>
+        <div className="flex flex-col sm:flex-row">
           <div className="flex-1 overflow-x-auto mb-6">
             <table className="min-w-full text-sm bg-white border">
               <thead>
                 <tr>
-                  <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
+                  <th className="px-2 sm:px-6 py-3 border-b-2 border-gray-300 text-left text-xs sm:text-sm leading-4 font-medium text-gray-600 uppercase tracking-wider">
                     Exam Name
                   </th>
-                  <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
+                  <th className="px-2 sm:px-6 py-3 border-b-2 border-gray-300 text-left text-xs sm:text-sm leading-4 font-medium text-gray-600 uppercase tracking-wider">
                     Score
                   </th>
-                  <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
+                  <th className="px-2 sm:px-6 py-3 border-b-2 border-gray-300 text-left text-xs sm:text-sm leading-4 font-medium text-gray-600 uppercase tracking-wider">
                     Comment
                   </th>
                 </tr>
@@ -86,13 +86,13 @@ const CombinedExamsList = () => {
               <tbody>
                 {filteredExams.map((exam, index) => (
                   <tr key={index}>
-                    <td className="px-6 py-2 whitespace-no-wrap border-b border-gray-300">
+                    <td className="px-2 sm:px-6 py-2 whitespace-no-wrap border-b border-gray-300">
                       {exam.examName}
                     </td>
-                    <td className="px-6 py-2 whitespace-no-wrap border-b border-gray-300">
+                    <td className="px-2 sm:px-6 py-2 whitespace-no-wrap border-b border-gray-300">
                       {exam.score}
                     </td>
-                    <td className="px-6 py-2 whitespace-no-wrap border-b border-gray-300">
+                    <td className="px-2 sm:px-6 py-2 whitespace-no-wrap border-b border-gray-300">
                       {exam.comment}
                     </td>
                   </tr>
@@ -101,15 +101,15 @@ const CombinedExamsList = () => {
             </table>
           </div>
 
-          <div className="flex-1 justify-center">
-            <PieChart width={600} height={300}>
+          <div className="flex-1 flex justify-center">
+            <PieChart width={300} height={300}>
               <Pie
                 data={filteredExams}
                 dataKey="score"
                 nameKey="examName"
                 cx="50%"
                 cy="50%"
-                outerRadius={100}
+                outerRadius={80}
                 fill="#8884d8"
                 label
               >

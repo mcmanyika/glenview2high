@@ -99,10 +99,10 @@ const StudentDash = () => {
                     <div className=''>
                       <NoticeCount />
                       <div className="w-full flex flex-col md:flex-row mt-4">
-                      <div className="w-2/4 bg-white    mt-0 mr-1">
+                      <div className="md:w-2/4 bg-white    mt-0 mr-1">
                          <Student />
                         </div>
-                        <div className="w-2/4 bg-white   mt-0 ml-1">
+                        <div className="md:w-2/4 bg-white   mt-0 ml-1">
                         <ClassRoutine />
                         </div>
                       </div>

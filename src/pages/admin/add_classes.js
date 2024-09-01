@@ -1,5 +1,5 @@
 import React from 'react';
-import AdminLayout from './teacherLayout';
+import AdminLayout from './adminLayout';
 import UploadClassNameForm from '../../app/components/teachers/UploadClassNameForm';
 import withAuth from '../../../utils/withAuth';
 import TeacherClasses from '../../app/components/teachers/TeacherClasses';

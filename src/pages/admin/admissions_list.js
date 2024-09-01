@@ -1,6 +1,6 @@
 import React from 'react'
 import StudentsApplications from '../../app/components/student/StudentsApplications';
-import AdminLayout from './teacherLayout';
+import AdminLayout from './adminLayout';
 import withAuth from '../../../utils/withAuth';
 
 const admissions_list = () => {

@@ -1,7 +1,7 @@
 import React from 'react'
 import ClassRoutineForm from '../../app/components/student/ClassRoutineForm'
 import ClassRoutineList  from '../../app/components/student/ClassRoutineList'
-import AdminLayout from './teacherLayout'
+import AdminLayout from './adminLayout'
 import withAuth from '../../../utils/withAuth';
 
 function ClassRoutine() {

@@ -1,5 +1,5 @@
 import withAuth from '../../../utils/withAuth';
-import AdminLayout from './administratorLayout';
+import AdminLayout from './adminLayout';
 import GenderCount from '../../app/components/admin/admissions/GenderCount';
 import AdmissionsList from '../../app/components/admin/admissions/AdmissionsList';
 import GenderPieChart from '../../app/components/admin/admissions/GenderPieChart';

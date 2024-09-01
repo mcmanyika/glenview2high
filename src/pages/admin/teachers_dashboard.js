@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import withAuth from '../../../utils/withAuth';
-import AdminLayout from './teacherLayout';
+import AdminLayout from './adminLayout';
 import Students from '../../app/components/teachers/utils/Students';
 import TeacherCounts from '../../app/components/notice/TeacherCounts';
 import StatusPieChart from '../../app/components/exams/StatusPieChart';

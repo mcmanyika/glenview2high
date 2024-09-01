@@ -1,5 +1,5 @@
 import React from 'react';
-import AdminLayout from './teacherLayout';
+import AdminLayout from './adminLayout';
 import withAuth from '../../../utils/withAuth';
 import CreateExamForm from '../../app/components/exams/CreateExamForm';
 import AssignedExamsList from '../../app/components/exams/AssignedExamsList';

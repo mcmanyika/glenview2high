@@ -110,16 +110,18 @@ const AdmissionsList = () => {
                 >
                   Edit
                 </button>
-                <button
-                  onClick={() => {
-                    setSelectedAdmission(admission); // Set the selected admission for payment
-                    setPaymentModalOpen(true);
-                  }}
-                  className="bg-green-500 text-white px-2 py-1 rounded"
-                >
-                  <HiCreditCard className="inline-block mr-1" />
-                  Pay
-                </button>
+                {admission.status === 'Accepted' && (
+                  <button
+                    onClick={() => {
+                      setSelectedAdmission(admission); // Set the selected admission for payment
+                      setPaymentModalOpen(true);
+                    }}
+                    className="bg-green-500 text-white px-2 py-1 rounded" 
+                  >
+                    <HiCreditCard className="inline-block mr-1" />
+                    Pay
+                  </button>
+                )}
               </td>
             </tr>
           ))}

@@ -176,9 +176,7 @@ const AdminLayout = ({ children }) => {
             {children}
           </div>
         </main>
-        <div className='p-4 md:p-6'>
           <Footer />
-        </div>
         <AIAssistantForm />
       </div>
     </div>

@@ -12,10 +12,10 @@ const AdminDashboard = () => {
         <div className="w-full">
           <GenderCount />
           <div className="w-full flex flex-col md:flex-row mt-4" style={{ height: '400px', overflowY: 'auto' }}>
-            <div className="flex-1 bg-white border mb-4 md:mb-0 md:mr-1 shadow-sm rounded p-4">
+            <div className="w-full md:w-2/4 bg-white border mb-4 md:mb-0 md:mr-1 shadow-sm rounded p-4">
               <AdmissionsList />
             </div>
-            <div className="flex-1 bg-white border md:ml-1 shadow-sm rounded p-4">
+            <div className="w-full md:w-2/4 bg-white border md:ml-1 shadow-sm rounded p-4">
               <GenderPieChart />
             </div>
           </div>

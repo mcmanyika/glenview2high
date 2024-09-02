@@ -55,7 +55,7 @@ const AdminLayout = ({ children }) => {
                   if (userData.userType === 'teacher') {
                     return ['Dashboard', 'Class Routine', 'Exams', 'Notice', 'Events', 'Add Class'].includes(title.title);
                   } else if (userData.userType === 'administrator') {
-                    return ['Dashboard', 'Notice', 'Events', 'Add Class', 'Admission', 'Class Routine'].includes(title.title);
+                    return ['Dashboard', 'Notice', 'Events', 'Add Class', 'Admission', 'Class Routine', 'Payments'].includes(title.title);
                   } else if (userData.userType === 'student') {
                     return ['Dashboard'].includes(title.title);
                   } else {

@@ -1,7 +1,9 @@
+// components/GenderCount.js
+
 import React, { useEffect, useState } from 'react';
 import { ref, onValue } from 'firebase/database';
 import { database } from '../../../../../utils/firebaseConfig';
-import { MdMale, MdFemale, MdPeople } from 'react-icons/md'; // Import icons for Male, Female, and Total Students
+import { FaMale, FaFemale, FaUsers } from 'react-icons/fa';
 
 const GenderCount = () => {
   const [genderCounts, setGenderCounts] = useState({ male: 0, female: 0 });
@@ -33,29 +35,23 @@ const GenderCount = () => {
   const totalStudents = genderCounts.male + genderCounts.female;
 
   return (
-    <div className="w-full flex flex-col md:flex-row text-center">
-      <div className="w-full md:w-1/3 flex bg-white border shadow-sm rounded m-2 mt-0 ml-0">
-        <div className='w-1/3 flex items-center justify-center p-4 md:p-2'>
-          <MdFemale className='w-16 h-16 rounded-full bg-pink-300 text-white p-2' />
+    <div className="w-full text-sm p-4 bg-white">
+      <h2 className="text-xl font-semibold mb-4">Students By Gender</h2>
+      <div className="grid grid-cols-3 gap-4">
+        <div className="p-4 bg-blue-100 text-blue-700 rounded-lg shadow flex flex-col items-center justify-center">
+          <FaMale className="text-4xl mb-2" />
+          <h3 className="text-lg font-semibold">Male</h3>
+          <p className="text-2xl">{genderCounts.male}</p>
         </div>
-        <div className="w-2/3 text-sm p-4 md:p-6 text-right">
-          Female Students <br />{genderCounts.female}
+        <div className="p-4 bg-pink-100 text-pink-700 rounded-lg shadow flex flex-col items-center justify-center">
+          <FaFemale className="text-4xl mb-2" />
+          <h3 className="text-lg font-semibold">Female</h3>
+          <p className="text-2xl">{genderCounts.female}</p>
         </div>
-      </div>
-      <div className="w-full md:w-1/3 flex bg-white border shadow-sm rounded m-2 mt-0 ml-0">
-        <div className='w-1/3 flex items-center justify-center p-4 md:p-2'>
-          <MdMale className='w-16 h-16 rounded-full bg-blue-300 text-white p-2' />
-        </div>
-        <div className="w-2/3 text-sm p-4 md:p-6 text-right">
-          Male Students <br />{genderCounts.male}
-        </div>
-      </div>
-      <div className="w-full md:w-1/3 flex bg-white border shadow-sm rounded m-2 mt-0 ml-0">
-        <div className='w-1/3 flex items-center justify-center p-4 md:p-2'>
-          <MdPeople className='w-16 h-16 rounded-full bg-green-300 text-white p-2' />
-        </div>
-        <div className="w-2/3 text-sm p-4 md:p-6 text-right">
-          Total Students <br />{totalStudents}
+        <div className="p-4 bg-gray-100 text-gray-700 rounded-lg shadow flex flex-col items-center justify-center">
+          <FaUsers className="text-4xl mb-2" />
+          <h3 className="text-lg font-semibold">Total Count</h3>
+          <p className="text-2xl">{totalStudents}</p>
         </div>
       </div>
     </div>

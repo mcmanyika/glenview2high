@@ -33,17 +33,17 @@ const CreateExamForm = () => {
         const examId = examSnapshot.key;
 
         // Fetch students of the assigned class
-        const studentsRef = ref(database, 'admissions');
+        const studentsRef = ref(database, 'userTypes');
         onValue(studentsRef, (snapshot) => {
           const studentsData = snapshot.val();
           if (studentsData) {
             const studentsInClass = Object.keys(studentsData)
-              .filter((key) => studentsData[key].class === examClass)
+              .filter((key) => studentsData[key].studentClassLevel === examClass)
               .map((key) => ({ id: key, ...studentsData[key] }));
 
             // Update each student to assign the exam
             studentsInClass.forEach((student) => {
-              const studentRef = ref(database, `admissions/${student.id}/exams/${examId}`);
+              const studentRef = ref(database, `userTypes/${student.userID}/exams/${examId}`);
               update(studentRef, {
                 examId: examId,
                 status: 'Assigned',

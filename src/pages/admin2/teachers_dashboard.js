@@ -8,7 +8,6 @@ import TeacherCounts from '../../app/components/notice/TeacherCounts';
 import StatusPieChart from '../../app/components/exams/StatusPieChart';
 import CompletedExamsPassRatePieChart from '../../app/components/exams/CompletedExamsPassRatePieChart';
 import Link from 'next/link';
-import StudentGenderCount from '../../app/components/teachers/utils/StudentGenderCount';
 
 const TeacherDashboard = () => {
 
@@ -16,7 +15,7 @@ const TeacherDashboard = () => {
     <AdminLayout>
       <div className="flex flex-col">
         <div className="w-full">
-          <StudentGenderCount />
+        <GenderCount /> 
           <div className="w-full flex mt-4">
             <div className="bg-white flex-1 border shadow-sm rounded mr-1 p-4 relative">
               <div className="absolute top-2 right-2">

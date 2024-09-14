@@ -13,7 +13,7 @@ const AdmissionsList = () => {
   useEffect(() => {
     if (session?.user?.email) {
       const fetchAdmissions = async () => {
-        const admissionsRef = ref(database, 'admissions');
+        const admissionsRef = ref(database, 'userTypes');
         const emailQuery = query(admissionsRef, orderByChild('email'), equalTo(session.user.email));
 
         onValue(emailQuery, (snapshot) => {
@@ -42,7 +42,7 @@ const AdmissionsList = () => {
 
   const handleSaveChanges = async () => {
     if (selectedAdmission) {
-      const admissionRef = ref(database, `admissions/${selectedAdmission.id}`);
+      const admissionRef = ref(database, `userTypes/${selectedAdmission.id}`);
       await update(admissionRef, selectedAdmission);
       setShowModal(false);
       window.location.reload();
@@ -80,7 +80,7 @@ const AdmissionsList = () => {
             </div>
             <div className="flex mb-2">
               <div className="flex-1"><strong>Student ID:</strong></div>
-              <div className="flex-1">{admission.studentNumber}</div>
+              <div className="flex-1">{admission.userID}</div>
             </div>
             <div className="flex mb-2">
               <div className="flex-1"><strong>Email:</strong></div>
@@ -150,8 +150,8 @@ const AdmissionsList = () => {
                   className="w-full border p-2 rounded"
                 >
                   <option value="">Select Gender</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
                 </select>
               </div>
               <div className="mb-2">

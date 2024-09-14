@@ -12,7 +12,8 @@ const StatusPieChart = () => {
     if (!session) return;
 
     const email = session.user.email;
-    const admissionsRef = ref(database, 'admissions');
+    const admissionsRef = ref(database, 'userTypes');
+    const resultsRef = ref(database, 'examResults'); // Reference to results in the database
 
     onValue(admissionsRef, (snapshot) => {
       const admissionsData = snapshot.val();
@@ -26,20 +27,25 @@ const StatusPieChart = () => {
           };
         });
 
-        let completedCount = 0;
-        let pendingCount = 0;
+        // Fetch results and check if exams are completed based on scores
+        onValue(resultsRef, (resultsSnapshot) => {
+          const resultsData = resultsSnapshot.val() || {};
+          let completedCount = 0;
+          let pendingCount = 0;
 
-        studentsWithExams.forEach(student => {
-          Object.values(student.exams).forEach(examDetails => {
-            if (examDetails.status === 'Completed') {
-              completedCount++;
-            } else {
-              pendingCount++;
-            }
+          studentsWithExams.forEach((student) => {
+            Object.keys(student.exams).forEach((examId) => {
+              const score = resultsData[`${student.id}_${examId}`]?.score || 0;
+              if (score > 0) {
+                completedCount++;
+              } else {
+                pendingCount++;
+              }
+            });
           });
-        });
 
-        setStatusData({ completed: completedCount, pending: pendingCount });
+          setStatusData({ completed: completedCount, pending: pendingCount });
+        });
       }
     });
   }, [session]);
@@ -49,8 +55,8 @@ const StatusPieChart = () => {
     datasets: [
       {
         data: [statusData.completed, statusData.pending],
-        backgroundColor: ['#60A5FA', '#FF9800'], // Replaced green with blue-400
-        hoverBackgroundColor: ['#93C5FD', '#FFB74D'], // Lighter blue for hover
+        backgroundColor: ['#60A5FA', '#FF9800'], // Blue and orange colors
+        hoverBackgroundColor: ['#93C5FD', '#FFB74D'], // Lighter blue and orange on hover
       },
     ],
   };

@@ -23,7 +23,7 @@ const Students = () => {
       
       const fetchAdmissionsAndClasses = async () => {
         try {
-          const admissionsRef = ref(database, 'admissions');
+          const admissionsRef = ref(database, 'userTypes');
           const classesRef = ref(database, 'classes');
 
           onValue(admissionsRef, (snapshot) => {
@@ -67,16 +67,16 @@ const Students = () => {
   }, [session, status]);
 
   const filteredStudents = admissions.filter((student) => {
-    const isClassValid = classes.some(cls => cls.className === student.class);
+    const isClassValid = classes.some(cls => cls.className === student.studentClassLevel);
     if (!isClassValid) return false;
 
     const term = searchTerm.toLowerCase();
     return (
-      student.admissionId?.toLowerCase().includes(term) ||
+      student.userID?.toLowerCase().includes(term) ||
       student.studentNumber?.toLowerCase().includes(term) ||
       student.firstName?.toLowerCase().includes(term) ||
       student.lastName?.toLowerCase().includes(term) ||
-      student.class?.toLowerCase().includes(term) ||
+      student.studentClassLevel?.toLowerCase().includes(term) ||
       student.gender?.toLowerCase().includes(term) ||
       student.phone?.toLowerCase().includes(term) ||
       student.email?.toLowerCase().includes(term)
@@ -170,10 +170,10 @@ const Students = () => {
           <tbody>
             {sortedStudents.map(student => (
               <tr key={student.id} className="hover:bg-gray-100 cursor-pointer" onClick={() => openModal(student)}>
-                <td className="p-2 border-b">{student.studentNumber || 'N/A'}</td>
+                <td className="p-2 border-b">{student.userID || 'N/A'}</td>
                 <td className="p-2 border-b">{student.firstName || 'N/A'}</td>
                 <td className="p-2 border-b">{student.lastName || 'N/A'}</td>
-                <td className="p-2 border-b">{student.class || 'N/A'}</td>
+                <td className="p-2 border-b">{student.studentClassLevel || 'N/A'}</td>
                 <td className="p-2 border-b capitalize">{student.gender || 'N/A'}</td>
                 <td className="p-2 border-b">{student.phone || 'N/A'}</td>
                 <td className="p-2 border-b">{student.email || 'N/A'}</td>
@@ -190,7 +190,7 @@ const Students = () => {
           
           <div className="flex mb-2">
             <div className="flex-1 font-semibold">Student Number:</div>
-            <div className="flex-1">{selectedStudent.studentNumber}</div>
+            <div className="flex-1">{selectedStudent.userID}</div>
           </div>
           
           <div className="flex mb-2">
@@ -205,7 +205,7 @@ const Students = () => {
           
           <div className="flex mb-2">
             <div className="flex-1 font-semibold">Class:</div>
-            <div className="flex-1">{selectedStudent.class}</div>
+            <div className="flex-1">{selectedStudent.studentClassLevel}</div>
           </div>
           
           <div className="flex mb-2">

@@ -2,19 +2,18 @@
 import { useState } from 'react';
 import { ref, push, set } from 'firebase/database';
 import { database } from '../../../utils/firebaseConfig';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import SmartBlankLayout from '../../app/components/SmartBlankLayout';
+import SmartBlankLayout from '../../app/components/SmartBlankLayout'
 
 export default function AddHeader() {
     const [title, setTitle] = useState("");
-    const [category, setCategory] = useState("Web"); // Default value for category dropdown
-    const [status] = useState("Active"); // Default status set to 'Active', and no need for setStatus
+    const [category, setCategory] = useState("");
+    const [status, setStatus] = useState("");
     const [link, setLink] = useState("");
-    const [icon, setIcon] = useState(""); // New state for icon
 
     const handleAddData = async () => {
-        if (title.trim() === "" || category.trim() === "" || icon.trim() === "") {
+        if (title.trim() === "" || category.trim() === "" || status.trim() === "") {
             toast.error('All fields are required.');
             return;
         }
@@ -26,16 +25,15 @@ export default function AddHeader() {
             await set(newDataRef, { // Set data under the new push key
                 title: title,
                 category: category,
-                status: status, // Status is always 'Active'
+                status: status,
                 link: link,
-                icon: icon, // Add the icon field
             });
 
             // Clear input fields after successful data addition
             setTitle("");
-            setCategory("Web"); // Reset category to default value
+            setCategory("");
+            setStatus("");
             setLink("");
-            setIcon(""); // Clear the icon field
 
             toast.success("Data added successfully!");
         } catch (error) {
@@ -61,21 +59,28 @@ export default function AddHeader() {
                     </div>
                     <div className='mb-2'>
                         <label htmlFor='category' className='block mb-1 text-sm'>Category</label>
-                        <select
+                        <input 
+                            type='text'
                             id='category'
+                            placeholder='Enter category'
                             value={category}
                             onChange={(e) => setCategory(e.target.value)}
                             className='w-full border p-2 rounded-md focus:outline-none focus:border-blue-500'
+                        />
+                    </div>
+                    <div className='mb-2'>
+                        <label htmlFor='status' className='block mb-1 text-sm'>Status</label>
+                        <select
+                            id='status'
+                            value={status}
+                            onChange={(e) => setStatus(e.target.value)}
+                            className='w-full border p-2 rounded-md focus:outline-none focus:border-blue-500'
                         >
-                            <option value="web">Web</option>
-                            <option value="dashboard">Dashboard</option>
+                            <option value="">Select Status</option>
+                            <option value="Active">Active</option>
+                            <option value="Non Active">Non Active</option>
                         </select>
                     </div>
-                    {/* Hidden field for status */}
-                    <input 
-                        type="hidden"
-                        value={status} // Default status is "Active"
-                    />
                     <div className='mb-2'>
                         <label htmlFor='link' className='block mb-1 text-sm'>Link</label>
                         <input 
@@ -87,17 +92,6 @@ export default function AddHeader() {
                             className='w-full border p-2 rounded-md focus:outline-none focus:border-blue-500'
                         />
                     </div>
-                    <div className='mb-2'>
-                        <label htmlFor='icon' className='block mb-1 text-sm'>Icon</label> {/* New Icon field */}
-                        <input 
-                            type='text'
-                            id='icon'
-                            placeholder='Enter icon name or URL'
-                            value={icon}
-                            onChange={(e) => setIcon(e.target.value)} // Update icon state
-                            className='w-full border p-2 rounded-md focus:outline-none focus:border-blue-500'
-                        />
-                    </div>
                 </div>
                 <button 
                     onClick={handleAddData} 
@@ -105,7 +99,18 @@ export default function AddHeader() {
                 >
                     Add Data
                 </button>
-                
+                <ToastContainer
+                    position="bottom-center"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="dark"
+                />
             </div>
         </SmartBlankLayout>
     );

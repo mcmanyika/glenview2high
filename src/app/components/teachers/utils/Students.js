@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ref, onValue } from 'firebase/database';
 import { database } from '../../../../../utils/firebaseConfig';
-import { FaSpinner } from 'react-icons/fa';
+import { FaSpinner, FaMale, FaFemale, FaUsers } from 'react-icons/fa'; // Importing icons
 import { useSession } from 'next-auth/react';
 
 const Students = () => {
@@ -19,21 +19,18 @@ const Students = () => {
 
   useEffect(() => {
     if (status === 'authenticated') {
-      const userEmail = session.user.email;
-      
       const fetchAdmissionsAndClasses = async () => {
         try {
-          const admissionsRef = ref(database, 'admissions');
+          const admissionsRef = ref(database, 'userTypes');
           const classesRef = ref(database, 'classes');
 
           onValue(admissionsRef, (snapshot) => {
             const admissionsData = snapshot.val();
             if (admissionsData) {
-              const admissionsArray = Object.keys(admissionsData)
-                .map(key => ({
-                  id: key,
-                  ...admissionsData[key]
-                }))
+              const admissionsArray = Object.keys(admissionsData).map(key => ({
+                id: key,
+                ...admissionsData[key]
+              }));
               setAdmissions(admissionsArray);
             } else {
               console.log('No admissions data found.');
@@ -67,16 +64,15 @@ const Students = () => {
   }, [session, status]);
 
   const filteredStudents = admissions.filter((student) => {
-    const isClassValid = classes.some(cls => cls.className === student.class);
+    const isClassValid = classes.some(cls => cls.className === student.studentClassLevel);
     if (!isClassValid) return false;
 
     const term = searchTerm.toLowerCase();
     return (
-      student.admissionId?.toLowerCase().includes(term) ||
-      student.studentNumber?.toLowerCase().includes(term) ||
+      student.userID?.toLowerCase().includes(term) ||
       student.firstName?.toLowerCase().includes(term) ||
       student.lastName?.toLowerCase().includes(term) ||
-      student.class?.toLowerCase().includes(term) ||
+      student.studentClassLevel?.toLowerCase().includes(term) ||
       student.gender?.toLowerCase().includes(term) ||
       student.phone?.toLowerCase().includes(term) ||
       student.email?.toLowerCase().includes(term)
@@ -135,10 +131,6 @@ const Students = () => {
     );
   }
 
-  if (sortedStudents.length === 0) {
-    return <div className="text-center mt-4">No students found.</div>;
-  }
-
   return (
     <div className="w-full text-sm p-4 bg-white">
       <h2 className="text-xl font-semibold mb-4">My Students</h2>
@@ -149,86 +141,59 @@ const Students = () => {
         onChange={handleSearchChange}
         className="mb-4 p-2 border border-gray-300 rounded w-full"
       />
-      <div className="overflow-x-auto">
-        <table className="min-w-full text-left border-collapse">
-          <thead>
-            <tr>
-              {['studentNumber', 'firstName', 'lastName', 'class name', 'gender', 'phone', 'email'].map((column) => (
-                <th
-                  key={column}
-                  className="p-2 border-b cursor-pointer text-blue-400 uppercase text-xs"
-                  onClick={() => handleSort(column)}
-                >
-                  <div>
-                    {column.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
-                    {sortColumn === column && (sortOrder === 'asc' ? ' ▲' : ' ▼')}
-                  </div>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {sortedStudents.map(student => (
-              <tr key={student.id} className="hover:bg-gray-100 cursor-pointer" onClick={() => openModal(student)}>
-                <td className="p-2 border-b">{student.studentNumber || 'N/A'}</td>
-                <td className="p-2 border-b">{student.firstName || 'N/A'}</td>
-                <td className="p-2 border-b">{student.lastName || 'N/A'}</td>
-                <td className="p-2 border-b">{student.class || 'N/A'}</td>
-                <td className="p-2 border-b capitalize">{student.gender || 'N/A'}</td>
-                <td className="p-2 border-b">{student.phone || 'N/A'}</td>
-                <td className="p-2 border-b">{student.email || 'N/A'}</td>
+
+      {sortedStudents.length === 0 ? (
+        <div className="text-center mt-4">No students found.</div>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="min-w-full text-left border-collapse">
+            <thead>
+              <tr>
+                {['studentNumber', 'firstName', 'lastName', 'studentClassLevel', 'gender', 'phone', 'email'].map((column) => (
+                  <th
+                    key={column}
+                    className="p-2 border-b cursor-pointer text-blue-400 uppercase text-xs"
+                    onClick={() => handleSort(column)}
+                  >
+                    <div>
+                      {column.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                      {sortColumn === column && (sortOrder === 'asc' ? ' ▲' : ' ▼')}
+                    </div>
+                  </th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {sortedStudents.map(student => (
+                <tr key={student.id} className="hover:bg-gray-100 cursor-pointer" onClick={() => openModal(student)}>
+                  <td className="p-2 border-b">{student.userID || 'N/A'}</td>
+                  <td className="p-2 border-b">{student.firstName || 'N/A'}</td>
+                  <td className="p-2 border-b">{student.lastName || 'N/A'}</td>
+                  <td className="p-2 border-b">{student.studentClassLevel || 'N/A'}</td>
+                  <td className="p-2 border-b capitalize">{student.gender || 'N/A'}</td>
+                  <td className="p-2 border-b">{student.phone || 'N/A'}</td>
+                  <td className="p-2 border-b">{student.email || 'N/A'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {isModalOpen && selectedStudent && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div ref={modalRef} className="bg-white p-6 rounded-lg max-w-md w-full">
-          <h3 className="text-xl font-semibold mb-4">Student Details</h3>
-          
-          <div className="flex mb-2">
-            <div className="flex-1 font-semibold">Student Number:</div>
-            <div className="flex-1">{selectedStudent.studentNumber}</div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div ref={modalRef} className="bg-white rounded-lg shadow-lg p-6">
+            <h2 className="text-lg font-bold mb-4">Student Details</h2>
+            <p><strong>Student ID:</strong> {selectedStudent.userID}</p>
+            <p><strong>First Name:</strong> {selectedStudent.firstName}</p>
+            <p><strong>Last Name:</strong> {selectedStudent.lastName}</p>
+            <p><strong>Class:</strong> {selectedStudent.studentClassLevel}</p>
+            <p><strong>Gender:</strong> {selectedStudent.gender}</p>
+            <p><strong>Phone:</strong> {selectedStudent.phone}</p>
+            <p><strong>Email:</strong> {selectedStudent.email}</p>
+            <button onClick={closeModal} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">Close</button>
           </div>
-          
-          <div className="flex mb-2">
-            <div className="flex-1 font-semibold">First Name:</div>
-            <div className="flex-1">{selectedStudent.firstName}</div>
-          </div>
-          
-          <div className="flex mb-2">
-            <div className="flex-1 font-semibold">Last Name:</div>
-            <div className="flex-1">{selectedStudent.lastName}</div>
-          </div>
-          
-          <div className="flex mb-2">
-            <div className="flex-1 font-semibold">Class:</div>
-            <div className="flex-1">{selectedStudent.class}</div>
-          </div>
-          
-          <div className="flex mb-2">
-            <div className="flex-1 font-semibold">Gender:</div>
-            <div className="flex-1">{selectedStudent.gender}</div>
-          </div>
-          
-          <div className="flex mb-2">
-            <div className="flex-1 font-semibold">Phone:</div>
-            <div className="flex-1">{selectedStudent.phone}</div>
-          </div>
-          
-          <div className="flex mb-2">
-            <div className="flex-1 font-semibold">Email:</div>
-            <div className="flex-1">{selectedStudent.email}</div>
-          </div>
-          
-          <button onClick={closeModal} className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-            Close
-          </button>
         </div>
-      </div>
-      
       )}
     </div>
   );

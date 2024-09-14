@@ -23,10 +23,11 @@ const AssignedExamsList = () => {
     if (!session) return;
 
     const email = session.user.email;
-    const admissionsRef = ref(database, 'admissions');
+    const admissionsRef = ref(database, 'userTypes');
     const examsRef = ref(database, 'exams');
     const resultsRef = ref(database, 'examResults');
 
+    // Fetch exams for the logged-in teacher
     onValue(examsRef, (snapshot) => {
       const examsData = snapshot.val();
       if (examsData) {
@@ -41,6 +42,7 @@ const AssignedExamsList = () => {
       }
     });
 
+    // Fetch student admissions and their assigned exams
     onValue(admissionsRef, (snapshot) => {
       const admissionsData = snapshot.val();
       if (admissionsData) {
@@ -52,19 +54,23 @@ const AssignedExamsList = () => {
             exams: student.exams || {},
           };
         });
-        const studentsWithAssignedExams = studentsWithExams.filter(student => Object.keys(student.exams).length > 0);
+        const studentsWithAssignedExams = studentsWithExams.filter(
+          (student) => Object.keys(student.exams).length > 0
+        );
         setStudents(studentsWithAssignedExams);
       }
     });
 
+    // Fetch exam results
     onValue(resultsRef, (snapshot) => {
       const resultsData = snapshot.val() || {};
       setExamResults(resultsData);
     });
   }, [session]);
 
+  // Filter students by selected exam
   const filteredStudents = selectedExam
-    ? students.filter(student => student.exams[selectedExam])
+    ? students.filter((student) => student.exams[selectedExam])
     : students;
 
   const totalItems = filteredStudents.length;
@@ -78,17 +84,21 @@ const AssignedExamsList = () => {
     }
   };
 
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case 'Assigned':
-        return <FaHourglassHalf className="text-yellow-500" />;
-      case 'Completed':
-        return <FaCheckCircle className="text-green-500" />;
-      default:
-        return <FaTimesCircle className="text-red-500" />;
+  // Get the status icon based on the exam status or score
+  const getStatusIcon = (score, status) => {
+    if (score > 0 && score < 50) {
+      return <FaTimesCircle className="text-red-500" />;
     }
+    if (score >= 50) {
+      return <FaCheckCircle className="text-green-500" />;
+    }
+    if (status === 'Assigned') {
+      return <FaHourglassHalf className="text-yellow-500" />;
+    }
+    return <FaTimesCircle className="text-gray-500" />;
   };
 
+  // Handle student click to show exam results in the modal
   const handleStudentClick = (student, examId) => {
     setSelectedStudent(student);
     setSelectedExamId(examId);
@@ -96,14 +106,20 @@ const AssignedExamsList = () => {
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentStudents = filteredStudents.slice(startIndex, startIndex + itemsPerPage);
+  const currentStudents = filteredStudents.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
 
   return (
     <div className="w-full bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
       <h2 className="text-2xl font-semibold mb-4">Students Assigned Exams</h2>
-      
+
+      {/* Dropdown for selecting exams */}
       <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">Select Exam</label>
+        <label className="block text-gray-700 text-sm font-bold mb-2">
+          Select Exam
+        </label>
         <select
           value={selectedExam}
           onChange={(e) => setSelectedExam(e.target.value)}
@@ -118,6 +134,7 @@ const AssignedExamsList = () => {
         </select>
       </div>
 
+      {/* Table showing students and exam details */}
       {currentStudents.length === 0 ? (
         <p>No students with assigned exams found.</p>
       ) : (
@@ -137,6 +154,8 @@ const AssignedExamsList = () => {
                   {Object.entries(student.exams).map(([examId, examDetails]) => {
                     if (examId in examsMap && (selectedExam === '' || examId === selectedExam)) {
                       const score = examResults[`${student.id}_${examId}`]?.score || 0;
+                      const examStatus = score > 0 ? 'Completed' : examDetails.status; // Update status if score exists
+
                       return (
                         <tr key={examId}>
                           <td className="border border-gray-300 px-4 py-2">
@@ -156,7 +175,7 @@ const AssignedExamsList = () => {
                             {score}
                           </td>
                           <td className="border border-gray-300 px-4 py-2">
-                            {getStatusIcon(examDetails.status)}
+                            {getStatusIcon(score, examStatus)}
                           </td>
                         </tr>
                       );
@@ -168,18 +187,21 @@ const AssignedExamsList = () => {
             </tbody>
           </table>
 
+          {/* Pagination */}
           <div className="flex justify-between mt-4">
             <button
-              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''
-                }`}
+              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${
+                currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
               onClick={() => handlePageChange('prev')}
               disabled={currentPage === 1}
             >
               Previous
             </button>
             <button
-              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''
-                }`}
+              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${
+                currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
               onClick={() => handlePageChange('next')}
               disabled={currentPage === totalPages}
             >
@@ -189,6 +211,7 @@ const AssignedExamsList = () => {
         </div>
       )}
 
+      {/* Toast notifications */}
       <ToastContainer
         position="bottom-center"
         autoClose={5000}
@@ -202,6 +225,7 @@ const AssignedExamsList = () => {
         theme="dark"
       />
 
+      {/* Modal for showing results */}
       {isModalOpen && selectedStudent && (
         <ResultsModal
           student={selectedStudent}

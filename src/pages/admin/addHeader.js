@@ -8,7 +8,7 @@ import SmartBlankLayout from '../../app/components/SmartBlankLayout';
 
 export default function AddHeader() {
     const [title, setTitle] = useState("");
-    const [category, setCategory] = useState("Web"); // Default value for category dropdown
+    const [category, setCategory] = useState("dashboard"); // Default value for category dropdown
     const [status] = useState("Active"); // Default status set to 'Active', and no need for setStatus
     const [link, setLink] = useState("");
     const [icon, setIcon] = useState(""); // New state for icon
@@ -33,7 +33,7 @@ export default function AddHeader() {
 
             // Clear input fields after successful data addition
             setTitle("");
-            setCategory("Web"); // Reset category to default value
+            setCategory("dashboard"); // Reset category to default value
             setLink("");
             setIcon(""); // Clear the icon field
 

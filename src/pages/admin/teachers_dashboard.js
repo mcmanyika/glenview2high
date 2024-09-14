@@ -9,6 +9,7 @@ import StatusPieChart from '../../app/components/exams/StatusPieChart';
 import CompletedExamsPassRatePieChart from '../../app/components/exams/CompletedExamsPassRatePieChart';
 import Link from 'next/link';
 import StudentGenderCount from '../../app/components/teachers/utils/StudentGenderCount';
+import ExamResults from '../../app/components/exams/ExamResults';
 
 const TeacherDashboard = () => {
 
@@ -18,25 +19,8 @@ const TeacherDashboard = () => {
         <div className="w-full">
           <StudentGenderCount />
           <div className="w-full flex mt-4">
-            <div className="bg-white flex-1 border shadow-sm rounded mr-1 p-4 relative">
-              <div className="absolute top-2 right-2">
-                <Link href="/admin/exams">
-                  <div className="three-dots flex flex-col items-center space-y-1">
-                    <div className="w-1 h-1 bg-black rounded-full"></div>
-                  </div>
-                </Link>
-              </div>
-              <StatusPieChart />
-            </div>
             <div className="bg-white flex-1 border shadow-sm rounded ml-1 p-4 relative">
-              <div className="absolute top-2 right-2">
-                <Link href="/admin/exams">
-                  <div className="three-dots flex flex-col items-center space-y-1">
-                    <div className="w-1 h-1 bg-black rounded-full"></div>
-                  </div>
-                </Link>
-              </div>
-              <CompletedExamsPassRatePieChart />
+              <ExamResults />
             </div>
           </div>
           <div className="bg-white border shadow-sm rounded mt-4 p-4">

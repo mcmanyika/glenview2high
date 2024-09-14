@@ -1,22 +1,9 @@
-// components/EditAdmissionForm.js
-
 import React from 'react';
 
 const EditAdmissionForm = ({ formData, handleInputChange, handleSubmit, closeModal }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div className="grid grid-cols-1 text-sm md:grid-cols-3 gap-4 mb-4">
-        <div>
-          <label className="block mb-2">Admission ID</label>
-          <input
-            type="text"
-            name="admissionId"
-            value={formData.admissionId}
-            onChange={handleInputChange}
-            className="border rounded w-full px-3 py-2"
-            disabled
-          />
-        </div>
         <div>
           <label className="block mb-2">First Name</label>
           <input
@@ -110,17 +97,6 @@ const EditAdmissionForm = ({ formData, handleInputChange, handleSubmit, closeMod
             <option value="Accepted">Accepted</option>
             <option value="Rejected">Rejected</option>
           </select>
-        </div>
-        <div>
-          <label className="block mb-2">Student Number</label>
-          <input
-            type="text"
-            name="studentNumber"
-            value={formData.studentNumber}
-            onChange={handleInputChange}
-            className="border rounded w-full px-3 py-2"
-            disabled
-          />
         </div>
       </div>
       <div className="flex justify-end">

@@ -13,6 +13,7 @@ const GenderCount = () => {
     if (status === 'authenticated') {
       const fetchGenderCounts = async () => {
         try {
+          const userEmail = session.user.email;
           const admissionsRef = ref(database, 'userTypes');
 
           onValue(admissionsRef, (snapshot) => {
@@ -20,7 +21,7 @@ const GenderCount = () => {
             if (admissionsData) {
               const counts = { Male: 0, Female: 0, TotalCount: 0 };
               Object.values(admissionsData).forEach((admission) => {
-                if (admission.userType === 'student') {
+                if (admission.email === userEmail) {
                   if (admission.gender === 'male') {
                     counts.Male += 1;
                   } else if (admission.gender === 'female') {

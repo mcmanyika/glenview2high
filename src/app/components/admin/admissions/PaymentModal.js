@@ -5,7 +5,7 @@ import { ref, set } from 'firebase/database';
 import { database } from '../../../../../utils/firebaseConfig';
 import { toast } from 'react-toastify'; // Import toast
 
-const PaymentModal = ({ studentId, onClose }) => {
+const PaymentModal = ({ id, onClose }) => {
   const [amount, setAmount] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');
   const [purpose, setPurpose] = useState(''); // State for purpose
@@ -26,7 +26,7 @@ const PaymentModal = ({ studentId, onClose }) => {
     }
 
     const paymentData = {
-      studentId,
+      id,
       amount: parseFloat(amount), // Ensure amount is a number
       paymentMethod,
       purpose, // Include purpose in payment data
@@ -34,7 +34,7 @@ const PaymentModal = ({ studentId, onClose }) => {
     };
 
     try {
-      const paymentRef = ref(database, 'payments/' + studentId + '/' + Date.now());
+      const paymentRef = ref(database, 'payments/' + id + '/' + Date.now());
       await set(paymentRef, paymentData);
       toast.success('Payment recorded successfully!'); // Show success toast
       onClose(); // Close the modal after submission

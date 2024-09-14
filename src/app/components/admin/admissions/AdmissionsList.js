@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { database } from '../../../../../utils/firebaseConfig';
 import { ref, onValue, update } from 'firebase/database';
 import { useSession } from 'next-auth/react';
-import Link from 'next/link';
+import { HiCreditCard } from 'react-icons/hi'; // Import payment icon
 import EditAdmissionForm from './EditAdmissionForm'; // Import the new form component
 import PaymentModal from './PaymentModal'; // Import the new payment modal component
-import { HiCreditCard } from 'react-icons/hi'; // Import payment icon
 
 const AdmissionsList = () => {
   const { data: session } = useSession();
@@ -21,7 +20,7 @@ const AdmissionsList = () => {
   const [paymentModalOpen, setPaymentModalOpen] = useState(false); // State for payment modal
 
   useEffect(() => {
-    const admissionsRef = ref(database, 'admissions');
+    const admissionsRef = ref(database, 'userTypes');
     onValue(admissionsRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
@@ -66,9 +65,16 @@ const AdmissionsList = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const admissionsRef = ref(database, `admissions/${selectedAdmission.id}`);
-    update(admissionsRef, formData)
+    const { id, ...dataToUpdate } = formData; // Remove id from formData
+    const admissionsRef = ref(database, `userTypes/${selectedAdmission.id}`);
+
+    // Log the data before updating
+    console.log("Updating admission with ID:", selectedAdmission.id);
+    console.log("Data being sent for update:", dataToUpdate);
+    
+    update(admissionsRef, dataToUpdate)
       .then(() => {
+        console.log("Update successful");
         closeModal(); // Close the modal after successful update
       })
       .catch((error) => console.error("Error updating admission: ", error));
@@ -89,7 +95,7 @@ const AdmissionsList = () => {
       <table className="min-w-full text-sm text-left border-collapse border border-gray-200">
         <thead>
           <tr>
-            <th className="border border-gray-200 px-4 py-2">Admission ID</th>
+            <th className="border border-gray-200 px-4 py-2">Account ID</th>
             <th className="border border-gray-200 px-4 py-2">First Name</th>
             <th className="border border-gray-200 px-4 py-2">Last Name</th>
             <th className="border border-gray-200 px-4 py-2">Status</th>
@@ -99,7 +105,7 @@ const AdmissionsList = () => {
         <tbody>
           {currentAdmissions.map((admission) => (
             <tr key={admission.id}>
-              <td className="border border-gray-200 px-4 py-2">{admission.studentNumber}</td>
+              <td className="border border-gray-200 px-4 py-2">{admission.id}</td>
               <td className="border border-gray-200 px-4 py-2">{admission.firstName}</td>
               <td className="border border-gray-200 px-4 py-2">{admission.lastName}</td>
               <td className="border border-gray-200 px-4 py-2">{admission.status}</td>
@@ -164,7 +170,7 @@ const AdmissionsList = () => {
       {/* Payment Modal */}
       {paymentModalOpen && selectedAdmission && (
         <PaymentModal
-          studentId={selectedAdmission.studentNumber} // Pass the studentNumber as studentId to PaymentModal
+          id={selectedAdmission.id} // Pass the id as id to PaymentModal
           onClose={() => {
             setPaymentModalOpen(false);
             closeModal(); // Close the Edit modal if it was open

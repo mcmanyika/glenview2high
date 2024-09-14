@@ -14,7 +14,7 @@ const AdmissionForm = () => {
     lastName: '',
     gender: '',
     dateOfBirth: '',
-    religion: '',
+    userType: '', // Replaced Religion with userType
     email: session?.user?.email || '',
     class: '',
     bio: '',
@@ -22,6 +22,7 @@ const AdmissionForm = () => {
     phone: '',
     status: 'Pending', // Default value for Status
   });
+  const [showClassLevel, setShowClassLevel] = useState(false);
 
   // Function to generate a random Admission ID
   const generateAdmissionId = () => {
@@ -39,6 +40,14 @@ const AdmissionForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // If userType is "student", show the class level dropdown
+    if (name === 'userType' && value === 'student') {
+      setShowClassLevel(true);
+    } else if (name === 'userType') {
+      setShowClassLevel(false);
+    }
+
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
@@ -62,7 +71,7 @@ const AdmissionForm = () => {
         lastName: '',
         gender: '',
         dateOfBirth: '',
-        religion: '',
+        userType: '',
         email: session?.user?.email || '',
         class: '',
         bio: '',
@@ -70,6 +79,7 @@ const AdmissionForm = () => {
         phone: '',
         status: 'Pending', // Reset Status to default value
       });
+      setShowClassLevel(false);
 
       // Redirect to the home page after submission
       router.push('/admin/student_dash'); // Navigate to the home page
@@ -134,16 +144,38 @@ const AdmissionForm = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Religion</label>
-            <input
-              type="text"
-              name="religion"
-              value={formData.religion}
+            <label className="block text-sm font-medium mb-1">User Type</label>
+            <select
+              name="userType"
+              value={formData.userType}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded"
               required
-            />
+            >
+              <option value="" disabled>Select User Type</option>
+              <option value="student">Student</option>
+              <option value="teacher">Teacher</option>
+              <option value="staff">Staff</option>
+            </select>
           </div>
+          {showClassLevel && (
+            <div>
+              <label className="block text-sm font-medium mb-1">Class Level</label>
+              <select
+                name="class"
+                value={formData.class}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded"
+                required
+              >
+                <option value="" disabled>Select Class Level</option>
+                <option value="Form 1">Form 1</option>
+                <option value="Form 2">Form 2</option>
+                <option value="O Level">O Level</option>
+                <option value="A Level">A Level</option>
+              </select>
+            </div>
+          )}
           <div>
             <label className="block text-sm font-medium mb-1">Phone</label>
             <input
@@ -163,17 +195,6 @@ const AdmissionForm = () => {
               value={formData.email}
               readOnly
               className="w-full p-2 border border-gray-300 rounded bg-gray-100 cursor-not-allowed"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Class</label>
-            <input
-              type="text"
-              name="class"
-              value={formData.class}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
-              required
             />
           </div>
           <div className="col-span-1 md:col-span-2">

@@ -1,20 +1,19 @@
-import { useEffect, useState, useRef } from 'react';
-import { FaFacebook, FaHome } from 'react-icons/fa';
+// components/Header.js
+
+import { useState, useEffect, useRef } from 'react';
+import { FaFacebook, FaInstagram, FaHome } from 'react-icons/fa';
 import Link from 'next/link';
-import Image from 'next/image';
 import { ref, onValue, query, orderByChild, equalTo } from 'firebase/database';
 import { database } from '../../../utils/firebaseConfig';
 import { useGlobalState, setIsOverlayVisible } from '../store';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { signIn, signOut } from 'next-auth/react';
 
-const Header = () => {
-  const { data: session } = useSession();
+const Header = ({ session }) => {
   const [titles, setTitles] = useState([]);
   const [isSticky, setIsSticky] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [showPopover, setShowPopover] = useState(false);
   const popoverRef = useRef(null);
-
   const [isOverlayVisible] = useGlobalState('isOverlayVisible');
 
   useEffect(() => {
@@ -34,7 +33,7 @@ const Header = () => {
                 status: data[key].status,
                 category: data[key].category,
               }))
-              .filter(a => a.category === 'title') // Filter where category is equal to title
+              .filter(a => a.category === 'title')
               .filter(a => a.title !== 'Projects')
               .sort((a, b) => {
                 if (a.title === 'Admissions') return 1;
@@ -98,23 +97,31 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed z-50 w-full bg-blue-400 text-white transition-all duration-500 ease-in-out ${
+      className={`fixed z-50 w-full bg-main text-white transition-all duration-500 ease-in-out ${
         isSticky ? 'top-0' : 'bottom-0 border-t-2 border-t-white p-5'
       } ${!isSticky && 'hidden md:block'}`}
     >
       {isSticky && (
         <div className='top-0 w-full text-white p-0'>
           <div className='container mx-auto flex text-sm font-thin p-2 mb-2 justify-between'>
-            <div className='flex-1 md:flex space-x-2 hidden'><span>Follow Us</span>
+            <div className='flex-1 md:flex space-x-2 hidden'>
+              <span>Follow Us</span>
               <a
-                href="https://www.facebook.com/groups/497811331424773/"
+                href="https://www.facebook.com/DivarisMakahariscollege/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white hover:text-gray-900"
               >
                 <FaFacebook className="h-5 w-5" />
               </a>
-             
+              {/* <a
+                href="https://www.instagram.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-gray-900"
+              >
+                <FaInstagram className="h-5 w-5" />
+              </a> */}
             </div>
             <div className='flex-1 text-right relative'>
               {session ? (
@@ -134,7 +141,7 @@ const Header = () => {
                       </Link>
                       <button
                         onClick={() => signOut()}
-                        className="mt-4 w-full bg-blue-400 text-white p-1 rounded hover:bg-blue-500"
+                        className="mt-4 w-full bg-main text-white p-1 rounded "
                       >
                         Sign Out
                       </button>
@@ -146,7 +153,7 @@ const Header = () => {
                   Welcome Guest, &nbsp;
                   <button
                     onClick={() => signIn('google')}
-                    className="bg-blue-500 text-white p-1 rounded hover:bg-blue-600"
+                    className=" text-white p-1 rounded hover:bg-main2"
                   >
                     Sign In
                   </button>
@@ -168,7 +175,7 @@ const Header = () => {
               priority
             />
           </Link> */}
-          <h1 className="text-sm md:text-2xl font-normal uppercase flex">GlenView 2 High</h1>
+          <h1 className="text-sm md:text-2xl font-normal uppercase flex">Divaris Makaharis High</h1>
         </div>
         {isSticky && (
           <div className="md:hidden">
@@ -187,7 +194,9 @@ const Header = () => {
           {titles.length > 0 && titles.map((rw) => (
             <li key={rw.id}>
               <Link href={`${rw.link}`} passHref>
-                <div className="hover:text-gray-300 text-sm font-sans font-thin uppercase pb-2 border-b-2 border-transparent hover:border-blue-200">{rw.title}</div>
+                <div className="hover:text-gray-300 text-sm font-sans font-thin uppercase pb-2 border-b-2 border-transparent hover:border-gray-300 transition duration-300">
+                  {rw.title}
+                </div>
               </Link>
             </li>
           ))}

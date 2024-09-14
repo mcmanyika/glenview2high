@@ -13,19 +13,14 @@ const Hero = () => {
   const carouselData = [
     {
       title: "Excellence in Education",
-      description: "Empowering students to reach their full potential.",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents3.jpeg?alt=media&token=368a73f2-a805-4330-85b6-24be48315e97",
+      description: "Providing a well-rounded, high quality, and relevant education for learners",
+      imageUrl: "/images/divaris.jpeg",
     },
     {
-      title: "Innovative Teaching",
-      description: "Providing state-of-the-art facilities and teaching methods.",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fcomputerlab.jpeg?alt=media&token=af04fc07-062b-412c-a9ce-a17bed728757",
-    },
-    {
-      title: "Sporting Activities",
-      description: "Building strong connections with the local community.",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fnetball.jpeg?alt=media&token=af4ee37f-7f9e-46d1-b823-d7ece81bcac8",
-    },
+      title: "Our Vision",
+      description: "To be e a trailblazer in the provision of quality education",
+      imageUrl: "/images/banner4.png",
+    }
   ];
 
   // Function to handle menu click and toggle overlay visibility
@@ -86,10 +81,10 @@ const Hero = () => {
     <div className="relative h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 flex transition-transform duration-1000 ease-in-out" style={{ transform: `translateX(${currentIndex * -100}%)` }}>
         {carouselData.map((slide, index) => (
-          <div key={index} className="min-w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${slide.imageUrl})` }}></div>
+          <div key={index} className="min-w-full h-full bg-cover bg-center md:bg-top" style={{ backgroundImage: `url(${slide.imageUrl})` }}></div>
         ))}
       </div>
-      <div className="absolute inset-0 bg-blue-500 opacity-20"></div>
+      <div className="absolute inset-0 bg-main opacity-20"></div>
       <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-20">
         <Link href="/">
           <Image
@@ -97,7 +92,7 @@ const Hero = () => {
             alt="Logo"
             width={100}
             height={100}
-            className="rounded w-12 h-12 md:w-24 md:h-24"
+            className="rounded w-12 h-12 md:w-24 md:h-24 top"
             onClick={handleMenuClick}
           />
         </Link>
@@ -122,7 +117,7 @@ const Hero = () => {
       )}
       <section className="relative text-white p-10 md:p-20 text-center">
         <h1 className="text-2xl md:text-5xl font-thin font-sans">{currentSlide.title}</h1>
-        <p className="mt-4 text-sm md:text-xl text-thin">{currentSlide.description}</p>
+        <p className="mt-4 text-sm md:text-xl text-thin font-sans">{currentSlide.description}</p>
       </section>
     </div>
   );

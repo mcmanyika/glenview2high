@@ -36,7 +36,7 @@ const SupplierContactForm = () => {
 
   return (
     <div className="flex justify-center items-center">
-      <form onSubmit={handleSubmit} className="bg-blue-300 p-8 rounded shadow-md text-black w-full max-w-md">
+      <form onSubmit={handleSubmit} className=" p-8 rounded shadow-md text-black w-full max-w-md">
         <div className="mb-4">
           <input
             id="name"
@@ -82,7 +82,7 @@ const SupplierContactForm = () => {
         </div>
         <button
           type="submit"
-          className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="w-full p-2 bg-main3 text-white rounded "
         >
           Submit
         </button>

@@ -4,10 +4,10 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import AIAssistantForm from '../components/ai/AIAssistantForm';
 
-const Layout = ({ children }) => {
+const Layout = ({ children, session }) => {
   return (
     <>
-      <Header />
+      <Header session={session} />
       <main>
         {children}
       </main>

@@ -7,8 +7,8 @@ const mapContainerStyle = {
 };
 
 const center = {
-  lat: -17.90265655517578, // Latitude
-  lng: 30.94776725769043,  // Longitude
+  lat: -17.771555, // Updated Latitude
+  lng: 30.986481,  // Updated Longitude
 };
 
 const Map = () => {
@@ -24,7 +24,7 @@ const Map = () => {
             draggable: true,
           }}
         >
-          <Marker position={center} title="Glenview 2 High School" />
+          <Marker position={center} title="Divaris Makaharis High" />
         </GoogleMap>
       </LoadScript>
     </div>

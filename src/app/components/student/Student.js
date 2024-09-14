@@ -150,8 +150,8 @@ const AdmissionsList = () => {
                   className="w-full border p-2 rounded"
                 >
                   <option value="">Select Gender</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
                 </select>
               </div>
               <div className="mb-2">

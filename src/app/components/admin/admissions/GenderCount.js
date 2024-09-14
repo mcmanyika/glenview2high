@@ -9,7 +9,7 @@ const GenderCount = () => {
   const [genderCounts, setGenderCounts] = useState({ male: 0, female: 0 });
 
   useEffect(() => {
-    const admissionsRef = ref(database, 'admissions');
+    const admissionsRef = ref(database, 'userTypes');
     const unsubscribe = onValue(admissionsRef, (snapshot) => {
       if (snapshot.exists()) {
         const data = snapshot.val();

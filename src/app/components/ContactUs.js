@@ -1,3 +1,5 @@
+// components/ContactUs.js
+
 import React, { useState } from 'react';
 import { ref, push } from 'firebase/database';
 import { ToastContainer, toast } from 'react-toastify';
@@ -23,7 +25,7 @@ const ContactUs = () => {
 
     try {
       await push(ref(database, 'contacts'), contactData);
-      toast.success('Form submitted successfully!');
+      toast.success('Thank you for contacting us, we will soon be reaching out to you');
       setName('');
       setEmail('');
       setMessage('');
@@ -34,7 +36,7 @@ const ContactUs = () => {
   };
 
   return (
-    <div className="bg-blue-50 p-10">
+    <div className="bg-main2 p-10">
       <div className="md:container mx-auto flex flex-col md:flex-row text-gray-500 font-thin">
         <div className="md:p-8 flex-1 flex flex-col">
           <div className="w-full">
@@ -44,23 +46,24 @@ const ContactUs = () => {
                 <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-4 mt-1" />
                 <span>
                   <strong>Address:</strong><br />
-                  GlenView 2 High School,<br />
-                  9480 1st Drive, Glenview 3,<br />
-                  Harare, Zimbabwe
+                  Corner Lavenham Drive & Northolt Road, <br />
+                  Bluffhill, Harare, Zimbabwe
                 </span>
               </div>
               <div className="w-full mb-4 flex">
                 <FontAwesomeIcon icon={faPhone} className="mr-4 mt-1" />
                 <span>
-                  <strong>Phone:</strong><br />
-                  +263 04692501, +263 04690070
+                  <strong>WhatsApp Call:</strong><br />
+                  <a href="https://wa.me/263773391486" target="_blank" rel="noopener noreferrer" className="text-blue-500">
+                    +263773391486
+                  </a>
                 </span>
               </div>
               <div className="w-full mb-4 flex">
                 <FontAwesomeIcon icon={faEnvelope} className="mr-4 mt-1" />
                 <span>
                   <strong>Email:</strong><br />
-                  info@glenview2high.com
+                  divarismakaharis@gmail.com
                 </span>
               </div>
             </div>
@@ -104,7 +107,7 @@ const ContactUs = () => {
             </div>
             <button
               type="submit"
-              className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              className="w-full p-2 bg-main text-white rounded"
             >
               Submit
             </button>

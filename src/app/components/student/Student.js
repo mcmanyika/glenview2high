@@ -96,7 +96,7 @@ const AdmissionsList = () => {
             </div>
             <div className="flex mb-2">
               <div className="flex-1"><strong>Gender:</strong></div>
-              <div className="flex-1">{admission.gender}</div>
+              <div className="flex-1 capitalize">{admission.gender}</div>
             </div>
             <div className="flex mb-2">
               <div className="flex-1"><strong>Religion:</strong></div>

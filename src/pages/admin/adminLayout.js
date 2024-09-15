@@ -97,12 +97,10 @@ const AdminLayout = ({ children }) => {
 
   const handleSignOut = () => {
     signOut();
-    toast.success('Signed out successfully!'); // Show success toast on sign out
   };
 
   return (
     <div className="flex min-h-screen text-base bg-gray-100 relative">
-      <ToastContainer /> {/* Add ToastContainer for toasts */}
 
       <aside className={`fixed z-40 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 md:relative md:translate-x-0 w-42 bg-main text-white p-4 min-h-screen rounded-tr-xl flex flex-col`}>
         <div className="flex justify-center items-center pt-10 mb-20">

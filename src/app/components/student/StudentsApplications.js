@@ -17,7 +17,7 @@ const AdmissionList = () => {
   const [searchQuery, setSearchQuery] = useState(''); // For search query
 
   useEffect(() => {
-    const admissionsRef = ref(database, 'admissions');
+    const admissionsRef = ref(database, 'userTypes');
     onValue(admissionsRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
@@ -130,8 +130,7 @@ const AdmissionList = () => {
         <table className="min-w-full bg-white border">
           <thead>
             <tr className='text-left'>
-              <th className="py-2 px-4 text-sm">Admission ID</th>
-              <th className="py-2 px-4 text-sm">Student ID</th>
+              <th className="py-2 px-4 text-sm">User ID</th>
               <th className="py-2 px-4 text-sm">First Name</th>
               <th className="py-2 px-4 text-sm">Last Name</th>
               <th className="py-2 px-4 text-sm">Gender</th>
@@ -149,8 +148,7 @@ const AdmissionList = () => {
                 className="hover:bg-gray-100 cursor-pointer"
                 onClick={() => openModal(admission)} // Open modal on row click
               >
-                <td className="py-2 px-4 text-sm">{admission.admissionId}</td>
-                <td className="py-2 px-4 text-sm">{admission.studentNumber || 'N/A'}</td>
+                <td className="py-2 px-4 text-sm">{admission.userID}</td>
                 <td className="py-2 px-4 text-sm">{admission.firstName}</td>
                 <td className="py-2 px-4 text-sm">{admission.lastName}</td>
                 <td className="py-2 px-4 text-sm">{admission.gender}</td>

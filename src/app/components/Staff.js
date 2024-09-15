@@ -21,18 +21,19 @@ const staffMembers = [
 
 const Staff = () => {
   return (
-    <section className="w-full p-10 text-gray-800">
+    <section id='team' className="w-full text-gray-800">
       <div className="container mx-auto">
+        <div className="text-2xl md:text-4xl text-center font-thin w-full p-5">Our Leadership</div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {staffMembers.map((staff, index) => (
-            <div key={index} className="bg-white   overflow-hidden text-center">
-              <div className="relative h-48 w-48 mx-auto mt-6">
+            <div key={index} className="bg-white overflow-hidden text-center">
+              <div className="relative h-48 w-48 mx-auto mt-6 group">
                 <div className="absolute inset-0 bg-blue2 opacity-80 rounded-full z-10"></div>
                 <Image
                   src={staff.imageUrl}
                   alt={staff.name}
                   fill
-                  className="rounded-full object-cover"
+                  className="rounded-full object-cover transition-transform duration-300 transform group-hover:scale-110"
                 />
               </div>
               <div className="p-4">

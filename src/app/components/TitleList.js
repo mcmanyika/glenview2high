@@ -22,35 +22,37 @@ const iconMapping = {
     FaCashRegister: FaCashRegister,
   };
 
-  const TitleList = ({ titles, onSignOut }) => {
-    const defaultIcon = FaHome; // Fallback icon
-  
-    return (
-      <ul className="flex flex-col">
-        {titles.length > 0 && titles.map((rw) => {
-          const IconComponent = iconMapping[rw.icon] || defaultIcon; // Fallback to default icon
-          return (
-            <li key={rw.id} className="mb-4 flex flex-col items-center">
-              <Link href={rw.link} className="flex flex-col items-center" aria-label={rw.title}>
-                <IconComponent className="text-2xl" />
-                <div className="text-center font-thin p-2 cursor-pointer w-full">{rw.title}</div>
-              </Link>
-            </li>
-          );
-        })}
-        <li className="mb-4 flex flex-col items-center">
-          <FaSignOutAlt className="text-2xl" />
-          <button
-            onClick={onSignOut}
-            className="text-center font-thin p-2 rounded cursor-pointer w-full"
-            aria-label="Sign Out"
-          >
-            Sign Out
-          </button>
-        </li>
-      </ul>
-    );
-  };
-  
+const TitleList = ({ titles, onSignOut }) => {
+  return (
+    <ul className="flex flex-col">
+      {titles.length > 0 && titles.map((rw) => {
+        const IconComponent = iconMapping[rw.icon] || iconMapping.default; // Use the icon from mapping or fallback
+        return (
+          <li key={rw.id} className="mb-4 flex flex-col items-center">
+            <Link href={rw.link} className="flex flex-col items-center" aria-label={rw.title}>
+              <IconComponent className="text-2xl" />
+              <div className="text-center font-thin p-2 cursor-pointer w-full">{rw.title}</div>
+            </Link>
+          </li>
+        );
+      })}
+      <li className="mb-4 flex flex-col items-center">
+        <FaSignOutAlt className="text-2xl" />
+        <button
+          onClick={onSignOut}
+          className="text-center font-thin p-2 rounded cursor-pointer w-full"
+          aria-label="Sign Out"
+        >
+          Sign Out
+        </button>
+      </li>
+    </ul>
+  );
+};
+
+TitleList.propTypes = {
+  titles: PropTypes.array.isRequired,
+  onSignOut: PropTypes.func.isRequired,
+};
 
 export default TitleList;

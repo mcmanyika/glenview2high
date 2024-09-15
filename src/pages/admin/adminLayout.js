@@ -103,12 +103,14 @@ const AdminLayout = ({ children }) => {
     <div className="flex min-h-screen text-base bg-gray-100 relative">
 
       <aside className={`fixed z-40 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 md:relative md:translate-x-0 w-42 bg-main text-white p-4 min-h-screen rounded-tr-xl flex flex-col`}>
-        <div className="flex justify-center items-center pt-10 mb-20">
-          {logoUrl ? (
-            <Image src={logoUrl} alt="Logo" width={70} height={60} className='rounded-full' />
-          ) : (
-            <div className="w-14 h-14 bg-gray-300 rounded-full animate-pulse" /> // Placeholder while loading
-          )}
+      <div className="flex justify-center items-center pt-10 mb-20">
+          <Link href="/" passHref>
+            {logoUrl ? (
+              <Image src={logoUrl} alt="Logo" width={70} height={60} className='rounded-full cursor-pointer' />
+            ) : (
+              <div className="w-14 h-14 bg-gray-300 rounded-full animate-pulse" /> // Placeholder while loading
+            )}
+          </Link>
         </div>
         <nav className="flex-1"> 
           <TitleList titles={titles} onSignOut={handleSignOut} /> {/* Pass handleSignOut to TitleList */}

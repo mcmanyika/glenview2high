@@ -46,7 +46,7 @@ const GenderPieChart = () => {
   return (
     <div className="w-full flex flex-col items-center justify-center bg-white p-4 rounded">
       <h2 className="text-2xl font-semibold mb-4">Students by Gender</h2>
-      <div className="w-1/3 h-1/3"> {/* Reduced container size */}
+      <div className="w-2/4 h-2/4"> {/* Reduced container size */}
         <Pie data={data} options={{ maintainAspectRatio: true }} />
       </div>
     </div>

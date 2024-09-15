@@ -102,7 +102,7 @@ const ExamResults = () => {
             <table className="w-full text-sm border-collapse mt-4">
               <thead>
                 <tr>
-                  <th className="border border-gray-300 px-4 py-2">Exam Name</th>
+                  <th className="border border-gray-300 px-4 py-2 text-left">Exam Name</th>
                   <th className="border border-gray-300 px-4 py-2">Score</th>
                 </tr>
               </thead>

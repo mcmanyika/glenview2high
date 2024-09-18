@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { ref, push } from 'firebase/database';
+import React, { useState, useEffect } from 'react';
+import { ref, get } from 'firebase/database';
+import { push } from 'firebase/database';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { database } from '../../../utils/firebaseConfig'; // Adjust the path to your firebaseConfig file
@@ -11,6 +12,31 @@ const ContactUs = () => {
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
   const [message, setMessage] = useState('');
+  const [contactInfo, setContactInfo] = useState({ email: '', mobile: '' });
+
+  // Fetch email and mobile from the account table
+  useEffect(() => {
+    const fetchContactInfo = async () => {
+      try {
+        const snapshot = await get(ref(database, 'account')); // Adjust this path according to your structure
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          setContactInfo({
+            email: data.email || 'Email not found', // Adjust based on your data structure
+            address: data.address || 'Mobile not found',
+            phone: data.phone || 'Mobile not found',
+          });
+        } else {
+          setContactInfo({ email: 'No email available', mobile: 'No mobile available' });
+        }
+      } catch (error) {
+        console.error('Error fetching contact info: ', error);
+        setContactInfo({ email: 'Failed to load email', mobile: 'Failed to load mobile' });
+      }
+    };
+
+    fetchContactInfo();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,23 +85,21 @@ const ContactUs = () => {
                 <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-4 mt-1" />
                 <span>
                   <strong>Address:</strong><br />
-                  GlenView 2 High School,<br />
-                  9480 1st Drive, Glenview 3,<br />
-                  Harare, Zimbabwe
+                  {contactInfo.address}
                 </span>
               </div>
               <div className="w-full mb-4 flex">
                 <FontAwesomeIcon icon={faPhone} className="mr-4 mt-1" />
                 <span>
                   <strong>Phone:</strong><br />
-                  +263 04692501, +263 04690070
+                  {contactInfo.phone}
                 </span>
               </div>
               <div className="w-full mb-4 flex">
                 <FontAwesomeIcon icon={faEnvelope} className="mr-4 mt-1" />
                 <span>
                   <strong>Email:</strong><br />
-                  info@glenview2high.com
+                  {contactInfo.email}
                 </span>
               </div>
             </div>

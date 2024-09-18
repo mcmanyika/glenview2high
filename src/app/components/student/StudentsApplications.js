@@ -10,7 +10,7 @@ const AdmissionList = () => {
 
   const [admissions, setAdmissions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5); // Number of admissions per page
+  const [itemsPerPage] = useState(10); // Number of admissions per page
   const [selectedAdmission, setSelectedAdmission] = useState(null); // For modal data
   const [modalOpen, setModalOpen] = useState(false); // For modal visibility
   const [formData, setFormData] = useState({}); // For the form data
@@ -70,6 +70,11 @@ const AdmissionList = () => {
       editedAt: new Date().toISOString(), // Add the current timestamp
     };
 
+    if (formData.status === 'Accepted' && !formData.studentNumber) {
+      // Generate a Student Number if the status is 'Accepted' and no Student Number exists
+      updatedData.studentNumber = `STID-${Math.floor(1000 + Math.random() * 9000)}`;
+    }
+
     const admissionsRef = ref(database, `userTypes/${selectedAdmission.id}`);
     update(admissionsRef, updatedData)
       .then(() => {
@@ -102,7 +107,7 @@ const AdmissionList = () => {
   return (
     <div className="p-4 bg-white shadow-md rounded-md">
       <div className="flex justify-between items-center w-full">
-        <div className="text-2xl font-semibold mb-4">Admission List</div>
+        <div className="text-2xl font-semibold mb-4">Accounts List</div>
         <div className="three-dots flex flex-col justify-between h-4 space-y-1">
           <Link href="/admin/admission">
             <div className="w-1 h-1 bg-black rounded-full"></div>
@@ -124,7 +129,7 @@ const AdmissionList = () => {
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border">
           <thead>
-            <tr className="text-left">
+            <tr className='text-left'>
               <th className="py-2 px-4 text-sm">Account ID</th>
               <th className="py-2 px-4 text-sm">First Name</th>
               <th className="py-2 px-4 text-sm">Last Name</th>
@@ -170,9 +175,7 @@ const AdmissionList = () => {
             <button
               key={i + 1}
               onClick={() => paginate(i + 1)}
-              className={`px-3 py-1 mx-1 text-sm rounded ${
-                currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200"
-              }`}
+              className={`px-3 py-1 mx-1 text-sm rounded ${currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200"}`}
             >
               {i + 1}
             </button>
@@ -188,7 +191,7 @@ const AdmissionList = () => {
             <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <div>
-                  <label className="block mb-2">Admission ID</label>
+                  <label className="block mb-2">Account ID</label>
                   <input
                     type="text"
                     name="admissionId"
@@ -220,18 +223,21 @@ const AdmissionList = () => {
                 </div>
                 <div>
                   <label className="block mb-2">Gender</label>
-                  <input
-                    type="text"
+                  <select
                     name="gender"
                     value={formData.gender}
                     onChange={handleInputChange}
                     className="border rounded w-full px-3 py-2"
-                  />
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
                 </div>
                 <div>
                   <label className="block mb-2">Date of Birth</label>
                   <input
-                    type="text"
+                    type="date"
                     name="dateOfBirth"
                     value={formData.dateOfBirth}
                     onChange={handleInputChange}
@@ -241,11 +247,12 @@ const AdmissionList = () => {
                 <div>
                   <label className="block mb-2">Email</label>
                   <input
-                    type="text"
+                    type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
                     className="border rounded w-full px-3 py-2"
+                    disabled
                   />
                 </div>
                 <div>
@@ -270,27 +277,24 @@ const AdmissionList = () => {
                 </div>
                 <div>
                   <label className="block mb-2">Status</label>
-                  <input
-                    type="text"
+                  <select
                     name="status"
                     value={formData.status}
                     onChange={handleInputChange}
                     className="border rounded w-full px-3 py-2"
-                  />
+                  >
+                    <option value="">Select Status</option>
+                    <option value="Accepted">Accepted</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Rejected">Rejected</option>
+                  </select>
                 </div>
               </div>
               <div className="flex justify-end">
-                <button
-                  type="button"
-                  onClick={closeModal}
-                  className="bg-gray-500 text-white px-4 py-2 rounded-md mr-2"
-                >
+                <button type="button" onClick={closeModal} className="mr-4 px-4 py-2 bg-gray-300 rounded-md">
                   Cancel
                 </button>
-                <button
-                  type="submit"
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md"
-                >
+                <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-md">
                   Save Changes
                 </button>
               </div>

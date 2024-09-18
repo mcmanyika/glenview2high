@@ -104,11 +104,13 @@ const AdminLayout = ({ children }) => {
 
       <aside className={`fixed z-40 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 md:relative md:translate-x-0 w-42 bg-main text-white p-4 min-h-screen rounded-tr-xl flex flex-col`}>
         <div className="flex justify-center items-center pt-10 mb-20">
+        <Link href='/'>
           {logoUrl ? (
             <Image src={logoUrl} alt="Logo" width={70} height={60} className='rounded-full' />
           ) : (
             <div className="w-14 h-14 bg-gray-300 rounded-full animate-pulse" /> // Placeholder while loading
           )}
+          </Link>
         </div>
         <nav className="flex-1"> 
           <TitleList titles={titles} onSignOut={handleSignOut} /> {/* Pass handleSignOut to TitleList */}
@@ -123,11 +125,13 @@ const AdminLayout = ({ children }) => {
         <header className="flex items-center justify-between bg-blue-400 text-white p-4 md:hidden">
           <div className="flex items-center">
             <FaBars className="cursor-pointer text-2xl mr-4" onClick={toggleMobileSidebar} />
+            <Link href='/'>
             {logoUrl ? (
               <Image src={logoUrl} alt="Logo" width={100} height={30} />
             ) : (
               <div className="w-24 h-8 bg-gray-300 animate-pulse" /> // Placeholder while loading
             )}
+            </Link>
           </div>
         </header>
         <main className="flex-1 p-4 md:p-6">

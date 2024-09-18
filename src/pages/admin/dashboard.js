@@ -51,6 +51,9 @@ const Dashboard = () => {
                 case 'staff':
                   setSelectedComponent(<AdminDashboard />);
                   break;
+                default:
+                  setSelectedComponent(<StudentDash />);
+                  break;
               }
             } else {
               console.log('No user found with this email.');

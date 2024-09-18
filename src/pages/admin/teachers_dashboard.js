@@ -1,7 +1,13 @@
-
+import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 import withAuth from '../../../utils/withAuth';
 import AdminLayout from './adminLayout';
+import GenderCount from '../../app/components/teachers/utils/GenderCount';
 import Students from '../../app/components/teachers/utils/Students';
+import TeacherCounts from '../../app/components/notice/TeacherCounts';
+import StatusPieChart from '../../app/components/exams/StatusPieChart';
+import CompletedExamsPassRatePieChart from '../../app/components/exams/CompletedExamsPassRatePieChart';
+import Link from 'next/link';
 import StudentGenderCount from '../../app/components/teachers/utils/StudentGenderCount';
 import ExamResults from '../../app/components/exams/ExamResults';
 

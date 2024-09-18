@@ -8,22 +8,29 @@ import { faMapMarkerAlt, faPhone, faEnvelope } from '@fortawesome/free-solid-svg
 
 const ContactUs = () => {
   const [name, setName] = useState('');
-  const [mobile, setMobile] = useState(''); // Changed to mobile
+  const [email, setEmail] = useState('');
+  const [mobile, setMobile] = useState('');
   const [message, setMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate the mobile number
-    const mobilePattern = /^\+2637\d{8}$/; // Zimbabwe mobile number pattern
+    const mobilePattern = /^\+2637\d{8}$/;
     if (!mobilePattern.test(mobile)) {
-      toast.error('Please enter a valid Zimbabwe mobile number (e.g., +2637XXXXXXXX)');
+      toast.error('Please enter a valid Zimbabwe mobile number without spaces (e.g., +2637XXXXXXXX)');
+      return;
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+      toast.error('Please enter a valid email address.');
       return;
     }
 
     const contactData = {
       name,
-      mobile, // Updated to mobile
+      email,
+      mobile,
       message,
       submittedAt: new Date().toISOString(),
     };
@@ -32,7 +39,8 @@ const ContactUs = () => {
       await push(ref(database, 'contacts'), contactData);
       toast.success('Form submitted successfully!');
       setName('');
-      setMobile(''); // Reset mobile
+      setEmail('');
+      setMobile('');
       setMessage('');
     } catch (error) {
       console.error('Error submitting form: ', error);
@@ -77,6 +85,7 @@ const ContactUs = () => {
         <div className="flex-1 flex flex-col justify-center">
           <form onSubmit={handleSubmit} className="md:p-8 text-gray-500 font-thin w-full">
             <h2 className="text-2xl mb-4">Contact Us</h2>
+
             <div className="mb-4">
               <label className="block text-sm font-bold mb-2" htmlFor="name">Name</label>
               <input
@@ -88,18 +97,34 @@ const ContactUs = () => {
                 className="w-full p-2 border rounded"
               />
             </div>
-            <div className="mb-4">
-              <label className="block text-sm font-bold mb-2" htmlFor="mobile">Mobile Number</label>
-              <input
-                id="mobile"
-                type="tel"
-                value={mobile}
-                onChange={(e) => setMobile(e.target.value)}
-                required
-                placeholder="+2637XXXXXXXX"
-                className="w-full p-2 border rounded"
-              />
+
+            {/* Flex container for email and mobile */}
+            <div className="flex flex-col md:flex-row md:space-x-4">
+              <div className="mb-4 w-full md:w-1/2">
+                <label className="block text-sm font-bold mb-2" htmlFor="email">Email</label>
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full p-2 border rounded"
+                />
+              </div>
+              <div className="mb-4 w-full md:w-1/2">
+                <label className="block text-sm font-bold mb-2" htmlFor="mobile">Mobile Number</label>
+                <input
+                  id="mobile"
+                  type="tel"
+                  value={mobile}
+                  onChange={(e) => setMobile(e.target.value)}
+                  required
+                  placeholder="+2637XXXXXXXX"
+                  className="w-full p-2 border rounded"
+                />
+              </div>
             </div>
+
             <div className="mb-4">
               <label className="block text-sm font-bold mb-2" htmlFor="message">Message</label>
               <textarea
@@ -110,6 +135,7 @@ const ContactUs = () => {
                 className="w-full p-2 border rounded"
               ></textarea>
             </div>
+
             <button
               type="submit"
               className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
@@ -117,16 +143,16 @@ const ContactUs = () => {
               Submit
             </button>
           </form>
-          <ToastContainer 
-            position="bottom-center" 
-            autoClose={5000} 
-            hideProgressBar={false} 
-            newestOnTop={false} 
-            closeOnClick 
-            rtl={false} 
-            pauseOnFocusLoss 
-            draggable 
-            pauseOnHover 
+          <ToastContainer
+            position="bottom-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
             theme="dark"
           />
         </div>

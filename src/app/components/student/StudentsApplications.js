@@ -16,9 +16,8 @@ const AdmissionList = () => {
   const [formData, setFormData] = useState({}); // For the form data
   const [searchQuery, setSearchQuery] = useState(''); // For search query
 
-  // Fetch admissions data from Firebase on component mount
   useEffect(() => {
-    const admissionsRef = ref(database, 'admissions');
+    const admissionsRef = ref(database, 'userTypes');
     onValue(admissionsRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
@@ -71,7 +70,12 @@ const AdmissionList = () => {
       editedAt: new Date().toISOString(), // Add the current timestamp
     };
 
-    const admissionsRef = ref(database, `admissions/${selectedAdmission.id}`);
+    if (formData.status === 'Accepted' && !formData.studentNumber) {
+      // Generate a Student Number if the status is 'Accepted' and no Student Number exists
+      updatedData.studentNumber = `STID-${Math.floor(1000 + Math.random() * 9000)}`;
+    }
+
+    const admissionsRef = ref(database, `userTypes/${selectedAdmission.id}`);
     update(admissionsRef, updatedData)
       .then(() => {
         closeModal(); // Close the modal after successful update
@@ -88,7 +92,6 @@ const AdmissionList = () => {
     }
   };
 
-  // Close modal when clicking outside of it
   useEffect(() => {
     if (modalOpen) {
       document.addEventListener('mousedown', handleClickOutside);
@@ -103,14 +106,14 @@ const AdmissionList = () => {
 
   return (
     <div className="p-4 bg-white shadow-md rounded-md">
-      <div className="flex justify-between items-center w-full">
-        <div className="text-2xl font-semibold mb-4">Admission List</div>
-        <div className="three-dots flex flex-col justify-between h-4 space-y-1">
-          <Link href="/admin/admission">
-            <div className="w-1 h-1 bg-black rounded-full"></div>
-          </Link>
-        </div>
-      </div>
+        <div className="flex justify-between items-center w-full">
+            <div className="text-2xl font-semibold mb-4">Admission List</div>
+            <div className="three-dots flex flex-col justify-between h-4 space-y-1">
+                <Link href="/admin/admission">
+                    <div className="w-1 h-1 bg-black rounded-full"></div>
+                </Link>
+            </div>
+            </div>
 
       {/* Search Bar */}
       <div className="mb-4">
@@ -123,29 +126,43 @@ const AdmissionList = () => {
         />
       </div>
 
-      {/* Grid View */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {currentAdmissions.map((admission) => (
-          <div
-            key={admission.id}
-            className="p-4 border rounded shadow hover:bg-gray-100 cursor-pointer"
-            onClick={() => openModal(admission)} // Open modal on item click
-          >
-            <div className="font-semibold text-lg mb-2 capitalize">
-              {admission.firstName} {admission.lastName}
-            </div>
-            <p className="capitalize"><strong>Gender:</strong> {admission.gender}</p>
-            {admission.dateOfBirth && (
-              <p><strong>Date of Birth:</strong> {admission.dateOfBirth}</p>
-            )}
-            <p><strong>Email:</strong> {admission.email}</p>
-            {admission.class && (
-              <p><strong>Class:</strong> {admission.class}</p>
-            )}
-            <p><strong>Phone:</strong> {admission.phone}</p>
-            <p><strong>Status:</strong> {admission.status}</p>
-          </div>
-        ))}
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white border">
+          <thead>
+            <tr className='text-left'>
+              <th className="py-2 px-4 text-sm">Admission ID</th>
+              <th className="py-2 px-4 text-sm">Student ID</th>
+              <th className="py-2 px-4 text-sm">First Name</th>
+              <th className="py-2 px-4 text-sm">Last Name</th>
+              <th className="py-2 px-4 text-sm">Gender</th>
+              <th className="py-2 px-4 text-sm">Date of Birth</th>
+              <th className="py-2 px-4 text-sm">Email</th>
+              <th className="py-2 px-4 text-sm">Class</th>
+              <th className="py-2 px-4 text-sm">Phone</th>
+              <th className="py-2 px-4 text-sm">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentAdmissions.map((admission) => (
+              <tr
+                key={admission.id}
+                className="hover:bg-gray-100 cursor-pointer"
+                onClick={() => openModal(admission)} // Open modal on row click
+              >
+                <td className="py-2 px-4 text-sm">{admission.admissionId}</td>
+                <td className="py-2 px-4 text-sm">{admission.studentNumber || 'N/A'}</td>
+                <td className="py-2 px-4 text-sm">{admission.firstName}</td>
+                <td className="py-2 px-4 text-sm">{admission.lastName}</td>
+                <td className="py-2 px-4 text-sm">{admission.gender}</td>
+                <td className="py-2 px-4 text-sm">{admission.dateOfBirth}</td>
+                <td className="py-2 px-4 text-sm">{admission.email}</td>
+                <td className="py-2 px-4 text-sm">{admission.class}</td>
+                <td className="py-2 px-4 text-sm">{admission.phone}</td>
+                <td className="py-2 px-4 text-sm">{admission.status}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       {/* Pagination */}
@@ -176,11 +193,11 @@ const AdmissionList = () => {
             <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <div>
-                  <label className="block mb-2">Profile ID</label>
+                  <label className="block mb-2">Admission ID</label>
                   <input
                     type="text"
                     name="admissionId"
-                    value={formData.userID}
+                    value={formData.admissionId}
                     onChange={handleInputChange}
                     className="border rounded w-full px-3 py-2"
                     disabled
@@ -266,21 +283,45 @@ const AdmissionList = () => {
                     className="border rounded w-full px-3 py-2"
                   />
                 </div>
+                <div>
+                  <label className="block mb-2">Status</label>
+                  <select
+                    name="status"
+                    value={formData.status}
+                    onChange={handleInputChange}
+                    className="border rounded w-full px-3 py-2"
+                  >
+                    <option value="">Select Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Accepted">Accepted</option>
+                    <option value="Rejected">Rejected</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block mb-2">Student Number</label>
+                  <input
+                    type="text"
+                    name="studentNumber"
+                    value={formData.studentNumber}
+                    onChange={handleInputChange}
+                    className="border rounded w-full px-3 py-2"
+                    disabled
+                  />
+                </div>
               </div>
-
               <div className="flex justify-end">
+                <button
+                  type="submit"
+                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                >
+                  Save Changes
+                </button>
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="px-4 py-2 bg-gray-400 text-white rounded mr-2"
+                  className="ml-2 bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
                 >
                   Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-blue-500 text-white rounded"
-                >
-                  Save Changes
                 </button>
               </div>
             </form>

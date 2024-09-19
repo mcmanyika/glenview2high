@@ -8,7 +8,7 @@ import { setUserID } from '../../app/store'; // Adjust the path if needed
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // FontAwesome icons
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'; // Spinner icon
 
-import StudentsApplications from '../../app/components/student/StudentsApplications';
+import Accounts from '../../app/components/student/Accounts';
 import AdminLayout from './adminLayout';
 import withAuth from '../../../utils/withAuth';
 
@@ -71,7 +71,7 @@ const AdmissionList = () => {
 
   return (
     <AdminLayout>
-        <StudentsApplications />
+        <Accounts />
     </AdminLayout>
   )
 }

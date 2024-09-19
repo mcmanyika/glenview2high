@@ -4,7 +4,7 @@ import { ref, onValue, update } from 'firebase/database';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 
-const AdmissionList = () => {
+const Accounts = () => {
   const { data: session } = useSession();
   const loggedInUserEmail = session?.user?.email || ""; // Get the logged-in user's email
 
@@ -126,41 +126,21 @@ const AdmissionList = () => {
         />
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border">
-          <thead>
-            <tr className='text-left'>
-              <th className="py-2 px-4 text-sm">Account ID</th>
-              <th className="py-2 px-4 text-sm">First Name</th>
-              <th className="py-2 px-4 text-sm">Last Name</th>
-              <th className="py-2 px-4 text-sm">Gender</th>
-              <th className="py-2 px-4 text-sm">Date of Birth</th>
-              <th className="py-2 px-4 text-sm">Email</th>
-              <th className="py-2 px-4 text-sm">Class</th>
-              <th className="py-2 px-4 text-sm">Phone</th>
-              <th className="py-2 px-4 text-sm">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentAdmissions.map((admission) => (
-              <tr
-                key={admission.id}
-                className="hover:bg-gray-100 cursor-pointer"
-                onClick={() => openModal(admission)} // Open modal on row click
-              >
-                <td className="py-2 px-4 text-sm">{admission.userID}</td>
-                <td className="py-2 px-4 text-sm">{admission.firstName}</td>
-                <td className="py-2 px-4 text-sm">{admission.lastName}</td>
-                <td className="py-2 px-4 text-sm">{admission.gender}</td>
-                <td className="py-2 px-4 text-sm">{admission.dateOfBirth}</td>
-                <td className="py-2 px-4 text-sm">{admission.email}</td>
-                <td className="py-2 px-4 text-sm">{admission.class}</td>
-                <td className="py-2 px-4 text-sm">{admission.phone}</td>
-                <td className="py-2 px-4 text-sm">{admission.status}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      {/* Grid of Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {currentAdmissions.map((admission) => (
+          <div
+            key={admission.id}
+            className="bg-gray-50 p-4 rounded-md shadow-md hover:bg-gray-100 cursor-pointer"
+            onClick={() => openModal(admission)}
+          >
+            <p className="text-lg font-bold mb-2 capitalize">{admission.firstName} {admission.lastName}</p>
+            <p className="text-sm mb-1"><span className="font-semibold">Email:</span> {admission.email}</p>
+            <p className="text-sm mb-1"><span className="font-semibold">Class:</span> {admission.class}</p>
+            <p className="text-sm mb-1"><span className="font-semibold">Phone:</span> {admission.phone}</p>
+            <p className="text-sm mb-1"><span className="font-semibold">Status:</span> {admission.status}</p>
+          </div>
+        ))}
       </div>
 
       {/* Pagination */}
@@ -306,4 +286,4 @@ const AdmissionList = () => {
   );
 };
 
-export default AdmissionList;
+export default Accounts;

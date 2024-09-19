@@ -168,8 +168,6 @@ const UserTypeSelector = ({ userEmail }) => {
               <option value="student">Student</option>
               <option value="teacher">Teacher</option>
               <option value="staff">Staff</option>
-              <option value="parent">Parent</option>
-              <option value="contractor">Contractor</option>
             </select>
           </div>
 

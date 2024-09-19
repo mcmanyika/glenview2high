@@ -39,7 +39,7 @@ const NewStudents = () => {
             <p className="mt-4 text-base md:text-lg">As a new student you can now apply online, click below to start the process.</p>
             <Link href='/admin/dashboard'>
             <button
-              className="inline-block mt-4 px-6 py-2 bg-white text-black rounded-full transition duration-300"
+              className="inline-block mt-4 px-6 py-2 bg-white text-gray-400 rounded-full transition duration-300"
             >
               Apply Now
             </button>

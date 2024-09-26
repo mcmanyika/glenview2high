@@ -107,7 +107,7 @@ const UserTypeSelector = ({ userEmail }) => {
 
   return (
     <div className="p-4 bg-white shadow-md rounded-md">
-      <h2 className="text-2xl font-semibold mb-4">User Details Form</h2>
+      <h2 className="text-2xl font-semibold mb-4">Account Registration</h2>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-4 mb-4">
           <div>

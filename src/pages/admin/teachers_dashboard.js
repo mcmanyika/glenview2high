@@ -10,7 +10,7 @@ const TeacherDashboard = () => {
 
   return (
     <AdminLayout>
-      <div className="flex flex-col">
+      <div className="flex flex-col h-screen overflow-y-auto">
         <div className="w-full">
           <StudentGenderCount />
           <div className="w-full flex mt-4">
@@ -19,11 +19,11 @@ const TeacherDashboard = () => {
             </div>
           </div>
           <div className="w-full flex mt-4">
-            <div className="bg-white flex-1 border shadow-sm rounded  relative">
+            <div className="bg-white flex-1 border shadow-sm rounded relative">
               <ExamResults />
             </div>
           </div>
-          <div className="bg-white border shadow-sm rounded mt-4 ">
+          <div className="bg-white border shadow-sm rounded mt-4">
             <Students />
           </div>
         </div>

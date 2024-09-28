@@ -24,11 +24,12 @@ const BlogDetails = () => {
   }, [id]);
 
   return (
-    <Layout templateText={blog ? blog.title : 'Loading...'}>
+    <Layout>
       <div className=" text-2xl">
         {blog ? (
           <>
             <div className="text-gray-800 mb-6">
+            <p className='capitalize m-3'>{blog.title}</p>
               <ReactQuill 
                 value={blog.content} 
                 readOnly={true} 

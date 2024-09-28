@@ -65,8 +65,8 @@ export default function Login() {
           <Image
             src="/images/logo.png"
             alt="GlenView 2 High School"
-            width={60}
-            height={60}
+            width={90}
+            height={90}
             className="mx-auto mb-4 rounded-full"
           />
         </Link>
@@ -75,7 +75,7 @@ export default function Login() {
         
         {!session && (
           <>
-            <form onSubmit={handleSignInWithCredentials}>
+            {/* <form onSubmit={handleSignInWithCredentials}>
               <input
                 type="email"
                 placeholder="Email"
@@ -100,7 +100,7 @@ export default function Login() {
                 {loading ? 'Logging in...' : 'Sign in'}
               </button>
             </form>
-            <p className="mt-6">OR</p>
+            <p className="mt-6">OR</p> */}
 
             <button
               onClick={handleGoogleSignIn}

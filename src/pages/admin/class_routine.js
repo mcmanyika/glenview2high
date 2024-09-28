@@ -10,7 +10,7 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons'; // Spinner icon
 
 
 import ClassRoutineForm from '../../app/components/student/ClassRoutineForm'
-import ClassRoutineList  from '../../app/components/student/ClassRoutineList'
+import RoutineList  from '../../app/components/admin/RoutineList'
 import AdminLayout from './adminLayout'
 import withAuth from '../../../utils/withAuth';
 
@@ -78,7 +78,7 @@ function ClassRoutine() {
           <ClassRoutineForm />
         </div>
         <div className='w-full lg:w-3/4 m-3 lg:ml-0 lg:mt-0'>
-          <ClassRoutineList />
+          <RoutineList />
         </div>
       </div>
     </AdminLayout>

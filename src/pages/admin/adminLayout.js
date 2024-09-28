@@ -44,7 +44,7 @@ const AdminLayout = ({ children }) => {
 
             if (userID.startsWith('STFF')) {
               filteredTitles = filteredTitles.filter(title =>
-                ['Dashboard', 'Notice', 'Admission', 'Contact Us', 'Payments'].includes(title.title)
+                ['Dashboard', 'Class Routine', 'Notice', 'Admission', 'Contact Us', 'Payments'].includes(title.title)
               );
             }
 
@@ -56,7 +56,7 @@ const AdminLayout = ({ children }) => {
 
             if (userID.startsWith('TCHR')) {
               filteredTitles = filteredTitles.filter(title =>
-                ['Dashboard', 'Class Routine', 'Exams', 'Notice', 'Events', 'Add Class'].includes(title.title)
+                ['Dashboard',  'Exams', 'Notice', 'Events', 'Add Class'].includes(title.title)
               );
             }
 

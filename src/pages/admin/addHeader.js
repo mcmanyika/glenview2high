@@ -101,7 +101,7 @@ export default function AddHeader() {
                 </div>
                 <button 
                     onClick={handleAddData} 
-                    className='bg-blue text-white p-2 rounded w-full max-w-xs hover:bg-blue-600 transition duration-200'
+                    className='bg-main text-white p-2 rounded w-full max-w-xs hover:bg-blue-600 transition duration-200'
                 >
                     Add Data
                 </button>

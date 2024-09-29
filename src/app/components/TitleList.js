@@ -31,7 +31,7 @@ const TitleList = ({ titles, onSignOut }) => {
           <li key={rw.id} className="mb-4 flex flex-col items-center">
             <Link href={rw.link} className="flex flex-col items-center" aria-label={rw.title}>
               <IconComponent className="text-2xl" />
-              <div className="text-center font-thin p-2 cursor-pointer w-full">{rw.title}</div>
+              <div className="text-center font-thin p-2 cursor-pointer w-full capitalize">{rw.title}</div>
             </Link>
           </li>
         );

@@ -24,7 +24,11 @@ const BlogList = () => {
       (snapshot) => {
         const blogData = [];
         snapshot.forEach((childSnapshot) => {
-          blogData.push({ id: childSnapshot.key, ...childSnapshot.val() });
+          const blog = { id: childSnapshot.key, ...childSnapshot.val() };
+          // Only include blogs that are published
+          if (blog.status === 'Published') {
+            blogData.push(blog);
+          }
         });
 
         // Sort blogs by createdAt in descending order

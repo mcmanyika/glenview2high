@@ -9,7 +9,7 @@ import { FaTrash } from 'react-icons/fa'; // Import the delete icon
 const BlogList = () => {
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(5); // Number of posts per page
+  const [postsPerPage] = useState(4); // Number of posts per page
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null); // State to store the post being edited
 

@@ -2,10 +2,10 @@ import React from 'react';
 
 const BlogPost = ({ title, category, createdAt, status }) => {
   return (
-    <div className="p-4 bg-white rounded shadow-md mb-4">
-      <h2 className="text-xl font-bold">{title}</h2>
+    <div className="p-2 bg-white  border-b mb-4">
+      <h2 className="text-lg font-bold uppercase">{title}</h2>
       <div className="text-gray-600 mb-2">
-        <span className="mr-4">Category: {category}</span>
+        <span className="mr-4">Category: {category}</span> <br/>
         <span>Created At: {new Date(createdAt).toLocaleString()}</span>
       </div>
       <div className="text-sm">

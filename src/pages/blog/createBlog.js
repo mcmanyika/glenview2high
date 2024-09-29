@@ -7,8 +7,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
 
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
-import 'react-quill/dist/quill.snow.css';
+// Dynamically import SunEditor for client-side rendering only
+const SunEditor = dynamic(() => import('suneditor-react'), { ssr: false });
+import 'suneditor/dist/css/suneditor.min.css'; // Import SunEditor styles
 
 const CreateBlog = () => {
   const [title, setTitle] = useState('');
@@ -17,8 +18,8 @@ const CreateBlog = () => {
   const [author, setAuthor] = useState('');
 
   useEffect(() => {
-    if (session && session.user && session.user.email) {
-      setAuthor(session.user.email);
+    if (session && session.user) {
+      setAuthor(session.user.name); // Use name from session.user
     }
   }, [session]);
 
@@ -72,37 +73,27 @@ const CreateBlog = () => {
           </div>
           <div className="mb-4">
             <label className="block mb-2">Content</label>
-            <ReactQuill 
-              value={content} 
-              onChange={setContent} 
-              className="border w-full" 
-              style={{ height: '300px' }} // Set the height to 200px
-              modules={{
-                toolbar: [
-                  [{ 'header': [1, 2, false] }],
-                  ['bold', 'italic', 'underline'],
-                  ['link', 'image'],
-                  ['clean'],
+            <SunEditor
+              setContents={content}
+              onChange={setContent}
+              setOptions={{
+                height: 300, // Set editor height
+                buttonList: [
+                  ['undo', 'redo', 'bold', 'italic', 'underline'],
+                  ['list', 'align', 'fontSize', 'formatBlock'],
+                  ['link', 'image', 'video'],
+                  ['fullScreen', 'showBlocks', 'codeView'],
+                  ['preview', 'print'],
                 ],
               }}
-              formats={[
-                'header',
-                'bold',
-                'italic',
-                'underline',
-                'link',
-                'image',
-              ]}
-              required
             />
-            
           </div>
           <button
-              type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-            >
-              Create Blog
-            </button>
+            type="submit"
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            Create Blog
+          </button>
         </form>
       </div>
     </Layout>

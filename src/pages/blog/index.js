@@ -4,34 +4,40 @@ import { database } from '../../../utils/firebaseConfig';
 import Link from 'next/link';
 import Layout from '../../app/components/Layout2';
 import dynamic from 'next/dynamic';
+import { FaSpinner } from 'react-icons/fa'; // Import FaSpinner
 
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
-import 'react-quill/dist/quill.snow.css';
+// Dynamically import SunEditor
+const SunEditor = dynamic(() => import('suneditor-react'), { ssr: false });
+import 'suneditor/dist/css/suneditor.min.css'; // Import SunEditor styles
 
 const BlogList = () => {
   const [blogs, setBlogs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(5); // Change this value to set how many blogs per page
+  const [postsPerPage] = useState(10); // Change this value to set how many blogs per page
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const blogsRef = ref(database, 'blogs');
-    onValue(blogsRef, (snapshot) => {
-      const blogData = [];
-      snapshot.forEach((childSnapshot) => {
-        blogData.push({ id: childSnapshot.key, ...childSnapshot.val() });
-      });
+    onValue(
+      blogsRef,
+      (snapshot) => {
+        const blogData = [];
+        snapshot.forEach((childSnapshot) => {
+          blogData.push({ id: childSnapshot.key, ...childSnapshot.val() });
+        });
 
-      // Sort blogs by createdAt in descending order
-      blogData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        // Sort blogs by createdAt in descending order
+        blogData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-      setBlogs(blogData);
-      setLoading(false);
-    }, (error) => {
-      setError(error);
-      setLoading(false);
-    });
+        setBlogs(blogData);
+        setLoading(false);
+      },
+      (error) => {
+        setError(error);
+        setLoading(false);
+      }
+    );
   }, []);
 
   // Get current blogs for the current page
@@ -47,9 +53,11 @@ const BlogList = () => {
 
   return (
     <Layout templateText="Latest News">
-      <div className="bg-white mt-3 p-4 rounded shadow">
+      <div className="bg-white mt-3 p-4">
         {loading ? (
-          <p>Loading blogs...</p>
+          <div className="flex justify-center">
+            <FaSpinner className="animate-spin text-blue-500" size={40} /> {/* Spinner icon */}
+          </div>
         ) : error ? (
           <p>Error loading blogs: {error.message}</p>
         ) : blogs.length === 0 ? (
@@ -60,17 +68,18 @@ const BlogList = () => {
               {currentBlogs.map((blog) => (
                 <div key={blog.id} className="p-4 border rounded hover:shadow-md">
                   <Link href={`/blog/${blog.id}`}>
-                    <div className="text-blue-500 text-4xl hover:underline capitalize">{blog.title}</div>
+                    <div className="text-blue-500 text-2xl line-clamp-1 hover:underline capitalize">{blog.title}</div>
                   </Link>
                   <p className="text-sm text-gray-600">By {blog.author}</p>
                   <div className="text-gray-700 pt-2">
-                    <div className="truncate-text text-xl" style={{ maxHeight: '3.6em', overflow: 'hidden' }}>
-                      <ReactQuill
-                        value={blog.content}
-                        readOnly={true}
-                        theme="bubble"
-                        style={{ fontSize: '38px' }} // Increased font size
-                      />
+                    <div className="truncate-text text-xl">
+                      {/* Check if blog content contains an image */}
+                      {!/<img\s+[^>]*src=/.test(blog.content) && (
+                        <div
+                          className="blog-content line-clamp-2"
+                          dangerouslySetInnerHTML={{ __html: blog.content }} // Render rich text content
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -94,14 +103,6 @@ const BlogList = () => {
           </>
         )}
       </div>
-
-      <style jsx>{`
-        .truncate-text {
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 2; /* Limit to 2 lines */
-        }
-      `}</style>
     </Layout>
   );
 };

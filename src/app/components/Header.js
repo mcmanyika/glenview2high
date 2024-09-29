@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { FaFacebook, FaHome } from 'react-icons/fa';
 import Link from 'next/link';
-import Image from 'next/image';
 import { ref, onValue, query, orderByChild, equalTo } from 'firebase/database';
 import { database } from '../../../utils/firebaseConfig';
 import { useGlobalState, setIsOverlayVisible } from '../store';
@@ -10,16 +9,17 @@ import { useSession, signIn, signOut } from 'next-auth/react';
 const Header = () => {
   const { data: session } = useSession();
   const [titles, setTitles] = useState([]);
+  const [schoolName, setSchoolName] = useState(''); // State for school name
   const [isSticky, setIsSticky] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [showPopover, setShowPopover] = useState(false);
   const popoverRef = useRef(null);
-
   const [isOverlayVisible] = useGlobalState('isOverlayVisible');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Fetching titles
         const titleRef = ref(database, 'title');
         const statusQuery = query(titleRef, orderByChild('status'), equalTo('Active'));
 
@@ -46,6 +46,19 @@ const Header = () => {
             setTitles(titlesArray);
           } else {
             setTitles([]);
+          }
+        });
+
+        // Fetching school name
+        const schoolRef = ref(database, 'account');
+        onValue(schoolRef, (snapshot) => {
+          const schoolData = snapshot.val();
+          if (schoolData) {
+            // Assuming there's only one account entry and it has a field named 'schoolName'
+            const accountKeys = Object.keys(schoolData);
+            if (accountKeys.length > 0) {
+              setSchoolName(schoolData.schoolName); // Set school name from the first entry
+            }
           }
         });
       } catch (error) {
@@ -105,7 +118,8 @@ const Header = () => {
       {isSticky && (
         <div className='top-0 w-full text-white p-0'>
           <div className='container mx-auto flex text-sm font-thin p-2 mb-2 justify-between'>
-            <div className='flex-1 md:flex space-x-2 hidden'><span>Follow Us</span>
+            <div className='flex-1 md:flex space-x-2 hidden'>
+              <span>Follow Us</span>
               <a
                 href="https://www.facebook.com/groups/497811331424773/"
                 target="_blank"
@@ -114,31 +128,28 @@ const Header = () => {
               >
                 <FaFacebook className="h-5 w-5" />
               </a>
-             
             </div>
             <div className='flex-1 text-right relative'>
               {session ? (
                 <div className="text-right">
-                <Link href="/admin/dashboard" className="inline-flex items-center space-x-2 text-white">
-                  <FaHome />
-                  <span className='pr-3'>My Dashboard </span> |
-                  <button
-                    onClick={() => signOut('google')}
-                    className=" text-white p-1 rounded"
-                  >
-                    Sign Out
-                  </button>
-                </Link>
-              </div>
+                  <Link href="/admin/dashboard" className="inline-flex items-center space-x-2 text-white">
+                    <FaHome />
+                    <span className='pr-3'>My Dashboard </span> |
+                    <button
+                      onClick={() => signOut('google')}
+                      className="text-white p-1 rounded"
+                    >
+                      Sign Out
+                    </button>
+                  </Link>
+                </div>
               ) : (
                 <>
-                 <span className='pr-3'>Welcome Guest</span>|
+                  <span className='pr-3'>Welcome Guest</span>|
                   <Link href='/admin/login'>
-                  <button
-                    className=" text-white p-1 rounded "
-                  >
-                    Sign In
-                  </button>
+                    <button className="text-white p-1 rounded ">
+                      Sign In
+                    </button>
                   </Link>
                 </>
               )}
@@ -148,17 +159,7 @@ const Header = () => {
       )}
       <nav className="max-w-4xl mx-auto flex justify-between items-center p-4">
         <div className={`flex items-center space-x-2 ${isOpen ? 'hidden md:flex' : 'block'}`}>
-          {/* <Link href='/'>
-            <Image
-              src="/images/logo.png"
-              alt="Logo"
-              width={isSticky ? 50 : 70}
-              height={isSticky ? 50 : 80}
-              className="rounded"
-              priority
-            />
-          </Link> */}
-          <h1 className="text-sm md:text-2xl font-normal uppercase flex">GlenView 2 High</h1>
+          <h1 className="text-sm md:text-2xl font-normal uppercase flex">{schoolName}</h1>
         </div>
         {isSticky && (
           <div className="md:hidden">

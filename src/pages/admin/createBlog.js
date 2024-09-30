@@ -15,7 +15,6 @@ import 'suneditor/dist/css/suneditor.min.css'; // Import SunEditor styles
 
 import AdminLayout from './adminLayout';
 import withAuth from '../../../utils/withAuth';
-import BlogList from '../../app/components/admin/blog/BlogList';
 
 function CreateBlog() {
     const [title, setTitle] = useState('');
@@ -134,21 +133,20 @@ function CreateBlog() {
     return (
         <AdminLayout>
             <div className='flex'>
-                <div className='flex-1'>
+                <div className='w-4/5'>
                     <div className="p-6 bg-white rounded shadow mt-3">
                         <form onSubmit={handleSubmit}>
                             <div className="mb-4">
-                                <label className="block mb-2">Title</label>
                                 <input
                                     type="text"
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
                                     className="border px-4 py-2 w-full"
+                                    placeholder='Title'
                                     required
                                 />
                             </div>
-                            <div className="mb-4">
-                                <label className="block mb-2">Content</label>
+                            <div className="border">
                                 <SunEditor
                                     setContents={content}
                                     onChange={setContent}
@@ -164,26 +162,27 @@ function CreateBlog() {
                                     }}
                                 />
                             </div>
-                            <div className="mb-4">
-                                <label className="block mb-2">Category</label>
-                                <input
-                                    type="text"
-                                    value={category}
-                                    onChange={(e) => setCategory(e.target.value)}
-                                    className="border px-4 py-2 w-full"
-                                    required
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block mb-2">Status</label>
-                                <select
-                                    value={status}
-                                    onChange={(e) => setStatus(e.target.value)}
-                                    className="border px-4 py-2 w-full"
-                                >
-                                    <option value="draft">Draft</option>
-                                    <option value="published">Published</option>
-                                </select>
+                            <div className='flex w-full mb-4'>
+                                <div className="flex-1 pt-2">
+                                    <input
+                                        type="text"
+                                        value={category}
+                                        onChange={(e) => setCategory(e.target.value)}
+                                        className="border px-4 py-3 w-full"
+                                        placeholder='Category'
+                                        required
+                                    />
+                                </div>
+                                <div className="flex-1 pt-2 ml-2">
+                                    <select
+                                        value={status}
+                                        onChange={(e) => setStatus(e.target.value)}
+                                        className="border px-4 py-3 w-full"
+                                    >
+                                        <option value="draft">Draft</option>
+                                        <option value="published">Published</option>
+                                    </select>
+                                </div>
                             </div>
                             <button
                                 type="submit"
@@ -194,8 +193,8 @@ function CreateBlog() {
                         </form>
                     </div>
                 </div>
-                <div className='flex-1'>
-                    <BlogList />
+                <div>
+                   
                 </div>
             </div>
         </AdminLayout>

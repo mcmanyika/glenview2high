@@ -1,17 +1,21 @@
 import React from 'react';
 
-const BlogPost = ({ title, category, createdAt, status }) => {
+const BlogPost = ({ title, category, createdAt, status, onEditStatus }) => {
   return (
-    <div className="p-2 bg-white  border-b mb-4">
-      <h2 className="text-lg font-bold uppercase">{title}</h2>
-      <div className="text-gray-600 mb-2">
-        <span className="text-sm mr-4">Category: {category}</span> <br/>
-        <span className='text-sm'>Created At: {new Date(createdAt).toLocaleString()}</span>
-      </div>
-      <div className="text-sm">
-        <strong>Status:</strong> {status}
-      </div>
-    </div>
+    <tr className="bg-white border-b">
+      <td className="px-4 py-2">{title}</td>
+      <td className="px-4 py-2">{category}</td>
+      <td className="px-4 py-2">{new Date(createdAt).toLocaleString()}</td>
+      <td className="px-4 py-2">
+        {status}
+        <button
+          className="ml-4 text-blue-500 hover:underline"
+          onClick={onEditStatus}
+        >
+          Edit Status
+        </button>
+      </td>
+    </tr>
   );
 };
 

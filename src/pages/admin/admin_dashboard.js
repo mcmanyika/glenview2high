@@ -4,6 +4,7 @@ import AdminLayout from './adminLayout';
 import GenderCount from '../../app/components/admin/admissions/GenderCount';
 import AdmissionsList from '../../app/components/admin/admissions/AdmissionsList';
 import GenderPieChart from '../../app/components/admin/admissions/GenderPieChart';
+import BlogList from '../../app/components/admin/blog/BlogList';
 
 const AdminDashboard = () => {
   // Fetch the userType from global state
@@ -22,6 +23,7 @@ const AdminDashboard = () => {
               <GenderPieChart />
             </div>
           </div>
+          <BlogList />
         </div>
       </div>
     </AdminLayout>

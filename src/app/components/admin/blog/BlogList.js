@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { ref, get, remove } from 'firebase/database';
+import { ref, get, update } from 'firebase/database';
 import { database } from '../../../../../utils/firebaseConfig'; // Adjust the path if needed
+import { useRouter } from 'next/router'; // Import useRouter
 import BlogPost from './BlogPost'; // Adjust the path if needed
-import StatusModal from './StatusModal'; // Import the StatusModal component
-import { toast } from 'react-toastify';
-import { FaTrash } from 'react-icons/fa'; // Import the delete icon
 
 const BlogList = () => {
+  const router = useRouter(); // Initialize useRouter
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(4); // Number of posts per page
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPost, setSelectedPost] = useState(null); // State to store the post being edited
+  const [postsPerPage] = useState(5); // Number of posts per page
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -46,50 +43,42 @@ const BlogList = () => {
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Open the modal and set the selected post
-  const openModal = (post) => {
-    setSelectedPost(post);
-    setIsModalOpen(true);
-  };
-
-  // Update the local post status after modal close
-  const handleStatusUpdate = (postId, newStatus) => {
-    setPosts(posts.map(post => (post.id === postId ? { ...post, status: newStatus } : post)));
-  };
-
-  // Handle post deletion
-  const handleDelete = async (postId) => {
-    const postRef = ref(database, `blogs/${postId}`);
-    try {
-      await remove(postRef);
-      setPosts(posts.filter(post => post.id !== postId)); // Remove post from local state
-      toast.success('Post deleted successfully!'); // Notify user
-    } catch (error) {
-      toast.error('Error deleting post: ' + error.message); // Notify error
-    }
-  };
-
   return (
-    <div className="p-6 bg-white m-3">
+    <div className="p-6 bg-white mt-4 rounded">
       <h1 className="text-2xl font-bold mb-4">Blog Posts</h1>
-      {currentPosts.map(post => (
-        <div key={post.id} className="flex justify-between items-center mb-4">
-          <div className='w-full' onClick={() => openModal(post)}>
-            <BlogPost
-              title={post.title}
-              category={post.category} // Assuming category is part of the post data
-              createdAt={post.createdAt}
-              status={post.status} // Assuming status is part of the post data
-            />
-          </div>
-          <div className='p-2'>
-          <button onClick={() => handleDelete(post.id)} className="text-red-500 hover:text-red-700">
-            <FaTrash size={20} />
-          </button>
-
-          </div>
-        </div>
-      ))}
+      
+      <table className="min-w-full border-collapse table-auto text-left">
+        <thead>
+          <tr className="bg-gray-200">
+            <th className="px-4 py-2">Title</th>
+            <th className="px-4 py-2">Category</th>
+            <th className="px-4 py-2">Created At</th>
+            <th className="px-4 py-2">Status</th>
+            <th className="px-4 py-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {currentPosts.map(post => (
+            <tr key={post.id}>
+              <td 
+                className="border px-4 py-2">
+                {post.title}
+              </td>
+              <td className="border px-4 py-2">{post.category}</td>
+              <td className="border px-4 py-2">{new Date(post.createdAt).toLocaleString()}</td>
+              <td className="border px-4 py-2">{post.status}</td>
+              <td className="border px-4 py-2">
+                <button
+                  onClick={() => router.push(`/admin/blogs/${post.id}`)} // Navigate to EditBlog
+                  className="bg-blue-500 text-white px-3 py-1 rounded"
+                >
+                  Edit
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
       {/* Pagination Controls */}
       <div className="flex justify-between mt-4">
@@ -111,14 +100,6 @@ const BlogList = () => {
           Next
         </button>
       </div>
-
-      {/* Status Modal */}
-      <StatusModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        post={selectedPost}
-        onStatusUpdate={handleStatusUpdate}
-      />
     </div>
   );
 };

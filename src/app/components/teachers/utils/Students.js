@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ref, onValue } from 'firebase/database';
 import { database } from '../../../../../utils/firebaseConfig';
-import { FaSpinner, FaMale, FaFemale, FaUsers } from 'react-icons/fa'; // Importing icons
+import { FaSpinner } from 'react-icons/fa'; // Importing icons
 import { useSession } from 'next-auth/react';
 
 const Students = () => {
@@ -14,7 +14,6 @@ const Students = () => {
   const [sortOrder, setSortOrder] = useState('asc');
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const modalRef = useRef(null);
 
   useEffect(() => {
@@ -64,6 +63,9 @@ const Students = () => {
   }, [session, status]);
 
   const filteredStudents = admissions.filter((student) => {
+    // Filter to only show students
+    if (student.userType !== 'student') return false;
+
     const isClassValid = classes.some(cls => cls.className === student.studentClassLevel);
     if (!isClassValid) return false;
 

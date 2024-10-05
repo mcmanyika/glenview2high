@@ -73,8 +73,12 @@ const UserTypeSelector = ({ userEmail }) => {
       formData.phone
     ) {
       try {
+        const createdAt = new Date().toISOString(); // Get current timestamp
         const userRef = ref(database, `userTypes/${formData.userID}`); // Updated to userID
-        await set(userRef, formData);
+        await set(userRef, {
+          ...formData,
+          createdAt, // Add the timestamp field
+        });
         toast.success('User data saved successfully', {
           position: 'bottom-center',
         });
@@ -105,9 +109,16 @@ const UserTypeSelector = ({ userEmail }) => {
     }
   };
 
+  const handleUserTypeSelect = (type) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      userType: type,
+    }));
+  };
+
   return (
     <div className="p-4 bg-white shadow-md rounded-md">
-      <h2 className="text-2xl font-semibold mb-4">Account Registration</h2>
+      <h2 className="text-2xl font-semibold mb-4">Account Details Registration</h2>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-4 mb-4">
           <div>
@@ -140,9 +151,9 @@ const UserTypeSelector = ({ userEmail }) => {
               className="w-full p-2 border border-gray-300 rounded"
               required
             >
-              <option value="" disabled>Select gender...</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
+              <option value="" disabled>Select Gender...</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
             </select>
           </div>
           <div>
@@ -156,19 +167,29 @@ const UserTypeSelector = ({ userEmail }) => {
               required
             />
           </div>
-          <div>
-            <select
-              name="userType"
-              value={formData.userType}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
-              required
-            >
-              <option value="" disabled>Select user type...</option>
-              <option value="student">Student</option>
-              <option value="teacher">Teacher</option>
-              <option value="staff">Staff</option>
-            </select>
+
+          <div className="flex flex-col mb-4">
+            <label className="text-lg font-semibold mb-2">Specify your Account</label>
+            <div className="flex space-x-4 mx-auto">
+              <div
+                className={`cursor-pointer p-2 border border-gray-300 rounded ${formData.userType === 'student' ? 'bg-main2' : ''}`}
+                onClick={() => handleUserTypeSelect('student')}
+              >
+                Student
+              </div>
+              <div
+                className={`cursor-pointer p-2 border border-gray-300 rounded ${formData.userType === 'teacher' ? 'bg-main2' : ''}`}
+                onClick={() => handleUserTypeSelect('teacher')}
+              >
+                Teacher
+              </div>
+              <div
+                className={`cursor-pointer p-2 border border-gray-300 rounded ${formData.userType === 'staff' ? 'bg-main2' : ''}`}
+                onClick={() => handleUserTypeSelect('staff')}
+              >
+                Staff
+              </div>
+            </div>
           </div>
 
           {formData.userType === 'student' && (

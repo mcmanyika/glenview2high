@@ -151,8 +151,8 @@ function EditBlog() {
                                         onChange={(e) => setStatus(e.target.value)}
                                         className="border px-4 py-3 w-full"
                                     >
-                                        <option value="draft">Draft</option>
-                                        <option value="published">Published</option>
+                                        <option value="Draft">Draft</option>
+                                        <option value="Published">Published</option>
                                     </select>
                                 </div>
                             </div>

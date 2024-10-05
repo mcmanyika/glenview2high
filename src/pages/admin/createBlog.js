@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { ref, push, get } from 'firebase/database'; // Import 'get' from Firebase
+import { ref, push, get } from 'firebase/database';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react'; // Import useSession for session handling
-import { database } from '../../../utils/firebaseConfig'; // Adjust the path if needed
-import { setUserID } from '../../app/store'; // Adjust the path if needed
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // FontAwesome icons
-import { faSpinner } from '@fortawesome/free-solid-svg-icons'; // Spinner icon
+import { useSession } from 'next-auth/react';
+import { database } from '../../../utils/firebaseConfig';
+import { setUserID } from '../../app/store';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import dynamic from 'next/dynamic';
 const SunEditor = dynamic(() => import('suneditor-react'), { ssr: false });
-import 'suneditor/dist/css/suneditor.min.css'; // Import SunEditor styles
+import 'suneditor/dist/css/suneditor.min.css';
 
 import AdminLayout from './adminLayout';
 import withAuth from '../../../utils/withAuth';
@@ -19,43 +19,53 @@ import withAuth from '../../../utils/withAuth';
 function CreateBlog() {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const [category, setCategory] = useState(''); // New state for category
-    const [status, setStatus] = useState('draft'); // New state for status (draft or published)
-    const { data: session, status: sessionStatus } = useSession(); // Get session and status from next-auth
-    const [userType, setUserType] = useState(null); // State for user type
+    const [category, setCategory] = useState(''); // State for category
+    const [status, setStatus] = useState('draft');
+    const { data: session, status: sessionStatus } = useSession();
+    const [userType, setUserType] = useState(null);
     const [author, setAuthor] = useState('');
-    const [loading, setLoading] = useState(true); // Loading state
-    const [error, setError] = useState(null); // Error state
-    const router = useRouter(); // Router for navigation
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const router = useRouter();
+
+    // Predefined categories for the dropdown
+    const categories = [
+        'School News',
+        'Events',
+        'Student Life',
+        'Parent Resources',
+        'Teacher Insights',
+        'Educational Trends',
+        'Extracurricular Activities',
+        'Health & Wellness',
+        'Alumni Updates',
+        'Technology in Education',
+    ];
 
     useEffect(() => {
         if (sessionStatus === 'authenticated') {
             const fetchUserType = async () => {
                 try {
-                    const userEmail = session.user.email; // Get the user's email from session
-                    const userRef = ref(database, 'userTypes'); // Reference to the userTypes node in Firebase
-                    const snapshot = await get(userRef); // Get the data from Firebase
+                    const userEmail = session.user.email;
+                    const userRef = ref(database, 'userTypes');
+                    const snapshot = await get(userRef);
 
                     if (snapshot.exists()) {
-                        const users = snapshot.val(); // Get the user data
-                        const foundUserID = Object.keys(users).find(id => users[id].email === userEmail); // Find user by email
+                        const users = snapshot.val();
+                        const foundUserID = Object.keys(users).find(id => users[id].email === userEmail);
 
                         if (foundUserID) {
                             const userData = users[foundUserID];
-                            setUserType(userData.userType); // Set user type
-                            setUserID(foundUserID); // Store user ID in the state
+                            setUserType(userData.userType);
+                            setUserID(foundUserID);
                         } else {
-                            console.log('No user found with this email.');
-                            router.push('/admin/user'); // Redirect if no user is found
+                            router.push('/admin/user');
                         }
-                    } else {
-                        console.log('No user types found.');
                     }
                 } catch (error) {
-                    console.error('Error fetching user type:', error); // Log any error
-                    setError('Error fetching user type. Please try again later.'); // Set error message
+                    setError('Error fetching user type. Please try again later.');
                 } finally {
-                    setLoading(false); // Stop loading
+                    setLoading(false);
                 }
             };
 
@@ -75,8 +85,8 @@ function CreateBlog() {
         const newBlog = {
             title,
             content,
-            category, // Add category to the new blog object
-            status, // Add status to the new blog object
+            category, // Add category to the blog
+            status,
             author,
             createdAt: new Date().toISOString(),
         };
@@ -88,7 +98,7 @@ function CreateBlog() {
                 setTitle('');
                 setContent('');
                 setCategory(''); // Reset category
-                setStatus('draft'); // Reset status to draft
+                setStatus('draft');
                 toast.update(toastId, {
                     render: 'Blog post created successfully!',
                     type: 'success',
@@ -108,26 +118,11 @@ function CreateBlog() {
     };
 
     if (loading) {
-        return <p>Loading...</p>; // Show a loading message while fetching user type
+        return <p>Loading...</p>;
     }
 
     if (error) {
-        return <p>{error}</p>; // Display error message
-    }
-
-    if (loading) {
-        return (
-            <div className="flex justify-center items-center h-screen">
-                <FontAwesomeIcon
-                    icon={faSpinner}
-                    className="text-4xl text-blue-500 animate-spin"
-                />
-            </div>
-        );
-    }
-
-    if (error) {
-        return <div>{error}</div>; // Display error message if any
+        return <p>{error}</p>;
     }
 
     return (
@@ -164,14 +159,19 @@ function CreateBlog() {
                             </div>
                             <div className='flex w-full mb-4'>
                                 <div className="flex-1 pt-2">
-                                    <input
-                                        type="text"
+                                    <select
                                         value={category}
                                         onChange={(e) => setCategory(e.target.value)}
                                         className="border px-4 py-3 w-full"
-                                        placeholder='Category'
                                         required
-                                    />
+                                    >
+                                        <option value="">Select Category</option>
+                                        {categories.map((cat, index) => (
+                                            <option key={index} value={cat}>
+                                                {cat}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
                                 <div className="flex-1 pt-2 ml-2">
                                     <select
@@ -179,8 +179,8 @@ function CreateBlog() {
                                         onChange={(e) => setStatus(e.target.value)}
                                         className="border px-4 py-3 w-full"
                                     >
-                                        <option value="draft">Draft</option>
-                                        <option value="published">Published</option>
+                                        <option value="Draft">Draft</option>
+                                        <option value="Published">Published</option>
                                     </select>
                                 </div>
                             </div>
@@ -192,9 +192,6 @@ function CreateBlog() {
                             </button>
                         </form>
                     </div>
-                </div>
-                <div>
-                   
                 </div>
             </div>
         </AdminLayout>

@@ -8,24 +8,28 @@ import { useSession } from 'next-auth/react';
 
 const UploadClassNameForm = () => {
   const { data: session } = useSession();
-  const uploadedBy = session.user.email; // Use email instead of name
+  const uploadedBy = session?.user?.email || ""; // Safeguard in case session is not loaded
 
   const [className, setClassName] = useState("");
-  const [uploadedByState, setUploadedBy] = useState(uploadedBy); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!className) {
+      toast.error("Please select a class name.");
+      return;
+    }
+
     const classData = {
       className,
-      uploadedBy: uploadedByState, 
+      uploadedBy,
     };
 
     try {
       await push(ref(database, "classes"), classData);
       toast.success("Class name uploaded successfully!");
-      // Clear the form
+      // Clear the form after submission
       setClassName("");
-      setUploadedBy(uploadedBy); // Reset uploadedBy to session user's email
     } catch (error) {
       console.error("Error uploading class name: ", error);
       toast.error("Failed to upload class name. Please try again.");
@@ -37,15 +41,20 @@ const UploadClassNameForm = () => {
       <div className="text-2xl font-bold pb-4">Upload Class Name</div>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Class Name
-          </label>
-          <input
-            type="text"
-            value={className}
-            onChange={(e) => setClassName(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
+          <div className="mt-2 grid grid-cols-3 gap-4">
+            {["1A", "2A", "3A", "4A", "5A", "6A"].map((option) => (
+              <label key={option} className="flex items-center">
+                <input
+                  type="radio"
+                  value={option}
+                  checked={className === option}
+                  onChange={(e) => setClassName(e.target.value)}
+                  className="mr-2"
+                />
+                <span>{option}</span>
+              </label>
+            ))}
+          </div>
         </div>
         <button
           type="submit"

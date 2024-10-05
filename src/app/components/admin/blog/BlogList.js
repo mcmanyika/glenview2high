@@ -44,7 +44,7 @@ const BlogList = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="p-6 bg-white mt-4 rounded">
+    <div className="text-sm p-6 bg-white mt-4 rounded">
       <h1 className="text-2xl font-bold mb-4">Blog Posts</h1>
       
       <table className="min-w-full border-collapse table-auto text-left">

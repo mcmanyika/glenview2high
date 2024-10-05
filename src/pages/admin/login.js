@@ -59,12 +59,14 @@ export default function Login() {
   };
 
   return (
-    <SmartBlankLayout>
-      <div className="max-w-lg mx-auto p-6 bg-white bg-opacity-75 rounded shadow-md text-center">
+    <>
+      <div className="flex items-center justify-center min-h-screen bg-cover bg-center"
+      style={{ backgroundImage: "url('https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents3.jpeg?alt=media&token=368a73f2-a805-4330-85b6-24be48315e97')" }}>
+      <div className="w-7xl mx-auto p-6 bg-white bg-opacity-75 rounded shadow-md text-center">
         <Link href='/'>
           <Image
             src="/images/logo.png"
-            alt="GlenView 2 High School"
+            alt=""
             width={90}
             height={90}
             className="mx-auto mb-4 rounded-full"
@@ -114,6 +116,7 @@ export default function Login() {
 
         {session && <p>Redirecting to dashboard...</p>}
       </div>
-    </SmartBlankLayout>
+      </div>
+    </>
   );
 }

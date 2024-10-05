@@ -7,22 +7,32 @@ import GenderPieChart from '../../app/components/admin/admissions/GenderPieChart
 import BlogList from '../../app/components/admin/blog/BlogList';
 
 const AdminDashboard = () => {
-  // Fetch the userType from global state
+  // Fetch the userID from global state
   const [userID] = useGlobalState('userID');
 
   return (
     <AdminLayout>
-      <div className="flex flex-col">
+      <div className="flex flex-col p-4 space-y-4">
+        {/* Gender Count Section */}
         <div className="w-full">
           <GenderCount />
-          <div className="w-full flex flex-col md:flex-row mt-4" style={{ height: '400px', overflowY: 'auto' }}>
-            <div className="w-full md:w-2/4 bg-white border mb-4 md:mb-0 md:mr-1 shadow-sm rounded p-4">
-              <AdmissionsList />
-            </div>
-            <div className="w-full md:w-2/4 bg-white border md:ml-1 shadow-sm rounded p-4">
-              <GenderPieChart />
-            </div>
+        </div>
+
+        {/* Main Content (AdmissionsList and GenderPieChart) */}
+        <div className="w-full flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
+          {/* Admissions List */}
+          <div className="w-full md:w-1/2 bg-white border shadow-sm rounded p-4 overflow-y-auto md:h-auto h-80">
+            <AdmissionsList />
           </div>
+
+          {/* Gender Pie Chart */}
+          <div className="w-full md:w-1/2 bg-white border shadow-sm rounded p-4">
+            <GenderPieChart />
+          </div>
+        </div>
+
+        {/* Blog List Section */}
+        <div className="w-full">
           <BlogList />
         </div>
       </div>

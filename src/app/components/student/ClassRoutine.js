@@ -85,7 +85,7 @@ const ClassRoutine = () => {
                     <td className="p-2 border-b">{getDayOfWeek(entry.date)}</td>
                     <td className="p-2 border-b">{entry.time}</td>
                     <td className="p-2 border-b">{entry.subject}</td>
-                    <td className="p-2 border-b">{entry.teacher}</td>
+                    <td className="p-2 border-b capitalize">{entry.teacher}</td>
                     <td className="p-2 border-b">{entry.date}</td>
                     <td className="p-2 border-b">{entry.room}</td>
                   </tr>

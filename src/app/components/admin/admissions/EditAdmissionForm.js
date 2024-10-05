@@ -11,7 +11,7 @@ const EditAdmissionForm = ({ formData, handleInputChange, handleSubmit, closeMod
           <input
             type="text"
             name="admissionId"
-            value={formData.admissionId}
+            value={formData.userID}
             onChange={handleInputChange}
             className="border rounded w-full px-3 py-2"
             disabled
@@ -111,7 +111,7 @@ const EditAdmissionForm = ({ formData, handleInputChange, handleSubmit, closeMod
             <option value="Rejected">Rejected</option>
           </select>
         </div>
-        <div>
+        {/* <div>
           <label className="block mb-2">Student Number</label>
           <input
             type="text"
@@ -121,7 +121,7 @@ const EditAdmissionForm = ({ formData, handleInputChange, handleSubmit, closeMod
             className="border rounded w-full px-3 py-2"
             disabled
           />
-        </div>
+        </div> */}
       </div>
       <div className="flex justify-end">
         <button

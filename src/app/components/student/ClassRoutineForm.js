@@ -11,10 +11,10 @@ const ClassRoutineForm = () => {
     date: '', // Changed from day to date
     time: '',
     subject: '',
-    teacher: '',
+    teacher: '', // Full name of selected teacher
     room: '',
     studentclass: '',
-    email: '', // This will be updated based on selected teacher
+    email: '', // Email of the selected teacher
   });
 
   const [teachers, setTeachers] = useState([]); // State to store teacher options
@@ -52,11 +52,14 @@ const ClassRoutineForm = () => {
 
     // Update email when teacher is selected
     if (name === 'teacher') {
-      const selectedTeacher = teachers.find(teacher => teacher.userID === value);
+      // Find the teacher based on their full name
+      const selectedTeacher = teachers.find(
+        (teacher) => `${teacher.firstName} ${teacher.lastName}` === value
+      );
       setFormData({
         ...formData,
-        [name]: value,
-        email: selectedTeacher ? selectedTeacher.email : '', // Update email based on selected teacher
+        [name]: value, // This will be "FirstName LastName"
+        email: selectedTeacher ? selectedTeacher.email : '', // Set email based on the selected teacher
       });
     } else {
       setFormData({
@@ -144,12 +147,22 @@ const ClassRoutineForm = () => {
               required
             >
               <option value="">Select Subject</option>
-              <option value="Mathematics">Mathematics</option>
               <option value="English">English</option>
-              <option value="Science">Science</option>
+              <option value="Math">Math</option>
+              <option value="Biology">Biology</option>
+              <option value="Chemistry">Chemistry</option>
+              <option value="Physics">Physics</option>
+              <option value="Combined Science">Combined Science</option>
+              <option value="Computer Science">Computer Science</option>
+              <option value="I.C.T">I.C.T</option>
+              <option value="Business Studies">Business Studies</option>
+              <option value="Accounts">Accounts</option>
               <option value="History">History</option>
+              <option value="Geography">Geography</option>
+              <option value="Travel and Tourism">Travel and Tourism</option>
             </select>
           </div>
+
 
           {/* Teacher dropdown - dynamically populated */}
           <div className="m-4">
@@ -162,16 +175,25 @@ const ClassRoutineForm = () => {
             >
               <option value="">Select Teacher</option>
               {teachers.map((teacher, index) => (
-              <option key={index} value={`${teacher.firstName} ${teacher.lastName}`}>
-                {teacher.firstName} {teacher.lastName}
-              </option>
-            ))}
+                <option key={index} value={`${teacher.firstName} ${teacher.lastName}`}>
+                  {teacher.firstName} {teacher.lastName}
+                </option>
+              ))}
             </select>
           </div>
 
+            <input
+              type="hidden"
+              name="email"
+              value={formData.email}
+              readOnly
+              className="mt-1 block w-full p-2 border border-gray-300 rounded bg-gray-100"
+              placeholder="Teacher's email will be auto-filled"
+            />
+
           {/* Class field */}
           <div className="m-4">
-          <select
+            <select
               name="studentclass"
               value={formData.studentclass}
               onChange={handleChange}

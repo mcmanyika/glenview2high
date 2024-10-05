@@ -3,7 +3,6 @@ import { useSession } from 'next-auth/react';
 import { ref, onValue, remove } from 'firebase/database';
 import { database } from '../../../../utils/firebaseConfig';
 import { FaTrashAlt } from 'react-icons/fa';
-import { useGlobalState } from '../../store'; // Import the global state hook
 
 const ClassRoutineList = () => {
   const { data: session } = useSession();
@@ -12,7 +11,6 @@ const ClassRoutineList = () => {
   const [itemsPerPage] = useState(10); // Number of items to display per page
   const [sortField, setSortField] = useState('date'); // Default sorting field
   const [sortDirection, setSortDirection] = useState('asc'); // Default sorting direction
-  const [userType] = useGlobalState('userType'); // Access userType from global state
 
   useEffect(() => {
     if (!session?.user?.email) return;
@@ -33,6 +31,13 @@ const ClassRoutineList = () => {
       setClassRoutines(routines);
     });
   }, [session?.user?.email]);
+
+  // Handle sorting by updating the sortField and sortDirection
+  const handleSort = (field) => {
+    const isAsc = sortField === field && sortDirection === 'asc';
+    setSortField(field);
+    setSortDirection(isAsc ? 'desc' : 'asc');
+  };
 
   // Sort routines based on the selected field and direction
   const sortedRoutines = [...classRoutines].sort((a, b) => {
@@ -62,7 +67,7 @@ const ClassRoutineList = () => {
     const routineRef = ref(database, `classRoutine/${id}`);
     remove(routineRef)
       .then(() => {
-        setClassRoutines(classRoutines.filter(routine => routine.id !== id));
+        setClassRoutines(classRoutines.filter((routine) => routine.id !== id));
       })
       .catch((error) => {
         console.error('Error deleting routine:', error);
@@ -73,7 +78,7 @@ const ClassRoutineList = () => {
     <div className="p-6 bg-white rounded shadow mt-3">
       <h2 className="text-xl font-semibold mb-4">My Class Routines</h2>
       {classRoutines.length === 0 ? (
-        <p>No upcoming routines found for your email.</p>
+        <p>No upcoming class routines found for you.</p>
       ) : (
         <>
           <table className="min-w-full text-sm bg-white text-left">
@@ -94,10 +99,7 @@ const ClassRoutineList = () => {
                 <th className="py-2 px-4 border-b cursor-pointer" onClick={() => handleSort('room')}>
                   Room {sortField === 'room' && (sortDirection === 'asc' ? '↑' : '↓')}
                 </th>
-                {/* Conditionally render Actions column based on userType */}
-                {userType === 'teacher' && (
-                  <th className="py-2 px-4 border-b">Actions</th>
-                )}
+                {/* <th className="py-2 px-4 border-b">Actions</th> */}
               </tr>
             </thead>
             <tbody>
@@ -108,17 +110,14 @@ const ClassRoutineList = () => {
                   <td className="py-2 px-4 border-b">{routine.subject}</td>
                   <td className="py-2 px-4 border-b">{routine.studentclass}</td>
                   <td className="py-2 px-4 border-b">{routine.room}</td>
-                  {/* Conditionally render delete action based on userType */}
-                  {userType === 'teacher' && (
-                    <td className="py-2 px-4 border-b">
-                      <button 
-                        className="text-red-500 hover:underline" 
-                        onClick={() => handleDelete(routine.id)}
-                      >
-                        <FaTrashAlt className="w-5 h-5" />
-                      </button>
-                    </td>
-                  )}
+                  {/* <td className="py-2 px-4 border-b">
+                    <button 
+                      className="text-red-500 hover:underline" 
+                      onClick={() => handleDelete(routine.id)}
+                    >
+                      <FaTrashAlt className="w-5 h-5" />
+                    </button>
+                  </td> */}
                 </tr>
               ))}
             </tbody>

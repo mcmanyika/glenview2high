@@ -21,7 +21,7 @@ const User = () => {
       <Link href='/'>
           <Image
             src="/images/logo.png"
-            alt="GlenView 2 High School"
+            alt=""
             width={90}
             height={90}
             className="mx-auto mb-4 rounded-full"

@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
 import { FaFacebook, FaHome } from 'react-icons/fa';
 import Link from 'next/link';
-import { ref, onValue, query, orderByChild, equalTo } from 'firebase/database';
+import Image from 'next/image';
+import { ref, onValue } from 'firebase/database';
 import { database } from '../../../utils/firebaseConfig';
 import { useGlobalState, setIsOverlayVisible } from '../store';
 import { useSession, signIn, signOut } from 'next-auth/react';
@@ -10,6 +11,7 @@ const Header = () => {
   const { data: session } = useSession();
   const [titles, setTitles] = useState([]);
   const [schoolName, setSchoolName] = useState(''); // State for school name
+  const [facebookLink, setFacebookLink] = useState(''); // State for Facebook link
   const [isSticky, setIsSticky] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [showPopover, setShowPopover] = useState(false);
@@ -21,9 +23,7 @@ const Header = () => {
       try {
         // Fetching titles
         const titleRef = ref(database, 'title');
-        const statusQuery = query(titleRef, orderByChild('status'), equalTo('Active'));
-
-        onValue(statusQuery, (snapshot) => {
+        onValue(titleRef, (snapshot) => {
           const data = snapshot.val();
           if (data) {
             const titlesArray = Object.keys(data)
@@ -34,30 +34,23 @@ const Header = () => {
                 status: data[key].status,
                 category: data[key].category,
               }))
-              .filter(a => a.category === 'title') // Filter where category is equal to title
-              .filter(a => a.title !== 'Projects')
-              .sort((a, b) => {
-                if (a.title === 'Admissions') return 1;
-                if (b.title === 'Admissions') return -1;
-                if (a.title === 'Alumni') return 1;
-                if (b.title === 'Alumni') return -1;
-                return a.title.localeCompare(b.title);
-              });
+              .filter(a => a.category === 'title' && a.status === 'Active') // Filter by active status
+              .sort((a, b) => a.title.localeCompare(b.title));
             setTitles(titlesArray);
           } else {
             setTitles([]);
           }
         });
-
-        // Fetching school name
-        const schoolRef = ref(database, 'account');
-        onValue(schoolRef, (snapshot) => {
-          const schoolData = snapshot.val();
-          if (schoolData) {
-            // Assuming there's only one account entry and it has a field named 'schoolName'
-            const accountKeys = Object.keys(schoolData);
+  
+        // Fetching school name and Facebook link
+        const accountRef = ref(database, 'account');
+        onValue(accountRef, (snapshot) => {
+          const accountData = snapshot.val();
+          if (accountData) {
+            const accountKeys = Object.keys(accountData);
             if (accountKeys.length > 0) {
-              setSchoolName(schoolData.schoolName); // Set school name from the first entry
+              setSchoolName(accountData.schoolName); // Set school name
+              setFacebookLink(accountData.facebook); // Set Facebook link
             }
           }
         });
@@ -65,19 +58,20 @@ const Header = () => {
         console.error('Firebase Error:', error);
       }
     };
-
+  
     fetchData();
-
+  
     const handleScroll = () => {
       setIsSticky(window.scrollY > 600);
     };
-
+  
     window.addEventListener('scroll', handleScroll);
-
+  
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+  
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -111,7 +105,7 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed z-50 w-full bg-blue-400 text-white transition-all duration-500 ease-in-out ${
+      className={`fixed z-50 w-full bg-main text-white transition-all duration-500 ease-in-out ${
         isSticky ? 'top-0' : 'bottom-0 border-t-2 border-t-white p-5'
       } ${!isSticky && 'hidden md:block'}`}
     >
@@ -120,14 +114,16 @@ const Header = () => {
           <div className='container mx-auto flex text-sm font-thin p-2 mb-2 justify-between'>
             <div className='flex-1 md:flex space-x-2 hidden'>
               <span>Follow Us</span>
-              <a
-                href="https://www.facebook.com/groups/497811331424773/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white hover:text-gray-900"
-              >
-                <FaFacebook className="h-5 w-5" />
-              </a>
+              {facebookLink && (
+                <a
+                  href={facebookLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white hover:text-gray-900"
+                >
+                  <FaFacebook className="h-5 w-5" />
+                </a>
+              )}
             </div>
             <div className='flex-1 text-right relative'>
               {session ? (
@@ -155,10 +151,19 @@ const Header = () => {
               )}
             </div>
           </div>
-        </div>
+        </div> 
       )}
       <nav className="max-w-4xl mx-auto flex justify-between items-center p-4">
         <div className={`flex items-center space-x-2 ${isOpen ? 'hidden md:flex' : 'block'}`}>
+        {/* <Link href='/'>
+            <Image
+              src="/images/logo.png"
+              alt="Logo"
+              width={50}
+              height={50}
+              className="rounded"
+            />
+          </Link> */}
           <h1 className="text-sm md:text-2xl font-normal uppercase flex">{schoolName}</h1>
         </div>
         {isSticky && (
@@ -178,7 +183,7 @@ const Header = () => {
           {titles.length > 0 && titles.map((rw) => (
             <li key={rw.id}>
               <Link href={`${rw.link}`} passHref>
-                <div className="hover:text-gray-300 text-sm font-sans font-thin uppercase pb-2 border-b-2 border-transparent hover:border-blue-200">{rw.title}</div>
+                <div className="hover:text-gray-300 text-sm font-sans font-thin uppercase pb-2 border-b-2 border-transparent hover:border-white">{rw.title}</div>
               </Link>
             </li>
           ))}

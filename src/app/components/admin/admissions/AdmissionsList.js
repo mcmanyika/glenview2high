@@ -106,8 +106,8 @@ const AdmissionsList = () => {
           {currentAdmissions.map((admission) => (
             <tr key={admission.id}>
               <td className="border border-gray-200 px-4 py-2">{admission.id}</td>
-              <td className="border border-gray-200 px-4 py-2">{admission.firstName}</td>
-              <td className="border border-gray-200 px-4 py-2">{admission.lastName}</td>
+              <td className="border border-gray-200 px-4 py-2 capitalize">{admission.firstName}</td>
+              <td className="border border-gray-200 px-4 py-2 capitalize">{admission.lastName}</td>
               <td className="border border-gray-200 px-4 py-2">{admission.status}</td>
               <td className="border border-gray-200 px-4 py-2">
                 <button
@@ -116,7 +116,7 @@ const AdmissionsList = () => {
                 >
                   Edit
                 </button>
-                {admission.status === 'Accepted' && (
+                {/* {admission.status === 'Accepted' && (
                   <button
                     onClick={() => {
                       setSelectedAdmission(admission); // Set the selected admission for payment
@@ -127,7 +127,7 @@ const AdmissionsList = () => {
                     <HiCreditCard className="inline-block mr-1" />
                     Pay
                   </button>
-                )}
+                )} */}
               </td>
             </tr>
           ))}

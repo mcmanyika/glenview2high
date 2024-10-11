@@ -139,7 +139,7 @@ const Header2 = () => {
                 onClick={overlayToggle}
                 className="bg-yellow-500 text-white font-bold py-2 px-6 rounded-tr-full rounded-br-full rounded-tl-full rounded-bl-md hover:bg-yellow-600 transition duration-300"
               >
-                APPLY NOW
+                NEW STUDENT
               </button>
             </li>
         </ul>

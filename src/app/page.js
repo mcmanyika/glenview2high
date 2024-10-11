@@ -19,7 +19,7 @@ export default function Home() {
       <Socials />
       <Features />
       <Vision />
-      <NewStudents />
+      {/* <NewStudents /> */}
       <ImageGallery />
       <Map />
       <ContactUs />

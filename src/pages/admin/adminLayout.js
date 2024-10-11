@@ -44,7 +44,7 @@ const AdminLayout = ({ children }) => {
 
             if (userID.startsWith('STFF')) {
               filteredTitles = filteredTitles.filter(title =>
-                ['Dashboard', 'Class Routine', 'Notice', 'Admission', 'Create Blog', 'Contact Us', 'Payment', 'Class Allocation'].includes(title.title)
+                ['Dashboard', 'Class Routine', 'Notice', 'Accounts', 'Create Blog', 'Contact Us', 'Payment', 'Class Allocation'].includes(title.title)
               );
             }
 

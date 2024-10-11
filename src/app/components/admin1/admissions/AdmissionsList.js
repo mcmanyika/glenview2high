@@ -24,13 +24,10 @@ const AdmissionsList = () => {
     onValue(admissionsRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        // Filter to show only student admissions
-        const admissionsArray = Object.keys(data)
-          .map((key) => ({
-            id: key,
-            ...data[key],
-          }))
-          .filter(admission => admission.userType === 'student'); // Filter by userType
+        const admissionsArray = Object.keys(data).map((key) => ({
+          id: key,
+          ...data[key],
+        }));
         setAdmissions(admissionsArray);
       } else {
         setAdmissions([]);
@@ -86,7 +83,7 @@ const AdmissionsList = () => {
   return (
     <div>
       <div className="mb-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold"> Total Admissions: {filteredAdmissions.length}</h1>
+        <h1 className="text-xl font-bold">Admissions List</h1>
         <input
           type="text"
           placeholder="Search..."
@@ -95,8 +92,6 @@ const AdmissionsList = () => {
           className="border rounded w-1/3 px-3 py-2"
         />
       </div>
-      
-      
       <table className="min-w-full text-sm text-left border-collapse border border-gray-200">
         <thead>
           <tr>
@@ -167,7 +162,7 @@ const AdmissionsList = () => {
               handleInputChange={handleInputChange}
               handleSubmit={handleSubmit}
               closeModal={closeModal}
-            /> 
+            />
           </div>
         </div>
       )}

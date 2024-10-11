@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { ref, get, remove } from 'firebase/database'; // Import remove
+import { ref, get, update } from 'firebase/database';
 import { database } from '../../../../../utils/firebaseConfig'; // Adjust the path if needed
 import { useRouter } from 'next/router'; // Import useRouter
-import Link from 'next/link';
-
+import BlogPost from './BlogPost'; // Adjust the path if needed
 
 const BlogList = () => {
-  const router = useRouter();
+  const router = useRouter(); // Initialize useRouter
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(5); // Number of posts per page
-  const [showModal, setShowModal] = useState(false); // Modal visibility state
-  const [postToDelete, setPostToDelete] = useState(null); // Post to delete
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -20,7 +17,7 @@ const BlogList = () => {
 
       if (snapshot.exists()) {
         const data = snapshot.val();
-        const formattedPosts = Object.keys(data).map((key) => ({
+        const formattedPosts = Object.keys(data).map(key => ({
           id: key,
           ...data[key],
         }));
@@ -46,33 +43,10 @@ const BlogList = () => {
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Show confirmation modal
-  const handleDeleteClick = (postId) => {
-    setPostToDelete(postId); // Set the post to be deleted
-    setShowModal(true); // Show the modal
-  };
-
-  // Delete post after confirmation
-  const handleConfirmDelete = async () => {
-    const postRef = ref(database, `blogs/${postToDelete}`);
-    await remove(postRef); // Remove the post from Firebase
-
-    // Update the post list
-    setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postToDelete));
-    setShowModal(false); // Close the modal
-    setPostToDelete(null); // Reset the post to delete
-  };
-
-  // Close the modal without deleting
-  const handleCancelDelete = () => {
-    setShowModal(false);
-    setPostToDelete(null);
-  };
-
   return (
     <div className="text-sm p-6 bg-white mt-4 rounded">
       <h1 className="text-2xl font-bold mb-4">Blog Posts</h1>
-
+      
       <table className="min-w-full border-collapse table-auto text-left">
         <thead>
           <tr className="bg-gray-200">
@@ -84,17 +58,11 @@ const BlogList = () => {
           </tr>
         </thead>
         <tbody>
-          {currentPosts.map((post) => (
+          {currentPosts.map(post => (
             <tr key={post.id}>
-              <td className="border px-4 py-2">
-              <Link
-                  href={`/blog/${post.id}`}
-                  className="text-blue-500 hover:underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {post.title}
-              </Link>
+              <td 
+                className="border px-4 py-2">
+                {post.title}
               </td>
               <td className="border px-4 py-2">{post.category}</td>
               <td className="border px-4 py-2">{new Date(post.createdAt).toLocaleString()}</td>
@@ -105,12 +73,6 @@ const BlogList = () => {
                   className="bg-blue-500 text-white px-3 py-1 rounded"
                 >
                   Edit
-                </button>
-                <button
-                  onClick={() => handleDeleteClick(post.id)} // Trigger the modal for confirmation
-                  className="bg-red-500 text-white px-3 py-1 ml-2 rounded"
-                >
-                  Delete
                 </button>
               </td>
             </tr>
@@ -138,30 +100,6 @@ const BlogList = () => {
           Next
         </button>
       </div>
-
-      {/* Modal */}
-      {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-xl font-semibold mb-4">Confirm Deletion</h2>
-            <p>Are you sure you want to delete this blog post?</p>
-            <div className="flex justify-end mt-4">
-              <button
-                onClick={handleCancelDelete}
-                className="bg-gray-300 text-black px-4 py-2 rounded mr-2"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleConfirmDelete}
-                className="bg-red-500 text-white px-4 py-2 rounded"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

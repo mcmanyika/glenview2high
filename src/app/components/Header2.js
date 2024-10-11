@@ -14,6 +14,7 @@ const Header2 = () => {
   const [facebookLink, setFacebookLink] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [isOverlayVisible] = useGlobalState('isOverlayVisible');
+  const [isOverlay, setIsOverlay] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +32,7 @@ const Header2 = () => {
                 status: data[key].status,
                 category: data[key].category,
               }))
-              .filter(a => a.category === 'title' && a.status === 'Active') // Filter by active status
+              .filter(a => a.category === 'title' && a.status === 'Active' && !(a.title === 'Staff')) // Filter by active status
               .sort((a, b) => a.title.localeCompare(b.title));
             setTitles(titlesArray);
           } else {
@@ -58,12 +59,16 @@ const Header2 = () => {
   
     fetchData();
   
-  
+    
   }, []);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const toggleOverlay = () => setIsOverlayVisible(!isOverlayVisible);
+
+  const overlayToggle = () => {
+    setIsOverlay(!isOverlay);
+  };
 
   return (
     <header className="fixed top-0 z-50 w-full bg-main text-white font-thin pb-4 transition-all duration-500 ease-in-out">
@@ -129,8 +134,42 @@ const Header2 = () => {
               </div>
             </li>
           ))}
+          <li>
+              <button
+                onClick={overlayToggle}
+                className="bg-yellow-500 text-white font-bold py-2 px-6 rounded-tr-full rounded-br-full rounded-tl-full rounded-bl-md hover:bg-yellow-600 transition duration-300"
+              >
+                APPLY NOW
+              </button>
+            </li>
         </ul>
       </nav>
+
+      <div
+        className={`fixed top-0 right-0 w-full z-50 h-full bg-main transition-transform duration-500 ease-in-out ${
+          isOverlay ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        <div className="flex items-center justify-center h-full p-10">
+          <div className="text-white text-center">
+            <h2 className="text-2xl md:text-4xl font-thin">Student Application</h2>
+            <p className="mt-4 text-base md:text-lg">
+              As a new student you can now apply online, click below to start the process.
+            </p>
+            <Link href="/admin/dashboard">
+              <button className="inline-block mt-4 px-6 py-2 bg-white text-gray-500 rounded-full transition duration-300">
+                Apply Now
+              </button>
+            </Link>
+            <button
+              onClick={overlayToggle}
+              className="absolute top-4 right-4 text-white text-xl font-semibold"
+            >
+              &times; {/* Close icon */}
+            </button>
+          </div>
+        </div>
+      </div>
     </header>
   );
 };

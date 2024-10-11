@@ -55,3 +55,9 @@ body {
 .sun-editor {
   border: none !important
 }
+
+.login-background {
+  background-image: url('https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8816.jpg?alt=media&token=fe55c1d3-37b5-46c8-b52e-ea49a15ba4f6');
+  background-size: cover;
+  background-position: center;
+}

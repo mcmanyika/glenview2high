@@ -14,12 +14,13 @@ const Academics = () => {
             <div className="relative flex items-center justify-center">
               <div className="w-full h-96  relative">
                 <Image 
-                  src="/images/students.png" 
+                  src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8782.jpg?alt=media&token=8dcfb031-e35c-406e-81fb-81513e3b2708" 
                   alt="Academic 1" 
                   fill
                   className="opacity-95 object-cover object-top"
                 />
               </div>
+              <div className="absolute inset-0 bg-blue-500 opacity-20"></div>
             </div>
             <div className="md:p-10 flex flex-col justify-center">
               <h2 className="text-4xl font-bold mb-4">Our Programs</h2>
@@ -36,12 +37,13 @@ const Academics = () => {
             <div className="relative flex items-center justify-center">
               <div className="w-full h-96 relative">
                 <Image 
-                  src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2FScreen%20Shot%202024-07-03%20at%208.22.33%20AM.png?alt=media&token=016853a8-7561-4395-9efb-93286fd2a8d8" 
+                  src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8811.jpg?alt=media&token=6d94c0bf-0979-4f8c-92da-929480f490fb" 
                   alt="Academic 2" 
                   fill
                   className="opacity-95 object-cover object-top"
                 />
               </div>
+              <div className="absolute inset-0 bg-blue-500 opacity-20"></div>
             </div>
           </div>
         </div>

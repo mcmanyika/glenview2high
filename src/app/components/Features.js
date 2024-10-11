@@ -4,19 +4,19 @@ import Image from 'next/image';
 const Features = () => {
   const features = [
     {
-      title: 'Our Vision',
+      title: '',
       image: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fclassroms.jpeg?alt=media&token=e989df51-cc5e-4306-943d-cb06d197c209',
-      description: 'To be the centre of excellence in the provision of high quality education as well as to develop in the pupils, desire of quality services, courage and usefulness to the school and ready to accept responsibility in pursuance of our aspirations and cherished goals.',
+      description: '',
     },
     {
-      title: 'Our School Tone',
-      image: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fprefects2.jpeg?alt=media&token=20a488a0-faad-402d-9640-5ddea7f08e40',
-      description: 'We have committees such as Disciplinary and Guidance and Counselling that work with the Prefects Body to ensure maximum discipline',
+      title: '',
+      image: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8743.jpg?alt=media&token=3a97ac10-9b84-430a-aa79-2690a1f0dfda',
+      description: '',
     },
     {
-      title: 'In Class',
-      image: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Felectronics.jpeg?alt=media&token=356cac23-0bae-4eb3-bcd8-26b1b1af9b68',
-      description: 'In support of STEM in the 21st Century. `A` Level chemistry practical in progress',
+      title: '',
+      image: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8837.jpg?alt=media&token=521ce794-d9d2-498d-9efa-382f2e1d56f6',
+      description: '',
     },
   ];
 
@@ -34,7 +34,7 @@ const Features = () => {
                   className="opacity-95 object-cover"
                 />
               </div>
-              <div className="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="absolute inset-0 bg-black bg-opacity-5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="text-white p-4 text-center">
                   <p>{feature.description}</p>
                 </div>

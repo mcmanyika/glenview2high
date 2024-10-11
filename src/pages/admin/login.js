@@ -61,7 +61,8 @@ export default function Login() {
   return (
     <>
       <div className="flex items-center justify-center min-h-screen bg-cover bg-center"
-      style={{ backgroundImage: "url('https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents3.jpeg?alt=media&token=368a73f2-a805-4330-85b6-24be48315e97')" }}>
+      style={{ backgroundImage: "url('https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8741.jpg?alt=media&token=73f1cfaf-ea7d-454e-8230-bd301ee4da81')" }}>
+        
       <div className="w-7xl mx-auto p-6 bg-white bg-opacity-75 rounded shadow-md text-center">
         <Link href='/'>
           <Image

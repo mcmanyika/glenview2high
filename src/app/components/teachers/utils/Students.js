@@ -66,7 +66,7 @@ const Students = () => {
     // Filter to only show students
     if (student.userType !== 'student') return false;
 
-    const isClassValid = classes.some(cls => cls.className === student.studentClassLevel);
+    const isClassValid = classes.some(cls => cls.className === student.class);
     if (!isClassValid) return false;
 
     const term = searchTerm.toLowerCase();
@@ -74,7 +74,7 @@ const Students = () => {
       student.userID?.toLowerCase().includes(term) ||
       student.firstName?.toLowerCase().includes(term) ||
       student.lastName?.toLowerCase().includes(term) ||
-      student.studentClassLevel?.toLowerCase().includes(term) ||
+      student.class?.toLowerCase().includes(term) ||
       student.gender?.toLowerCase().includes(term) ||
       student.phone?.toLowerCase().includes(term) ||
       student.email?.toLowerCase().includes(term)
@@ -151,7 +151,7 @@ const Students = () => {
           <table className="min-w-full text-left border-collapse">
             <thead>
               <tr>
-                {['studentNumber', 'firstName', 'lastName', 'studentClassLevel', 'gender', 'phone', 'email'].map((column) => (
+                {['studentNumber', 'firstName', 'lastName', 'class', 'gender', 'phone', 'email'].map((column) => (
                   <th
                     key={column}
                     className="p-2 border-b cursor-pointer text-blue-400 uppercase text-xs"
@@ -171,7 +171,7 @@ const Students = () => {
                   <td className="p-2 border-b">{student.userID || 'N/A'}</td>
                   <td className="p-2 border-b">{student.firstName || 'N/A'}</td>
                   <td className="p-2 border-b">{student.lastName || 'N/A'}</td>
-                  <td className="p-2 border-b">{student.studentClassLevel || 'N/A'}</td>
+                  <td className="p-2 border-b">{student.class || 'N/A'}</td>
                   <td className="p-2 border-b capitalize">{student.gender || 'N/A'}</td>
                   <td className="p-2 border-b">{student.phone || 'N/A'}</td>
                   <td className="p-2 border-b">{student.email || 'N/A'}</td>
@@ -189,7 +189,7 @@ const Students = () => {
             <p><strong>Student ID:</strong> {selectedStudent.userID}</p>
             <p><strong>First Name:</strong> {selectedStudent.firstName}</p>
             <p><strong>Last Name:</strong> {selectedStudent.lastName}</p>
-            <p><strong>Class:</strong> {selectedStudent.studentClassLevel}</p>
+            <p><strong>Class:</strong> {selectedStudent.class}</p>
             <p><strong>Gender:</strong> {selectedStudent.gender}</p>
             <p><strong>Phone:</strong> {selectedStudent.phone}</p>
             <p><strong>Email:</strong> {selectedStudent.email}</p>

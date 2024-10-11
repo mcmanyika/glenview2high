@@ -12,19 +12,19 @@ const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const carouselData = [
     {
-      title: "Excellence in Education",
-      description: "Empowering students to reach their full potential.",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents3.jpeg?alt=media&token=368a73f2-a805-4330-85b6-24be48315e97",
+      title: "",
+      description: "",
+      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8822.jpg?alt=media&token=e6331461-e260-44f3-803c-ef2897b7c1a5",
     },
     {
-      title: "Innovative Teaching",
-      description: "Providing state-of-the-art facilities and teaching methods.",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fcomputerlab.jpeg?alt=media&token=af04fc07-062b-412c-a9ce-a17bed728757",
+      title: "",
+      description: "",
+      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8739.jpg?alt=media&token=a5f09144-b087-49c3-8805-7683b1c45782",
     },
     {
-      title: "Sporting Activities",
-      description: "Building strong connections with the local community.",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fnetball.jpeg?alt=media&token=af4ee37f-7f9e-46d1-b823-d7ece81bcac8",
+      title: "",
+      description: "",
+      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8761.jpg?alt=media&token=912f9b9a-fd25-4949-9b46-7283fc48bee2",
     },
   ];
 

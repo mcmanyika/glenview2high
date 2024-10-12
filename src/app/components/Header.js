@@ -98,11 +98,12 @@ const Header = () => {
         <div className="text-right">
           <Link href="/admin/dashboard" className="inline-flex items-center space-x-2 text-white">
             <FaHome />
-            <span className="pr-3">My Dashboard</span> |
+            <span className="pr-3">My Dashboard</span>
+             |
+          </Link>
             <button onClick={() => signOut()} className="text-white p-1 rounded">
               Sign Out
             </button>
-          </Link>
         </div>
       );
     } else {

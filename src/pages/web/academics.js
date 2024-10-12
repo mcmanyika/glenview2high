@@ -14,7 +14,7 @@ const Academics = () => {
             <div className="relative flex items-center justify-center">
               <div className="w-full h-96  relative">
                 <Image 
-                  src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8782.jpg?alt=media&token=8dcfb031-e35c-406e-81fb-81513e3b2708" 
+                  src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8831.jpg?alt=media&token=5ebbe8f2-7d39-404f-a6f8-708e7ae810e0" 
                   alt="Academic 1" 
                   fill
                   className="opacity-95 object-cover object-top"
@@ -37,7 +37,7 @@ const Academics = () => {
             <div className="relative flex items-center justify-center">
               <div className="w-full h-96 relative">
                 <Image 
-                  src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8811.jpg?alt=media&token=6d94c0bf-0979-4f8c-92da-929480f490fb" 
+                  src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8735.jpg?alt=media&token=57d5a57f-0333-4e5c-87f3-be7e9474fe6f" 
                   alt="Academic 2" 
                   fill
                   className="opacity-95 object-cover object-top"

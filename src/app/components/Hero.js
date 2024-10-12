@@ -14,17 +14,17 @@ const Hero = () => {
     {
       title: "",
       description: "",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8822.jpg?alt=media&token=e6331461-e260-44f3-803c-ef2897b7c1a5",
+      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8739.jpg?alt=media&token=4c1ad891-71f2-4ba0-8bf0-5ab698df5e95",
     },
     {
       title: "",
       description: "",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8739.jpg?alt=media&token=a5f09144-b087-49c3-8805-7683b1c45782",
+      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8743.jpg?alt=media&token=b5da3af0-3cde-4101-b41b-78f6a7c98853",
     },
     {
       title: "",
       description: "",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8761.jpg?alt=media&token=912f9b9a-fd25-4949-9b46-7283fc48bee2",
+      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8837.jpg?alt=media&token=3ed1068e-b33d-4654-b761-b19fc5df63ee",
     },
   ];
 

@@ -10,12 +10,12 @@ const Features = () => {
     },
     {
       title: '',
-      image: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8743.jpg?alt=media&token=3a97ac10-9b84-430a-aa79-2690a1f0dfda',
+      image: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8767.jpg?alt=media&token=40d44520-da11-4385-8ebb-403aae2562a0',
       description: '',
     },
     {
       title: '',
-      image: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8837.jpg?alt=media&token=521ce794-d9d2-498d-9efa-382f2e1d56f6',
+      image: 'https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8846.jpg?alt=media&token=bde76c85-9eb2-48b2-8e03-e1ac1e8852bd',
       description: '',
     },
   ];

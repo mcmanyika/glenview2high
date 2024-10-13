@@ -3,7 +3,6 @@
 import Layout from "./components/Layout";
 import Hero from "./components/Hero";
 import Features from "./components/Features";
-import NewStudents from '../app/components/NewStudents';
 import About from '../app/components/About';
 import Socials from '../app/components/Socials';
 import Vision from '../app/components/Vision';
@@ -19,7 +18,6 @@ export default function Home() {
       <Socials />
       <Features />
       <Vision />
-      {/* <NewStudents /> */}
       <ImageGallery />
       <Map />
       <ContactUs />

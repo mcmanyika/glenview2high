@@ -22,7 +22,7 @@ const ImageGallery = () => {
           <div className="relative w-full h-[12rem] md:h-[20rem] overflow-hidden"> {/* Adjust height for mobile */}
             <div className="w-full h-full transform transition-transform duration-500 hover:scale-105">
               <Image
-                src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8927.jpg?alt=media&token=08df172a-dfce-4537-aad9-d3cd6b56bacd"
+                src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8983.jpg?alt=media&token=391f0aef-7e68-46c1-bdfe-51497b3f6248"
                 alt="Sub Image 1"
                 layout="fill"
                 objectFit="cover"

@@ -19,7 +19,7 @@ const Hero = () => {
     {
       title: "",
       description: "",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8983.jpg?alt=media&token=391f0aef-7e68-46c1-bdfe-51497b3f6248",
+      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8927.jpg?alt=media&token=08df172a-dfce-4537-aad9-d3cd6b56bacd",
     },
     {
       title: "",

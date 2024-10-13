@@ -9,7 +9,7 @@ const ImageGallery = () => {
         <div className="flex-1 relative w-full h-[24rem] md:h-[40.2rem] overflow-hidden"> {/* Adjust height for mobile */}
           <div className="w-full h-full transform transition-transform duration-500 hover:scale-105">
             <Image
-              src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8741.jpg?alt=media&token=310c7322-161c-4524-afc0-7d185b8518e4"
+              src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8902.jpg?alt=media&token=7016be1b-92d5-4726-9289-79ee1481ac8f"
               alt="Main Image"
               layout="fill"
               objectFit="cover"
@@ -22,7 +22,7 @@ const ImageGallery = () => {
           <div className="relative w-full h-[12rem] md:h-[20rem] overflow-hidden"> {/* Adjust height for mobile */}
             <div className="w-full h-full transform transition-transform duration-500 hover:scale-105">
               <Image
-                src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8749.jpg?alt=media&token=ece6a3cc-34f7-4500-998c-c5a02853d9f9"
+                src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8927.jpg?alt=media&token=08df172a-dfce-4537-aad9-d3cd6b56bacd"
                 alt="Sub Image 1"
                 layout="fill"
                 objectFit="cover"
@@ -42,7 +42,7 @@ const ImageGallery = () => {
           <div className="relative w-full h-[12rem] md:h-[20rem] overflow-hidden">
             <div className="w-full h-full transform transition-transform duration-500 hover:scale-105">
               <Image
-                src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8782.jpg?alt=media&token=38c23169-2e49-4b24-b3a4-c9b3e519594e"
+                src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_9035.jpg?alt=media&token=c774f761-8b51-49b5-8754-4d5d4e690f2f"
                 alt="Sub Image 4"
                 layout="fill"
                 objectFit="cover"
@@ -52,7 +52,7 @@ const ImageGallery = () => {
           <div className="relative w-full h-[12rem] md:h-[20rem] overflow-hidden">
             <div className="w-full h-full transform transition-transform duration-500 hover:scale-105">
               <Image
-                src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8811.jpg?alt=media&token=ec88b01c-0f38-4258-a114-eebbbd055d12"
+                src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_9075.jpg?alt=media&token=51be187d-2a33-4f95-8fc3-10fd31f57447"
                 alt="Sub Image 3"
                 layout="fill"
                 objectFit="cover"

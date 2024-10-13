@@ -19,12 +19,12 @@ const Hero = () => {
     {
       title: "",
       description: "",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8739.jpg?alt=media&token=4c1ad891-71f2-4ba0-8bf0-5ab698df5e95",
+      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8983.jpg?alt=media&token=391f0aef-7e68-46c1-bdfe-51497b3f6248",
     },
     {
       title: "",
       description: "",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8743.jpg?alt=media&token=b5da3af0-3cde-4101-b41b-78f6a7c98853",
+      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8900.jpg?alt=media&token=7c849e1e-fd70-408a-95fa-1071650dc66c",
     },
    
   ];

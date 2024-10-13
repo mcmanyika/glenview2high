@@ -14,7 +14,7 @@ const Academics = () => {
             <div className="relative flex items-center justify-center">
               <div className="w-full h-96  relative">
                 <Image 
-                  src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8831.jpg?alt=media&token=5ebbe8f2-7d39-404f-a6f8-708e7ae810e0" 
+                  src="https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8942.jpg?alt=media&token=eeddcc3d-aada-436a-85b7-76fb894a1d43" 
                   alt="Academic 1" 
                   fill
                   className="opacity-95 object-cover object-top"

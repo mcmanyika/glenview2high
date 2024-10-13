@@ -6,25 +6,29 @@ import { database } from '../../../utils/firebaseConfig'; // Adjust the path to 
 
 const Address = () => {
   const [address, setAddress] = useState('Loading...');
+  const [facebookContent, setFacebookContent] = useState('');
 
-  // Fetch address from the account table
+  // Fetch address and facebook content from the account table
   useEffect(() => {
-    const fetchAddress = async () => {
+    const fetchData = async () => {
       try {
-        const snapshot = await get(ref(database, 'account')); // Adjust this path according to your structure
+        const accountRef = ref(database, 'account');
+        const snapshot = await get(accountRef);
+
         if (snapshot.exists()) {
           const data = snapshot.val();
-          setAddress(data.address || 'Address not found'); // Adjust based on your data structure
+          setAddress(data.address || 'Address not found');
+          setFacebookContent(data.facebook || ''); // If Facebook content exists
         } else {
           setAddress('No address available');
         }
       } catch (error) {
-        console.error('Error fetching address: ', error);
+        console.error('Error fetching data: ', error);
         setAddress('Failed to load address');
       }
     };
 
-    fetchAddress();
+    fetchData(); // Fetch the data on component mount
   }, []);
 
   return (
@@ -46,7 +50,7 @@ const Address = () => {
             <h2 className="text-sm font-bold mb-2 uppercase">Stay Connected</h2>
             <div className="flex space-x-2">
               <a
-                href="https://www.facebook.com/DivarisMakahariscollege/"
+                href={facebookContent}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white"

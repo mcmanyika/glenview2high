@@ -237,20 +237,33 @@ const Products = () => {
               />
               <h2 className="text-2xl font-bold mb-2">{selectedProduct.name}</h2>
               <p className="text-lg font-semibold mt-2">${selectedProduct.price.toFixed(2)}</p>
-              <p className="mt-2">{selectedProduct.description}</p>
 
               <h3 className="mt-4 font-bold">Choose a variant:</h3>
-              <select
-                value={selectedVariant}
-                onChange={(e) => handleVariantChange(e.target.value)}
-                className="mt-1 block w-full p-2 border rounded"
-              >
-                {Object.keys(selectedProduct.variants || {}).map((variant) => (
-                  <option key={variant} value={variant}>
-                    {variant} - {selectedProduct.variants[variant].stock} in stock
-                  </option>
-                ))}
-              </select>
+<div className="mt-2 flex space-x-2">
+  {Object.keys(selectedProduct.variants || {}).map((variant) => (
+    <label
+      key={variant}
+      className="cursor-pointer flex items-center justify-center border-2 border-gray-300 rounded-md p-2 transition hover:bg-gray-100"
+    >
+      <input
+        type="radio"
+        value={variant}
+        checked={selectedVariant === variant}
+        onChange={() => handleVariantChange(variant)}
+        className="hidden peer"
+      />
+      <span
+        className={`block w-6 h-6 rounded-sm ${
+          selectedVariant === variant
+            ? 'bg-blue-500 border-blue-500'
+            : 'bg-white border-gray-300'
+        } peer-checked:bg-blue-500 peer-checked:border-blue-500`}
+      ></span>
+      <span className="ml-2">{variant} - {selectedProduct.variants[variant].stock} in stock</span>
+    </label>
+  ))}
+</div>
+
               <div className="mt-4">
                 <div className='w-full'>
                   <button

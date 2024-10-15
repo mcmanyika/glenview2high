@@ -147,7 +147,7 @@ const Products = () => {
                   <p className="text-gray-700">${product.price.toFixed(2)}</p>
                   <button
                     onClick={() => addToCart(product)}
-                    className="mt-2 px-4 py-2 bg-main text-white rounded hover:bg-blue-600 transition"
+                    className="mt-2 px-4 py-2 bg-main text-white rounded-full hover:bg-blue-600 transition"
                   >
                     <FontAwesomeIcon icon={faShoppingCart} className="mr-2" />
                     Add to Cart
@@ -156,7 +156,7 @@ const Products = () => {
               ))}
             </div>
             {/* Pagination Controls */}
-            <div className="flex justify-center mt-4">
+            <div className="flex justify-center mt-10">
               <button
                 onClick={handlePrevPage}
                 disabled={currentPage === 1}

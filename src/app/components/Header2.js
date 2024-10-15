@@ -76,7 +76,7 @@ const Header2 = () => {
     <header className="fixed top-0 z-50 w-full bg-main text-white font-thin pb-4 transition-all duration-500 ease-in-out">
       <div className="top-0 w-full text-white p-0">
         <div className="container mx-auto flex text-sm font-thin p-2 mb-2 justify-between">
-          <div className="flex-1 md:flex space-x-2 hidden">
+          <div className="flex-1 p-2 md:flex space-x-2 hidden">
             <span>Follow Us</span>
             {facebookLink && (
               <a
@@ -95,9 +95,9 @@ const Header2 = () => {
               <FaShoppingCart className="h-5 w-5" />
             </div>
           </div>
-          <div className="flex-1 text-right relative">
+          <div className="flex-1  text-right relative">
             {session ? (
-              <div className="text-right">
+              <div className="text-right p-2">
                 <Link href="/admin/dashboard" className="inline-flex items-center space-x-2 text-white">
                   <FaHome />
                   <span className="pr-3">My Dashboard</span>

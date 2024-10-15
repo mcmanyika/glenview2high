@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { ref, get } from 'firebase/database';
 import { database } from '../../../utils/firebaseConfig';
 import Link from 'next/link';
@@ -8,7 +8,6 @@ import { useCart } from '../../context/CartContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { setTotalItems } from '../../app/store'; 
-import ProductDetailModal from './ProductDetailModal';  // Import modal component
 
 const Products = () => {
   const { addToCart, cart } = useCart();
@@ -21,9 +20,10 @@ const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState(null); // Track the selected product
   const [isModalOpen, setIsModalOpen] = useState(false);  // State for controlling modal
 
-  // Pagination state
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
+  const [selectedVariant, setSelectedVariant] = useState('');
+  const [variantStock, setVariantStock] = useState(0);
+
+  const modalRef = useRef(null); // Reference for the modal
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -57,6 +57,25 @@ const Products = () => {
     setTotalItems(cart.length);
   }, [cart]);
 
+  useEffect(() => {
+    if (selectedProduct && selectedProduct.variants) {
+      const defaultVariant = Object.keys(selectedProduct.variants)[0];
+      setSelectedVariant(defaultVariant);
+      setVariantStock(selectedProduct.variants[defaultVariant].stock);
+    }
+  }, [selectedProduct]);
+
+  const handleVariantChange = (variant) => {
+    setSelectedVariant(variant);
+    setVariantStock(selectedProduct.variants[variant].stock);
+  };
+
+  const handleAddToCart = () => {
+    if (selectedVariant && variantStock > 0) {
+      addToCart(selectedProduct, selectedVariant); // Add product to cart
+    }
+  };
+
   const handleIconClick = (product) => {
     setSelectedProduct(product); // Set selected product to state
     setIsModalOpen(true); // Open the modal
@@ -64,6 +83,14 @@ const Products = () => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false); // Close the modal
+    setSelectedProduct(null); // Clear selected product
+  };
+
+  const handleOverlayClick = (e) => {
+    // Check if the click was on the overlay (background)
+    if (modalRef.current && !modalRef.current.contains(e.target)) {
+      handleCloseModal();
+    }
   };
 
   const sortProducts = (products, option) => {
@@ -89,6 +116,8 @@ const Products = () => {
   const sortedProducts = sortProducts(filteredProducts, sortOption);
 
   // Pagination logic
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentProducts = sortedProducts.slice(indexOfFirstItem, indexOfLastItem);
@@ -194,9 +223,60 @@ const Products = () => {
           </main>
         </div>
 
-        {/* Product Detail Modal */}
-        {isModalOpen && selectedProduct && (
-          <ProductDetailModal product={selectedProduct} onClose={handleCloseModal} />
+        {/* Modal for Product Details */}
+        {isModalOpen && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" onClick={handleOverlayClick}>
+            <div ref={modalRef} className="bg-white rounded-lg p-6 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
+              
+              <Image
+                src={selectedProduct.imageUrl}
+                alt={selectedProduct.name}
+                width={640}
+                height={640}
+                className="w-full h-40 object-cover pb-2 rounded"
+              />
+              <h2 className="text-2xl font-bold mb-2">{selectedProduct.name}</h2>
+              <p className="text-lg font-semibold mt-2">${selectedProduct.price.toFixed(2)}</p>
+              <p className="mt-2">{selectedProduct.description}</p>
+
+              <h3 className="mt-4 font-bold">Choose a variant:</h3>
+              <select
+                value={selectedVariant}
+                onChange={(e) => handleVariantChange(e.target.value)}
+                className="mt-1 block w-full p-2 border rounded"
+              >
+                {Object.keys(selectedProduct.variants || {}).map((variant) => (
+                  <option key={variant} value={variant}>
+                    {variant} - {selectedProduct.variants[variant].stock} in stock
+                  </option>
+                ))}
+              </select>
+              <div className="mt-4">
+                <div className='w-full'>
+                  <button
+                  onClick={handleAddToCart}
+                  disabled={variantStock <= 0}
+                  className={`w-full px-4 py-2 bg-main text-white rounded-full ${variantStock <= 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                >
+                  Add to Cart
+                </button>
+
+                </div>
+                <div className='w-full'>
+                <button
+                    className="mt-2 w-full bg-blue-500 text-white px-4 py-2 rounded-full"
+                    onClick={() => {
+                      // Redirect to the cart page, adjust according to your routing
+                      window.location.href = '/shopping/cart';
+                    }}
+                  >
+                    Go to Cart
+                  </button>
+                </div>
+                
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </Layout>

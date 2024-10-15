@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ref, onValue, query, orderByChild, equalTo } from 'firebase/database';
-import { database } from '../../../utils/firebaseConfig'; // Assuming firebaseConfig is set up properly
+import { ref, onValue } from 'firebase/database';
+import { database } from '../../../utils/firebaseConfig'; // Ensure firebaseConfig is set up properly
 import { useGlobalState, setIsOverlayVisible } from '../store';
 import { useSession, signIn, signOut } from 'next-auth/react';
-import { FaFacebook, FaHome } from 'react-icons/fa';
+import { FaFacebook, FaShoppingCart, FaHome } from 'react-icons/fa';
+import { useCart } from '../../context/CartContext';
+import { useRouter } from 'next/navigation'; // Correct import
 
 const Header2 = () => {
+  const router = useRouter(); // Initialize router
   const { data: session } = useSession();
   const [titles, setTitles] = useState([]);
   const [schoolName, setSchoolName] = useState('');
@@ -15,6 +18,7 @@ const Header2 = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOverlayVisible] = useGlobalState('isOverlayVisible');
   const [isOverlay, setIsOverlay] = useState(false);
+  const { totalItems } = useCart();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,7 +43,7 @@ const Header2 = () => {
             setTitles([]);
           }
         });
-  
+
         // Fetching school name and Facebook link
         const accountRef = ref(database, 'account');
         onValue(accountRef, (snapshot) => {
@@ -56,10 +60,8 @@ const Header2 = () => {
         console.error('Firebase Error:', error);
       }
     };
-  
+
     fetchData();
-  
-    
   }, []);
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -72,22 +74,28 @@ const Header2 = () => {
 
   return (
     <header className="fixed top-0 z-50 w-full bg-main text-white font-thin pb-4 transition-all duration-500 ease-in-out">
-      <div className='top-0 w-full text-white p-0'>
-        <div className='container mx-auto flex text-sm font-thin p-2 mb-2 justify-between'>
-          <div className='flex-1 md:flex space-x-2 hidden'>
+      <div className="top-0 w-full text-white p-0">
+        <div className="container mx-auto flex text-sm font-thin p-2 mb-2 justify-between">
+          <div className="flex-1 md:flex space-x-2 hidden">
             <span>Follow Us</span>
             {facebookLink && (
-                <a
-                  href={facebookLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white hover:text-gray-900"
-                >
-                  <FaFacebook className="h-5 w-5" />
-                </a>
-              )}
+              <a
+                href={facebookLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-gray-900"
+              >
+                <FaFacebook className="h-5 w-5 mr-3 ml-3" />
+              </a>
+            )}
+            <div onClick={() => router.push('/shopping/cart')} className="relative link cursor-pointer flex items-center">
+              <span className='absolute top-0 right-0 md:left-5 h-5 w-5 bg-yellow-400 text-center rounded-full text-white font-bold'>
+                {totalItems}
+              </span>
+              <FaShoppingCart className="h-5 w-5" />
+            </div>
           </div>
-          <div className='flex-1 text-right relative'>
+          <div className="flex-1 text-right relative">
             {session ? (
               <div className="text-right">
                 <Link href="/admin/dashboard" className="inline-flex items-center space-x-2 text-white">
@@ -95,14 +103,14 @@ const Header2 = () => {
                   <span className="pr-3">My Dashboard</span>
                   |
                 </Link>
-                  <button onClick={() => signOut()} className="text-white p-1 rounded">
-                    Sign Out
-                  </button>
+                <button onClick={() => signOut()} className="text-white p-1 rounded">
+                  Sign Out
+                </button>
               </div>
             ) : (
               <>
-                <span className='pr-3'>Welcome Guest</span> |
-                <Link href='/admin/login'>
+                <span className="pr-3">Welcome Guest</span> |
+                <Link href="/admin/login">
                   <button className="text-white p-1 rounded">
                     Sign In
                   </button>
@@ -114,7 +122,7 @@ const Header2 = () => {
       </div>
       <nav className="max-w-5xl mx-auto flex justify-between items-center">
         <div className="flex items-center w-4/5 space-x-2">
-          <Link href='/'>
+          <Link href="/">
             <Image
               src="/images/logo.png"
               alt="Logo"
@@ -130,19 +138,21 @@ const Header2 = () => {
             <li key={rw.id}>
               <div className="cursor-pointer py-2 px-4 hover:text-gray-300 text-sm font-sans font-thin uppercase" onClick={toggleMenu}>
                 <Link href={rw.link}>
-                <div className="hover:text-gray-300 text-sm font-sans font-thin uppercase pb-2 border-b-2 border-transparent hover:border-white">{rw.title}</div>
+                  <div className="hover:text-gray-300 text-sm font-sans font-thin uppercase pb-2 border-b-2 border-transparent hover:border-white">
+                    {rw.title}
+                  </div>
                 </Link>
               </div>
             </li>
           ))}
-          <li className='min-w-48'> 
-              <button
-                onClick={overlayToggle}
-                className="bg-yellow-500 text-white font-bold py-2 px-6 rounded-tr-full rounded-br-full rounded-tl-full rounded-bl-md hover:bg-yellow-600 transition duration-300"
-              >
-                NEW STUDENT
-              </button>
-            </li>
+          <li className="min-w-48">
+            <button
+              onClick={overlayToggle}
+              className="bg-yellow-500 text-white font-bold py-2 px-6 rounded-tr-full rounded-br-full rounded-tl-full rounded-bl-md hover:bg-yellow-600 transition duration-300"
+            >
+              NEW STUDENT
+            </button>
+          </li>
         </ul>
       </nav>
 
@@ -158,15 +168,15 @@ const Header2 = () => {
               As a new student you can now apply online, click below to start the process.
             </p>
             <Link href="/admin/dashboard">
-              <button className="inline-block mt-4 px-6 py-2 bg-white text-gray-500 rounded-full transition duration-300">
-                Apply Now
+              <button className="inline-block mt-5 bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">
+                Start Application
               </button>
             </Link>
             <button
-              onClick={overlayToggle}
-              className="absolute top-4 right-4 text-white text-xl font-semibold"
+              className="mt-5 ml-4 p-2 border border-white text-white rounded"
+              onClick={toggleOverlay}
             >
-              &times; {/* Close icon */}
+              Close
             </button>
           </div>
         </div>

@@ -1,0 +1,183 @@
+import { useEffect, useState } from 'react';
+import { ref, get } from 'firebase/database';
+import { database } from '../../../utils/firebaseConfig';
+import Link from 'next/link';
+import Image from 'next/image';
+import Layout from '../../app/components/Layout2';
+import { useCart } from '../../context/CartContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { setTotalItems } from '../../app/store'; 
+
+const Products = () => {
+  const { addToCart, cart, clearCart } = useCart();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [sortOption, setSortOption] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All Categories');
+  const [categories, setCategories] = useState([]);
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8; // Number of items per page
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const productsRef = ref(database, 'products');
+        const snapshot = await get(productsRef);
+
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          const productList = Object.keys(data).map((key) => ({ id: key, ...data[key] }));
+          console.log('Fetched Products:', productList);
+          setProducts(productList);
+
+          const uniqueCategories = Array.from(new Set(productList.map(product => product.category)));
+          setCategories(['All Categories', ...uniqueCategories]); // Include All Categories
+        } else {
+          setError('No products available.');
+        }
+      } catch (error) {
+        console.error('Error fetching products: ', error);
+        setError('Failed to load products.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // Update total items in global state whenever the cart changes
+  useEffect(() => {
+    setTotalItems(cart.length); // Set totalItems in the store
+  }, [cart]);
+
+  const sortProducts = (products, option) => {
+    const sorted = [...products];
+    switch (option) {
+      case 'priceAsc':
+        return sorted.sort((a, b) => a.price - b.price);
+      case 'priceDesc':
+        return sorted.sort((a, b) => b.price - a.price);
+      case 'nameAsc':
+        return sorted.sort((a, b) => a.name.localeCompare(b.name));
+      case 'nameDesc':
+        return sorted.sort((a, b) => b.name.localeCompare(a.name));
+      default:
+        return sorted;
+    }
+  };
+
+  const filteredProducts = selectedCategory === 'All Categories' 
+    ? products 
+    : products.filter(product => product.category === selectedCategory);
+
+  const sortedProducts = sortProducts(filteredProducts, sortOption);
+
+  // Pagination logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentProducts = sortedProducts.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(prevPage => prevPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(prevPage => prevPage - 1);
+    }
+  };
+
+  if (loading) return <div className="text-center">Loading...</div>;
+  if (error) return <div className="text-center text-red-500">{error}</div>;
+
+  return (
+    <Layout>
+      <div className="container mx-auto p-4">
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between">
+          {/* Category Filter */}
+          <aside className="w-full md:w-1/3 lg:w-1/4 p-4">
+            <h1 className="text-2xl font-bold mb-4">Categories</h1>
+            <div className="mt-2">
+              {categories.map((category, index) => (
+                <label key={index} className="flex items-center mb-2">
+                  <input
+                    type="radio"
+                    value={category}
+                    checked={selectedCategory === category}
+                    onChange={() => setSelectedCategory(category)}
+                    className="hidden peer"
+                  />
+                  <span className="inline-flex items-center justify-center w-5 h-5 bg-gray-200 border border-gray-300 rounded-full mr-2 peer-checked:bg-blue-500 peer-checked:border-transparent transition"></span>
+                  {category}
+                </label>
+              ))}
+            </div>
+            <label htmlFor="sort" className="block text-sm font-medium text-gray-700 mt-4">Sort By</label>
+            <select
+              id="sort"
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value)}
+              className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+            >
+              <option value="">None</option>
+              <option value="priceAsc">Price: Low to High</option>
+              <option value="priceDesc">Price: High to Low</option>
+              <option value="nameAsc">Name: A to Z</option>
+              <option value="nameDesc">Name: Z to A</option>
+            </select>
+          </aside>
+          
+          {/* Product List */}
+          <main className="w-full md:w-2/3 lg:w-3/4 p-4">
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
+              {currentProducts.map((product) => (
+                <div key={product.id} className="border p-4 rounded transition-shadow hover:shadow-lg">
+                  <Link href={`/products/${product.id}`}>
+                    <Image src={product.imageUrl} alt={product.name} width={640} height={640} className="w-full h-40 object-cover rounded" />
+                  </Link>
+                  <h2 className="text-lg font-bold mt-2">{product.name}</h2>
+                  <p className="text-gray-700">${product.price.toFixed(2)}</p>
+                  <button
+                    onClick={() => addToCart(product)}
+                    className="mt-2 px-4 py-2 bg-main text-white rounded hover:bg-blue-600 transition"
+                  >
+                    <FontAwesomeIcon icon={faShoppingCart} className="mr-2" />
+                    Add to Cart
+                  </button>
+                </div>
+              ))}
+            </div>
+            {/* Pagination Controls */}
+            <div className="flex justify-center mt-4">
+              <button
+                onClick={handlePrevPage}
+                disabled={currentPage === 1}
+                className="px-4 py-2 mx-2 bg-gray-200 hover:bg-gray-300 rounded"
+              >
+                Previous
+              </button>
+              <span className="mx-2">{currentPage} / {totalPages}</span>
+              <button
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+                className="px-4 py-2 mx-2 bg-gray-200 hover:bg-gray-300 rounded"
+              >
+                Next
+              </button>
+            </div>
+          </main>
+        </div>
+      </div>
+    </Layout>
+  );
+};
+
+export default Products;

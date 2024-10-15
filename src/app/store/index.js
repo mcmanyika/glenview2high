@@ -11,7 +11,8 @@ const initialState = {
   studentId: '',
   admissionId: '',
   status: '',
-  routineCount: 0
+  routineCount: 0,
+  totalItems: 0
 };
 
 const { useGlobalState, getGlobalState, setGlobalState } = createGlobalState(initialState);
@@ -26,6 +27,7 @@ const setAdmissionId = (admissionId) => setGlobalState('admissionId', admissionI
 const setStudentId = (studentId) => setGlobalState('studentId', studentId);
 const setUserType = (userType) => setGlobalState('userType', userType);
 const setRoutineCount = (routineCount) => setGlobalState('routineCount', routineCount);
+const setTotalItems = (totalItems) => setGlobalState('totalItems', totalItems);
 const setIsOverlayVisible = (isOverlayVisible) => setGlobalState('isOverlayVisible', isOverlayVisible);
 
 export { 
@@ -41,5 +43,6 @@ export {
   setStudentId,
   setTeacherId,
   setRoutineCount,
+  setTotalItems,
   setIsOverlayVisible 
 };

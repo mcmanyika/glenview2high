@@ -8,19 +8,22 @@ import { useCart } from '../../context/CartContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { setTotalItems } from '../../app/store'; 
+import ProductDetailModal from './ProductDetailModal';  // Import modal component
 
 const Products = () => {
-  const { addToCart, cart, clearCart } = useCart();
+  const { addToCart, cart } = useCart();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [sortOption, setSortOption] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [categories, setCategories] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null); // Track the selected product
+  const [isModalOpen, setIsModalOpen] = useState(false);  // State for controlling modal
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8; // Number of items per page
+  const itemsPerPage = 8;
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -35,7 +38,7 @@ const Products = () => {
           setProducts(productList);
 
           const uniqueCategories = Array.from(new Set(productList.map(product => product.category)));
-          setCategories(['All Categories', ...uniqueCategories]); // Include All Categories
+          setCategories(['All Categories', ...uniqueCategories]);
         } else {
           setError('No products available.');
         }
@@ -50,10 +53,18 @@ const Products = () => {
     fetchProducts();
   }, []);
 
-  // Update total items in global state whenever the cart changes
   useEffect(() => {
-    setTotalItems(cart.length); // Set totalItems in the store
+    setTotalItems(cart.length);
   }, [cart]);
+
+  const handleIconClick = (product) => {
+    setSelectedProduct(product); // Set selected product to state
+    setIsModalOpen(true); // Open the modal
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false); // Close the modal
+  };
 
   const sortProducts = (products, option) => {
     const sorted = [...products];
@@ -95,7 +106,7 @@ const Products = () => {
     }
   };
 
-  if (loading) return <div className="text-center">Loading...</div>;
+  if (loading) return <div className="text-center"><div className="spinner"></div></div>;
   if (error) return <div className="text-center text-red-500">{error}</div>;
 
   return (
@@ -137,21 +148,28 @@ const Products = () => {
           
           {/* Product List */}
           <main className="w-full md:w-2/3 lg:w-3/4 p-4">
-            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 w-full">
               {currentProducts.map((product) => (
-                <div key={product.id} className="border p-4 rounded transition-shadow hover:shadow-lg">
-                  <Link href={`/products/${product.id}`}>
-                    <Image src={product.imageUrl} alt={product.name} width={640} height={640} className="w-full h-40 object-cover rounded" />
-                  </Link>
-                  <h2 className="text-lg font-bold mt-2">{product.name}</h2>
+                <div key={product.id} className="relative border p-4 rounded transition-shadow hover:shadow-lg">
+                  <div className="relative group">
+                    <Image
+                      src={product.imageUrl}
+                      alt={product.name}
+                      width={640}
+                      height={640}
+                      className="w-full h-40 object-cover rounded"
+                    />
+                    {/* Shopping Cart Icon */}
+                    <FontAwesomeIcon
+                      icon={faShoppingCart}
+                      onClick={() => handleIconClick(product)}
+                      className="absolute bottom-2 right-2 text-white border border-white rounded-full w-4 h-4 p-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100 cursor-pointer"
+                    />
+                  </div>
+                  <div className=' cursor-pointer' onClick={() => handleIconClick(product)}>
+                    <h2 className="text-lg font-bold mt-2">{product.name}</h2>
+                  </div>
                   <p className="text-gray-700">${product.price.toFixed(2)}</p>
-                  <button
-                    onClick={() => addToCart(product)}
-                    className="mt-2 px-4 py-2 bg-main text-white rounded-full hover:bg-blue-600 transition"
-                  >
-                    <FontAwesomeIcon icon={faShoppingCart} className="mr-2" />
-                    Add to Cart
-                  </button>
                 </div>
               ))}
             </div>
@@ -175,6 +193,11 @@ const Products = () => {
             </div>
           </main>
         </div>
+
+        {/* Product Detail Modal */}
+        {isModalOpen && selectedProduct && (
+          <ProductDetailModal product={selectedProduct} onClose={handleCloseModal} />
+        )}
       </div>
     </Layout>
   );

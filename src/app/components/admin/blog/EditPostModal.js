@@ -54,6 +54,19 @@ const EditPostModal = ({ isOpen, onClose, post, onPostUpdate }) => {
             />
           </div>
           <div className="mb-4">
+            <label className="block text-sm font-bold mb-1" htmlFor="category">
+              Category
+            </label>
+            <input
+              type="text"
+              id="author"
+              name="author"
+              value={updatedPost.author || ''}
+              onChange={handleChange}
+              className="w-full border px-2 py-1 rounded"
+            />
+          </div>
+          <div className="mb-4">
             <label className="block text-sm font-bold mb-1" htmlFor="createdAt">
               Created At
             </label>

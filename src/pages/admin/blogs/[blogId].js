@@ -18,6 +18,7 @@ import withAuth from '../../../../utils/withAuth';
 function EditBlog() {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const [author, setAuthor] = useState('');
     const [category, setCategory] = useState('');
     const [status, setStatus] = useState('draft');
     const [loading, setLoading] = useState(true);
@@ -39,6 +40,7 @@ function EditBlog() {
                         setTitle(blogData.title);
                         setContent(blogData.content);
                         setCategory(blogData.category);
+                        setAuthor(blogData.author);
                         setStatus(blogData.status);
                     } else {
                         console.log('No blog found with this ID.');
@@ -64,6 +66,7 @@ function EditBlog() {
             title,
             content,
             category,
+            author,
             status,
             updatedAt: new Date().toISOString(),
         };
@@ -142,6 +145,16 @@ function EditBlog() {
                                         onChange={(e) => setCategory(e.target.value)}
                                         className="border px-4 py-3 w-full"
                                         placeholder='Category'
+                                        required
+                                    />
+                                </div>
+                                <div className="flex-1 pt-2">
+                                    <input
+                                        type="text"
+                                        value={author}
+                                        onChange={(e) => setAuthor(e.target.value)}
+                                        className="border px-4 py-3 w-full"
+                                        placeholder='Author'
                                         required
                                     />
                                 </div>

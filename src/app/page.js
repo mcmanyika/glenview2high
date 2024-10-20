@@ -9,6 +9,7 @@ import Vision from '../app/components/Vision';
 import ImageGallery from '../app/components/ImageGallery';
 import ContactUs from '../app/components/ContactUs';
 import Map from '../app/components/Map';
+import Alumni from "./components/libs/Alumni";
 
 export default function Home() {
   return (
@@ -19,6 +20,7 @@ export default function Home() {
       <Features />
       <Vision />
       <ImageGallery />
+      <Alumni />
       <Map />
       <ContactUs />
     </Layout>

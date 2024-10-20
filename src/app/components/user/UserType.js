@@ -12,7 +12,8 @@ const UserTypeSelector = ({ userEmail }) => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    gender: '',
+    companyName: '', // Added for contractor
+    typeOfService: '', // Added for contractor
     dateOfBirth: '',
     phone: '',
     userType: '',
@@ -28,7 +29,8 @@ const UserTypeSelector = ({ userEmail }) => {
       teacher: 'TCHR',
       staff: 'STFF',
       parent: 'PRNT',
-      contractor: 'CNTR',
+      contractor: 'CNTR', // Added prefix for contractor
+      alumni: 'ALUM', // Added prefix for alumni
     };
 
     const randomNum = Math.floor(100000 + Math.random() * 900000).toString(); // Generates a 6-digit number
@@ -63,13 +65,13 @@ const UserTypeSelector = ({ userEmail }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (
       formData.email &&
       formData.userType &&
       formData.firstName &&
       formData.lastName &&
-      formData.gender &&
+      (formData.userType !== 'contractor' || (formData.companyName && formData.typeOfService)) && // Check for companyName and typeOfService if userType is contractor
       formData.phone
     ) {
       try {
@@ -82,13 +84,14 @@ const UserTypeSelector = ({ userEmail }) => {
         toast.success('User data saved successfully', {
           position: 'bottom-center',
         });
-  
+
         // Reset form data and generate a new ID based on the selected userType
         setFormData((prevFormData) => ({
           ...prevFormData,
           firstName: '',
           lastName: '',
-          gender: '',
+          companyName: '', // Reset company name for contractor
+          typeOfService: '', // Reset type of service for contractor
           dateOfBirth: '',
           phone: '',
           userType: '',
@@ -143,19 +146,51 @@ const UserTypeSelector = ({ userEmail }) => {
               required
             />
           </div>
-          <div>
-            <select
-              name="gender"
-              value={formData.gender}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
-              required
-            >
-              <option value="" disabled>Select Gender...</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-            </select>
-          </div>
+
+          {/* Conditional fields for Contractor */}
+          {formData.userType === 'contractor' ? (
+            <>
+              <div>
+                <input
+                  type="text"
+                  name="companyName"
+                  value={formData.companyName}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                  placeholder="Company Name"
+                  required
+                />
+              </div>
+              <div>
+                <input
+                  type="text"
+                  name="typeOfService"
+                  value={formData.typeOfService}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                  placeholder="Type of Service"
+                  required
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <select
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                  required
+                >
+                  <option value="">Select Gender...</option>
+                  <option value="Female">Female</option>
+                  <option value="Male">Male</option>
+                </select>
+              </div>
+            </>
+          )}
+
           <div>
             <input
               type="tel"
@@ -189,6 +224,24 @@ const UserTypeSelector = ({ userEmail }) => {
               >
                 Staff
               </div>
+              <div
+                className={`cursor-pointer p-2 border border-gray-300 rounded ${formData.userType === 'parent' ? 'bg-main2' : ''}`}
+                onClick={() => handleUserTypeSelect('parent')}
+              >
+                Parent
+              </div>
+              <div
+                className={`cursor-pointer p-2 border border-gray-300 rounded ${formData.userType === 'alumni' ? 'bg-main2' : ''}`}
+                onClick={() => handleUserTypeSelect('alumni')}
+              >
+                Alumni
+              </div>
+              <div
+                className={`cursor-pointer p-2 border border-gray-300 rounded ${formData.userType === 'contractor' ? 'bg-main2' : ''}`}
+                onClick={() => handleUserTypeSelect('contractor')}
+              >
+                Contractor
+              </div>
             </div>
           </div>
 
@@ -214,31 +267,20 @@ const UserTypeSelector = ({ userEmail }) => {
                   <option value="" disabled>Select Class Level...</option>
                   <option value="Form 1">Form 1</option>
                   <option value="Form 2">Form 2</option>
-                  <option value="O Level">O Level</option>
-                  <option value="A Level">A Level</option>
+                  <option value="O' Level">O' Level</option>
+                  <option value="A' Level">A' Level</option>
                 </select>
               </div>
             </>
           )}
 
-          {/* Hidden fields */}
-          <input type="hidden" name="status" value={formData.status} />
-          <input type="hidden" name="userID" value={formData.userID} /> {/* Updated to userID */}
-
-          <div>
-            <input
-              type="hidden"
-              name="email"
-              value={formData.email}
-              readOnly
-              className="w-full p-2 border border-gray-300 rounded bg-gray-100 cursor-not-allowed"
-              placeholder="Email"
-            />
-          </div>
+          <button
+            type="submit"
+            className="mt-4 bg-blue-500 text-white py-2 rounded"
+          >
+            Submit
+          </button>
         </div>
-        <button type="submit" className="p-2 bg-main text-white rounded hover:bg-blue-600">
-          Submit
-        </button>
       </form>
       <ToastContainer />
     </div>

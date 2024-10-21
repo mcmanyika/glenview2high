@@ -3,7 +3,7 @@ import { ref, set } from 'firebase/database';
 import { database } from '../../../../utils/firebaseConfig'; // Adjust the path as needed
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const UserTypeSelector = ({ userEmail }) => {
   const router = useRouter();
@@ -267,8 +267,8 @@ const UserTypeSelector = ({ userEmail }) => {
                   <option value="" disabled>Select Class Level...</option>
                   <option value="Form 1">Form 1</option>
                   <option value="Form 2">Form 2</option>
-                  <option value="O' Level">O' Level</option>
-                  <option value="A' Level">A' Level</option>
+                  <option value="O' Level">O Level</option>
+                  <option value="A' Level">A Level</option>
                 </select>
               </div>
             </>

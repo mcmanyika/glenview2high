@@ -4,7 +4,7 @@ import { getStorage } from 'firebase/storage';
 
 
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
+  apiKey: 'AIzaSyDdClopB_iRI-UCm228U7a8yPLPCooZwEA',
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
   projectId: 'glenview2-b3d45',
   storageBucket: process.env.FIREBASE_STORAGE_BUCKET,

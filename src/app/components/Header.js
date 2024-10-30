@@ -180,10 +180,10 @@ const Header = () => {
         }`}
       >
         <div className="flex items-center justify-center h-full p-10">
-          <div className="text-white text-center">
-            <h2 className="text-2xl md:text-4xl font-thin">Student Application</h2>
-            <p className="mt-4 text-base md:text-lg">
-              As a new student you can now apply online, click below to start the process.
+          <div className="max-w-4xl mx-auto text-white text-center">
+            <h2 className="text-2xl md:text-4xl font-thin">Form 1 Student Application in progress</h2>
+            <p className="mt-4 font-thin md:text-lg">
+            ​We are excited to announce that Form 1 registration for the upcoming academic year has officially begun. All prospective students are invited to complete their registration at the school’s admissions office. Please ensure you bring the necessary documents, including your child’s birth certificate, Grade 7 results, and proof of residence. For more details on the registration process and requirements, visit our school or contact the admissions office. We look forward to welcoming new students to our school community
             </p>
             <Link href="/admin/dashboard">
               <button className="inline-block mt-4 px-6 py-2 bg-white text-gray-500 rounded-full transition duration-300">

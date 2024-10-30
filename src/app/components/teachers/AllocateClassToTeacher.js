@@ -59,7 +59,7 @@ const AllocateClassToTeacher = () => {
     if (!selectedClass || !selectedTeacher) {
       toast.error("Please select both a class and a teacher.");
       return;
-    }
+    } 
 
     const allocationData = {
       className: selectedClass,

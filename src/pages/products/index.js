@@ -1,13 +1,14 @@
 import { useEffect, useState, useRef } from 'react';
 import { ref, get } from 'firebase/database';
 import { database } from '../../../utils/firebaseConfig';
-import Link from 'next/link';
 import Image from 'next/image';
 import Layout from '../../app/components/Layout2';
 import { useCart } from '../../context/CartContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { setTotalItems } from '../../app/store'; 
+
+const sizeOptions = ['Small', 'Medium', 'Large', 'X-Large', 'XX-Large'];
 
 const Products = () => {
   const { addToCart, cart } = useCart();
@@ -20,8 +21,8 @@ const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState(null); // Track the selected product
   const [isModalOpen, setIsModalOpen] = useState(false);  // State for controlling modal
 
-  const [selectedVariant, setSelectedVariant] = useState('');
-  const [variantStock, setVariantStock] = useState(0);
+  const [sizes, setSizes] = useState(['']);
+
 
   const modalRef = useRef(null); // Reference for the modal
 
@@ -58,22 +59,17 @@ const Products = () => {
   }, [cart]);
 
   useEffect(() => {
-    if (selectedProduct && selectedProduct.variants) {
-      const defaultVariant = Object.keys(selectedProduct.variants)[0];
-      setSelectedVariant(defaultVariant);
-      setVariantStock(selectedProduct.variants[defaultVariant].stock);
+    if (selectedProduct && selectedProduct.size) {
+      const defaultSize = Object.keys(selectedProduct.size)[0];
     }
   }, [selectedProduct]);
 
-  const handleVariantChange = (variant) => {
-    setSelectedVariant(variant);
-    setVariantStock(selectedProduct.variants[variant].stock);
-  };
+  
 
   const handleAddToCart = () => {
-    if (selectedVariant && variantStock > 0) {
-      addToCart(selectedProduct, selectedVariant); // Add product to cart
-    }
+    
+      addToCart(selectedProduct); // Add product to cart
+  
   };
 
   const handleIconClick = (product) => {
@@ -186,14 +182,15 @@ const Products = () => {
                       alt={product.name}
                       width={640}
                       height={640}
-                      className="w-full h-40 object-cover rounded"
+                      className="w-full h-60 object-cover cursor-pointer rounded"
+                      onClick={() => handleIconClick(product)}
                     />
                     {/* Shopping Cart Icon */}
-                    <FontAwesomeIcon
-                      icon={faShoppingCart}
-                      onClick={() => handleIconClick(product)}
-                      className="absolute bottom-2 right-2 text-white border border-white rounded-full w-4 h-4 p-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100 cursor-pointer"
-                    />
+                      <FontAwesomeIcon
+                        icon={faShoppingCart}
+                        onClick={() => handleIconClick(product)}
+                        className="absolute bottom-2 right-2 text-white border border-white rounded-full w-4 h-4 p-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100 cursor-pointer"
+                      />
                   </div>
                   <div className=' cursor-pointer' onClick={() => handleIconClick(product)}>
                     <h2 className="text-lg font-bold mt-2">{product.name}</h2>
@@ -233,43 +230,16 @@ const Products = () => {
                 alt={selectedProduct.name}
                 width={640}
                 height={640}
-                className="w-full h-40 object-cover pb-2 rounded"
+                className="w-full h-90 object-cover pb-2 rounded"
               />
               <h2 className="text-2xl font-bold mb-2">{selectedProduct.name}</h2>
               <p className="text-lg font-semibold mt-2">${selectedProduct.price.toFixed(2)}</p>
-
-              <h3 className="mt-4 font-bold">Choose a variant:</h3>
-<div className="mt-2 flex space-x-2">
-  {Object.keys(selectedProduct.variants || {}).map((variant) => (
-    <label
-      key={variant}
-      className="cursor-pointer flex items-center justify-center border-2 border-gray-300 rounded-md p-2 transition hover:bg-gray-100"
-    >
-      <input
-        type="radio"
-        value={variant}
-        checked={selectedVariant === variant}
-        onChange={() => handleVariantChange(variant)}
-        className="hidden peer"
-      />
-      <span
-        className={`block w-6 h-6 rounded-sm ${
-          selectedVariant === variant
-            ? 'bg-blue-500 border-blue-500'
-            : 'bg-white border-gray-300'
-        } peer-checked:bg-blue-500 peer-checked:border-blue-500`}
-      ></span>
-      <span className="ml-2">{variant} - {selectedProduct.variants[variant].stock} in stock</span>
-    </label>
-  ))}
-</div>
 
               <div className="mt-4">
                 <div className='w-full'>
                   <button
                   onClick={handleAddToCart}
-                  disabled={variantStock <= 0}
-                  className={`w-full px-4 py-2 bg-main text-white rounded-full ${variantStock <= 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  className={`w-full px-4 py-2 bg-main text-white rounded-full`}
                 >
                   Add to Cart
                 </button>

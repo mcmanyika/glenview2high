@@ -8,9 +8,9 @@ const ClassRoutineList = () => {
   const { data: session } = useSession();
   const [classRoutines, setClassRoutines] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); // Number of items to display per page
-  const [sortField, setSortField] = useState('date'); // Default sorting field
-  const [sortDirection, setSortDirection] = useState('asc'); // Default sorting direction
+  const [itemsPerPage] = useState(10);
+  const [sortField, setSortField] = useState('date');
+  const [sortDirection, setSortDirection] = useState('asc');
 
   useEffect(() => {
     if (!session?.user?.email) return;
@@ -18,13 +18,15 @@ const ClassRoutineList = () => {
     const routineRef = ref(database, 'classRoutine');
     onValue(routineRef, (snapshot) => {
       const routines = [];
+      const currentDate = new Date();
+      const twoDaysAgo = new Date(currentDate);
+      twoDaysAgo.setDate(currentDate.getDate() - 2);
+
       snapshot.forEach((childSnapshot) => {
         const routine = childSnapshot.val();
         const routineDate = new Date(routine.date);
-        const currentDate = new Date();
 
-        // Only include routines with a date that is current or in the future
-        if (routine.email === session.user.email && routineDate >= currentDate) {
+        if (routine.email === session.user.email && routineDate >= twoDaysAgo) {
           routines.push({ id: childSnapshot.key, ...routine });
         }
       });
@@ -32,14 +34,12 @@ const ClassRoutineList = () => {
     });
   }, [session?.user?.email]);
 
-  // Handle sorting by updating the sortField and sortDirection
   const handleSort = (field) => {
     const isAsc = sortField === field && sortDirection === 'asc';
     setSortField(field);
     setSortDirection(isAsc ? 'desc' : 'asc');
   };
 
-  // Sort routines based on the selected field and direction
   const sortedRoutines = [...classRoutines].sort((a, b) => {
     const aValue = a[sortField];
     const bValue = b[sortField];
@@ -51,12 +51,9 @@ const ClassRoutineList = () => {
     }
   });
 
-  // Calculate the routines to be displayed on the current page
   const indexOfLastRoutine = currentPage * itemsPerPage;
   const indexOfFirstRoutine = indexOfLastRoutine - itemsPerPage;
   const currentRoutines = sortedRoutines.slice(indexOfFirstRoutine, indexOfLastRoutine);
-
-  // Calculate the total number of pages
   const totalPages = Math.ceil(sortedRoutines.length / itemsPerPage);
 
   const handlePageChange = (pageNumber) => {
@@ -75,53 +72,53 @@ const ClassRoutineList = () => {
   };
 
   return (
-    <div className="p-6 bg-white rounded shadow mt-3">
+    <div className="p-6 bg-white rounded shadow">
       <h2 className="text-xl font-semibold mb-4">My Class Routines</h2>
       {classRoutines.length === 0 ? (
-        <p>No upcoming class routines found for you.</p>
+        <p>No class routines found for you within the last two days.</p>
       ) : (
         <>
-          <table className="min-w-full text-sm bg-white text-left">
-            <thead>
-              <tr>
-                <th className="py-2 px-4 border-b cursor-pointer" onClick={() => handleSort('date')}>
-                  Date {sortField === 'date' && (sortDirection === 'asc' ? '↑' : '↓')}
-                </th>
-                <th className="py-2 px-4 border-b cursor-pointer" onClick={() => handleSort('time')}>
-                  Time {sortField === 'time' && (sortDirection === 'asc' ? '↑' : '↓')}
-                </th>
-                <th className="py-2 px-4 border-b cursor-pointer" onClick={() => handleSort('subject')}>
-                  Subject {sortField === 'subject' && (sortDirection === 'asc' ? '↑' : '↓')}
-                </th>
-                <th className="py-2 px-4 border-b cursor-pointer" onClick={() => handleSort('studentclass')}>
-                  Class {sortField === 'studentclass' && (sortDirection === 'asc' ? '↑' : '↓')}
-                </th>
-                <th className="py-2 px-4 border-b cursor-pointer" onClick={() => handleSort('room')}>
-                  Room {sortField === 'room' && (sortDirection === 'asc' ? '↑' : '↓')}
-                </th>
-                {/* <th className="py-2 px-4 border-b">Actions</th> */}
-              </tr>
-            </thead>
-            <tbody>
-              {currentRoutines.map((routine) => (
-                <tr key={routine.id}>
-                  <td className="py-2 px-4 border-b">{routine.date}</td>
-                  <td className="py-2 px-4 border-b">{routine.time}</td>
-                  <td className="py-2 px-4 border-b">{routine.subject}</td>
-                  <td className="py-2 px-4 border-b">{routine.studentclass}</td>
-                  <td className="py-2 px-4 border-b">{routine.room}</td>
-                  {/* <td className="py-2 px-4 border-b">
-                    <button 
-                      className="text-red-500 hover:underline" 
-                      onClick={() => handleDelete(routine.id)}
-                    >
-                      <FaTrashAlt className="w-5 h-5" />
-                    </button>
-                  </td> */}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {/* Sort Headers */}
+          <div className="grid grid-cols-5 gap-4 text-sm font-semibold border-b pb-2 mb-4">
+            <button onClick={() => handleSort('date')} className="cursor-pointer">
+              Date {sortField === 'date' && (sortDirection === 'asc' ? '↑' : '↓')}
+            </button>
+            <button onClick={() => handleSort('time')} className="cursor-pointer">
+              Time {sortField === 'time' && (sortDirection === 'asc' ? '↑' : '↓')}
+            </button>
+            <button onClick={() => handleSort('subject')} className="cursor-pointer">
+              Subject {sortField === 'subject' && (sortDirection === 'asc' ? '↑' : '↓')}
+            </button>
+            <button onClick={() => handleSort('studentclass')} className="cursor-pointer">
+              Class {sortField === 'studentclass' && (sortDirection === 'asc' ? '↑' : '↓')}
+            </button>
+            <button onClick={() => handleSort('room')} className="cursor-pointer">
+              Room {sortField === 'room' && (sortDirection === 'asc' ? '↑' : '↓')}
+            </button>
+          </div>
+
+          {/* Routine Entries */}
+          {currentRoutines.map((routine) => (
+            <div
+              key={routine.id}
+              className="grid grid-cols-5 gap-4 text-sm border-b py-2 items-center"
+            >
+              <div>{routine.date}</div>
+              <div>{routine.time}</div>
+              <div>{routine.subject}</div>
+              <div>{routine.studentclass}</div>
+              <div>{routine.room}</div>
+              {/* Uncomment if you want to add the delete option
+              <div>
+                <button
+                  className="text-red-500 hover:underline"
+                  onClick={() => handleDelete(routine.id)}
+                >
+                  <FaTrashAlt className="w-5 h-5" />
+                </button>
+              </div> */}
+            </div>
+          ))}
 
           {/* Pagination Controls */}
           <div className="mt-4 flex justify-end space-x-2">

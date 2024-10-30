@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import { useGlobalState, setStudentClass, setStatus } from '../../app/store';
 import Student from '../../app/components/student/Student';
 import CombinedExamsList from '../../app/components/exams/CombinedExamsList';
+import StudentAssignmentsList from '../../app/components/student/assignments/StudentAssignmentsList';
 
 const StudentDash = () => {
   const { data: session, status } = useSession();
@@ -71,18 +72,23 @@ const StudentDash = () => {
           ) : (
             <div>
               {studentStatus === "Accepted" ? (
-                <div>
+                <div className='h-screen overflow-y-auto'>
                   <NoticeCount />
                   <div className="w-full flex flex-col md:flex-row mt-4">
-                    <div className="md:w-2/4 bg-white p-4 mt-0 mr-1">
+                    <div className="md:w-2/4 bg-white p-4 m-2">
                       <Student />
                     </div>
-                    <div className="md:w-2/4 bg-white mt-0 ml-1">
-                      <ClassRoutine />
+                    <div className="md:w-2/4 bg-white m-2">
+                    <ClassRoutine />
                     </div>
                   </div>
-                  <div className='w-full mt-4'>
-                    <CombinedExamsList />
+                  <div className="w-full flex flex-col md:flex-row mt-4">
+                    <div className="md:w-2/4 bg-white p-4 m-2">
+                        <StudentAssignmentsList />
+                  </div>
+                    <div className="md:w-2/4 bg-white m-2">
+                      <CombinedExamsList />
+                    </div>
                   </div>
                 </div>
               ) : (

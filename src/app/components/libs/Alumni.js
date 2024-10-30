@@ -24,22 +24,22 @@ const Alumni = () => {
             </p>
             <ul className="mb-4 font-sans text-lg space-y-2">
               <li className="flex items-center">
-                <FaCheckCircle className="text-blue-400 mr-2" />
+                <FaCheckCircle className="text-black mr-2" />
                 Offer Career Advice
               </li>
               <li className="flex items-center">
-                <FaCheckCircle className="text-blue-400 mr-2" />
+                <FaCheckCircle className="text-black mr-2" />
                 Provide Networking Opportunities
               </li>
               <li className="flex items-center">
-                <FaCheckCircle className="text-blue-400 mr-2" />
+                <FaCheckCircle className="text-black mr-2" />
                 Support Personal Development
               </li>
             </ul>
           </div>
           <button
             onClick={handleRedirect}
-            className="bg-main text-white px-6 py-2 rounded hover:bg-blue-600 mt-auto"
+            className="bg-main text-white px-6 py-2 rounded hover:bg-yellow-800 mt-auto"
           >
             Become a Mentor
           </button>
@@ -54,22 +54,22 @@ const Alumni = () => {
             </p>
             <ul className="mb-4 font-sans text-lg space-y-2">
               <li className="flex items-center">
-                <FaCheckCircle className="text-blue-400 mr-2" />
+                <FaCheckCircle className="text-black mr-2" />
                 Donate to Scholarships
               </li>
               <li className="flex items-center">
-                <FaCheckCircle className="text-blue-400 mr-2" />
+                <FaCheckCircle className="text-black mr-2" />
                 Sponsor School Events
               </li>
               <li className="flex items-center">
-                <FaCheckCircle className="text-blue-400 mr-2" />
+                <FaCheckCircle className="text-black mr-2" />
                 Volunteer Your Time
               </li>
             </ul>
           </div>
           <button
             onClick={handleRedirect}
-            className="bg-main text-white px-6 py-2 rounded hover:bg-blue-600 mt-auto"
+            className="bg-main text-white px-6 py-2 rounded hover:bg-yellow-800  mt-auto"
           >
             Support Our School
           </button>
@@ -85,7 +85,7 @@ const Alumni = () => {
           </div>
           <button
             onClick={handleRedirect}
-            className="bg-main text-white px-6 py-2 rounded hover:bg-blue-600 mt-auto"
+            className="bg-main text-white px-6 py-2 rounded hover:bg-yellow-800 mt-auto"
           >
             Join a Volunteer Program
           </button>

@@ -11,7 +11,7 @@ const AssignExam = () => {
   const [selectedStudents, setSelectedStudents] = useState([]);
 
   useEffect(() => {
-    const admissionsRef = ref(database, 'admissions'); // Changed to 'admissions'
+    const admissionsRef = ref(database, 'userTypes'); // Changed to 'admissions'
     const examsRef = ref(database, 'exams');
 
     onValue(admissionsRef, (snapshot) => {
@@ -31,7 +31,7 @@ const AssignExam = () => {
 
   const handleAssignExam = () => {
     selectedStudents.forEach((studentId) => {
-      const studentRef = ref(database, `admissions/${studentId}/exams`); // Changed to 'admissions'
+      const studentRef = ref(database, `userTypes/${studentId}/exams`); // Changed to 'admissions'
       update(studentRef, {
         [selectedExam]: {
           examId: selectedExam,

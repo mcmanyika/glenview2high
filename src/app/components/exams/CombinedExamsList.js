@@ -64,14 +64,35 @@ const CombinedExamsList = () => {
     .slice(-10);  // Get the last 10 exams
 
   return (
-    <div className="w-full bg-white rounded px-4 sm:px-8 pt-6 pb-8 mt-4 mb-4">
-      <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-8 text-center">Recent Exams Results</h2>
+    <div className="w-full bg-white rounded pt-6 pb-8 mt-4 mb-4">
+      <h2 className="text-xl sm:text-2xl font-semibold  sm:mb-8 text-center">Recent Exams Results</h2>
 
       {filteredExams.length === 0 ? (
         <p>No exams found.</p>
       ) : (
-        <div className="flex flex-col sm:flex-row">
-          <div className="flex-1 overflow-x-auto mb-6">
+        <div className="flex flex-col items-center"> {/* Centering items */}
+          <div className="w-full flex justify-center mb-4"> {/* Center the PieChart */}
+            <PieChart width={300} height={300}>
+              <Pie
+                data={filteredExams}
+                dataKey="score"
+                nameKey="examName"
+                cx="50%"
+                cy="50%"
+                outerRadius={80}
+                fill="#8884d8"
+                label
+              >
+                {filteredExams.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={`#${Math.floor(Math.random() * 16777215).toString(16)}`} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </div>
+
+          <div className="fw-full overflow-x-auto mb-6">
             <table className="min-w-full text-sm bg-white border">
               <thead>
                 <tr>
@@ -102,27 +123,6 @@ const CombinedExamsList = () => {
                 ))}
               </tbody>
             </table>
-          </div>
-
-          <div className="flex-1 flex justify-center">
-            <PieChart width={300} height={300}>
-              <Pie
-                data={filteredExams}
-                dataKey="score"
-                nameKey="examName"
-                cx="50%"
-                cy="50%"
-                outerRadius={80}
-                fill="#8884d8"
-                label
-              >
-                {filteredExams.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={`#${Math.floor(Math.random() * 16777215).toString(16)}`} />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
           </div>
         </div>
       )}

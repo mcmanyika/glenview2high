@@ -9,12 +9,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // FontAwesome
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'; // Spinner icon
 
 
-import AdminLayout from './adminLayout';
+import AdminLayout from '../admin/adminLayout';
 import withAuth from '../../../utils/withAuth';
-import CreateExamForm from '../../app/components/exams/CreateExamForm';
+import CreateAssignment from '../../app/components/teachers/assignments/CreateAssignment';
 import AssignedExamsList from '../../app/components/exams/AssignedExamsList';
+import TeacherAssignmentsList from '../../app/components/teachers/assignments/TeacherAssignmentsList';
 
-const Exams = () => {
+const Assignments = () => {
   const { data: session, status } = useSession(); // Get session and status from next-auth
   const [userType, setUserType] = useState(null); // State for user type
   const [loading, setLoading] = useState(true); // Loading state
@@ -73,13 +74,13 @@ const Exams = () => {
 
   return (
     <AdminLayout>
-      <div className='w-full flex flex-col md:flex-row'>
-        <div className='w-full  m-1'>
-          <AssignedExamsList />
+      <div className='w-full flex flex-col h-screen overflow-y-auto'>
+        <div className='w-full m-1'>
+          <TeacherAssignmentsList />
         </div>
       </div>
     </AdminLayout>
   );
 }
 
-export default withAuth(Exams);
+export default withAuth(Assignments);

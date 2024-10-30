@@ -4,17 +4,12 @@ import { database } from '../../../../utils/firebaseConfig'; // Adjust the path 
 import { toast } from 'react-toastify';
 
 const categories = [
-  'Textbooks',
-  'Stationery',
-  'Art Supplies',
-  'Educational Toys',
-  'Classroom Resources',
-  'Electronics (e.g., calculators, projectors)',
   'Uniforms',
   'Sports Equipment',
-  'Learning Tools (e.g., flashcards, educational games)',
-  'Others'
 ];
+
+// Predefined sizes for the dropdown
+const sizeOptions = ['Small', 'Medium', 'Large', 'X-Large', 'XX-Large'];
 
 const AddProduct = () => {
   const [name, setName] = useState('');
@@ -22,23 +17,23 @@ const AddProduct = () => {
   const [description, setDescription] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [category, setCategory] = useState(''); // State for selected category
-  const [variants, setVariants] = useState([{ variantName: '', stock: '' }]); // Manage variants
+  const [sizes, setSizes] = useState(['']); // Manage sizes
   const [loading, setLoading] = useState(false);
 
-  const handleVariantChange = (index, e) => {
-    const { name, value } = e.target;
-    const newVariants = [...variants];
-    newVariants[index][name] = value;
-    setVariants(newVariants);
+  const handleSizeChange = (index, e) => {
+    const { value } = e.target;
+    const newSizes = [...sizes];
+    newSizes[index] = value;
+    setSizes(newSizes);
   };
 
-  const addVariant = () => {
-    setVariants([...variants, { variantName: '', stock: '' }]); // Add a new variant
+  const addSize = () => {
+    setSizes([...sizes, '']); // Add a new size
   };
 
-  const removeVariant = (index) => {
-    const newVariants = variants.filter((_, i) => i !== index); // Remove the variant at the index
-    setVariants(newVariants);
+  const removeSize = (index) => {
+    const newSizes = sizes.filter((_, i) => i !== index); // Remove the size at the index
+    setSizes(newSizes);
   };
 
   const handleSubmit = async (e) => {
@@ -50,10 +45,10 @@ const AddProduct = () => {
       return;
     }
 
-    // Validate variants
-    const invalidVariant = variants.some(variant => !variant.variantName || parseInt(variant.stock) < 0);
-    if (invalidVariant) {
-      toast.error('Please enter valid variant names and stock levels.');
+    // Validate sizes
+    const invalidSize = sizes.some(size => !size);
+    if (invalidSize) {
+      toast.error('Please select valid sizes.');
       return;
     }
 
@@ -64,7 +59,7 @@ const AddProduct = () => {
       description,
       imageUrl,
       category, // Include category
-      variants, // Include variants
+      sizes, // Include sizes
       createdAt: new Date().toISOString(), // Add a timestamp
     };
 
@@ -83,7 +78,7 @@ const AddProduct = () => {
       setDescription('');
       setImageUrl('');
       setCategory(''); // Reset category
-      setVariants([{ variantName: '', stock: '' }]); // Reset variants
+      setSizes(['']); // Reset sizes
     } catch (error) {
       console.error('Error adding product: ', error);
       toast.error('Failed to add product. Please try again.');
@@ -164,31 +159,24 @@ const AddProduct = () => {
           </select>
         </div>
 
-        <h3 className="text-md font-bold mb-2">Product Variants</h3>
-        {variants.map((variant, index) => (
+        <h3 className="text-md font-bold mb-2">Product Sizes</h3>
+        {sizes.map((size, index) => (
           <div key={index} className="mb-4 flex space-x-2">
-            <input
-              type="text"
-              name="variantName"
-              value={variant.variantName}
-              onChange={(e) => handleVariantChange(index, e)}
+            <select
+              name="size"
+              value={size}
+              onChange={(e) => handleSizeChange(index, e)}
               className="border border-gray-300 rounded w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Variant name (e.g., Color, Size)"
               required
-            />
-            <input
-              type="number"
-              name="stock"
-              value={variant.stock}
-              onChange={(e) => handleVariantChange(index, e)}
-              className="border border-gray-300 rounded w-24 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Stock"
-              min="0"
-              required
-            />
+            >
+              <option value="">Select a size</option>
+              {sizeOptions.map((option, idx) => (
+                <option key={idx} value={option}>{option}</option>
+              ))}
+            </select>
             <button
               type="button"
-              onClick={() => removeVariant(index)}
+              onClick={() => removeSize(index)}
               className="bg-red-500 text-white rounded px-2 py-2"
             >
               Remove
@@ -197,10 +185,10 @@ const AddProduct = () => {
         ))}
         <button
           type="button"
-          onClick={addVariant}
-          className="bg-green-500 text-white rounded px-4 py-2 mb-4"
+          onClick={addSize}
+          className="bg-green-500 text-white rounded px-4 py-2 m-4"
         >
-          Add Variant
+          Add Size
         </button>
 
         <button

@@ -15,8 +15,17 @@ body {
   .bg-main {
     background-color: #85b6fb
   }
+  .bg-main1{
+    background-color: #f0f2f636;
+  }
   .bg-main2{
     background-color: #85b6fb36;
+  }
+  .bg-main3 {
+    background-color: #85b6fb
+  }
+  .bg-admin-footer {
+    background-color: #f3f4f6;
   }
 
   .no-hover-overlay {

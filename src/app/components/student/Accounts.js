@@ -3,6 +3,7 @@ import { database } from '../../../../utils/firebaseConfig'; // Adjust the impor
 import { ref, onValue, update } from 'firebase/database';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import EditAdmissionForm from '../admin/admissions/EditAdmissionForm';
 
 const Accounts = () => {
   const { data: session } = useSession();
@@ -165,122 +166,17 @@ const Accounts = () => {
 
       {/* Modal */}
       {modalOpen && selectedAdmission && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div id="modal-content" className="bg-white p-8 rounded-md w-full max-w-4xl mx-4">
-            <h2 className="text-xl font-semibold mb-4">Edit Admission</h2>
-            <form onSubmit={handleSubmit}>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div>
-                  <label className="block mb-2">Account ID</label>
-                  <input
-                    type="text"
-                    name="admissionId"
-                    value={formData.userID}
-                    onChange={handleInputChange}
-                    className="border rounded w-full px-3 py-2"
-                    disabled
-                  />
-                </div>
-                <div>
-                  <label className="block mb-2">First Name</label>
-                  <input
-                    type="text"
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleInputChange}
-                    className="border rounded w-full px-3 py-2"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-2">Last Name</label>
-                  <input
-                    type="text"
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleInputChange}
-                    className="border rounded w-full px-3 py-2"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-2">Gender</label>
-                  <select
-                    name="gender"
-                    value={formData.gender}
-                    onChange={handleInputChange}
-                    className="border rounded w-full px-3 py-2"
-                  >
-                    <option value="">Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block mb-2">Date of Birth</label>
-                  <input
-                    type="date"
-                    name="dateOfBirth"
-                    value={formData.dateOfBirth}
-                    onChange={handleInputChange}
-                    className="border rounded w-full px-3 py-2"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-2">Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="border rounded w-full px-3 py-2"
-                    disabled
-                  />
-                </div>
-                <div>
-                  <label className="block mb-2">Class</label>
-                  <input
-                    type="text"
-                    name="class"
-                    value={formData.class}
-                    onChange={handleInputChange}
-                    className="border rounded w-full px-3 py-2"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-2">Phone</label>
-                  <input
-                    type="text"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    className="border rounded w-full px-3 py-2"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-2">Status</label>
-                  <select
-                    name="status"
-                    value={formData.status}
-                    onChange={handleInputChange}
-                    className="border rounded w-full px-3 py-2"
-                  >
-                    <option value="">Select Status</option>
-                    <option value="Accepted">Accepted</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Rejected">Rejected</option>
-                  </select>
-                </div>
-              </div>
-              <div className="flex justify-end">
-                <button type="button" onClick={closeModal} className="mr-4 px-4 py-2 bg-gray-300 rounded-md">
-                  Cancel
-                </button>
-                <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-md">
-                  Save Changes
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+         <div className="bg-white p-8 rounded-md max-w-screen-lg">
+           <h2 className="text-xl font-semibold mb-4">Edit Admission</h2>
+           <EditAdmissionForm
+             formData={formData}
+             handleInputChange={handleInputChange}
+             handleSubmit={handleSubmit}
+             closeModal={closeModal}
+           /> 
+         </div>
+       </div>
       )}
     </div>
   );

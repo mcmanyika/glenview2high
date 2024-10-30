@@ -3,7 +3,7 @@ import { ref, set } from 'firebase/database';
 import { database } from '../../../../utils/firebaseConfig'; // Adjust the path as needed
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 
 const UserTypeSelector = ({ userEmail }) => {
   const router = useRouter();

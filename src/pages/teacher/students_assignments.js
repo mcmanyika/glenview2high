@@ -1,4 +1,3 @@
-import React from 'react'
 import { useState, useEffect } from 'react';
 import { ref, get } from 'firebase/database';
 import { useRouter } from 'next/router';
@@ -8,14 +7,12 @@ import { setUserID } from '../../app/store'; // Adjust the path if needed
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // FontAwesome icons
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'; // Spinner icon
 
-
-import AdminLayout from './adminLayout';
+import TeacherSubmittedAssignments from '../../app/components/teachers/assignments/TeacherSubmittedAssignments'
+import AdminLayout from '../admin/adminLayout'
 import withAuth from '../../../utils/withAuth';
-import CreateExamForm from '../../app/components/exams/CreateExamForm';
-import AssignedExamsList from '../../app/components/exams/AssignedExamsList';
 
-const Exams = () => {
-  const { data: session, status } = useSession(); // Get session and status from next-auth
+function StudentsAssignments() {
+    const { data: session, status } = useSession(); // Get session and status from next-auth
   const [userType, setUserType] = useState(null); // State for user type
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
@@ -61,25 +58,16 @@ const Exams = () => {
       <div className="flex justify-center items-center h-screen">
         <FontAwesomeIcon
           icon={faSpinner}
-          className="text-4xl text-blue-500 animate-spin"
+          className="text-4xl text-main3 animate-spin"
         />
       </div>
     );
   }
 
-  if (error) {
-    return <div>{error}</div>; // Display error message if any
-  }
-
   return (
     <AdminLayout>
-      <div className='w-full flex flex-col md:flex-row'>
-        <div className='w-full  m-1'>
-          <AssignedExamsList />
-        </div>
-      </div>
+        <TeacherSubmittedAssignments />
     </AdminLayout>
-  );
+  )
 }
-
-export default withAuth(Exams);
+export default withAuth(StudentsAssignments)

@@ -12,44 +12,53 @@ const StudentGenderCount = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
+    const fetchAdmissionsAndClasses = () => {
+      const admissionsRef = ref(database, 'userTypes');
+      const classesRef = ref(database, 'classes');
+
+      onValue(admissionsRef, (snapshot) => {
+        const admissionsData = snapshot.val();
+        if (admissionsData) {
+          const admissionsArray = Object.keys(admissionsData).map((key) => ({
+            id: key,
+            ...admissionsData[key],
+          }));
+          setAdmissions(admissionsArray);
+        } else {
+          console.error('No admissions data found.');
+        }
+      });
+
+      onValue(classesRef, (snapshot) => {
+        const classesData = snapshot.val();
+        if (classesData) {
+          const classesArray = Object.keys(classesData).map(key => ({
+            id: key,
+            ...classesData[key]
+          }));
+
+          // Filtering classes by teacherEmail to match logged-in user
+          const filteredClasses = classesArray.filter(
+            (classItem) => classItem.teacherEmail === session.user.email
+          );
+          setClasses(filteredClasses); // Set only the filtered classes
+        } else {
+          console.error('No classes data found.');
+        }
+      });
+
+      setIsLoading(false);
+    };
+
     if (status === 'authenticated') {
-      const fetchAdmissionsAndClasses = () => {
-        const admissionsRef = ref(database, 'userTypes');
-        const classesRef = ref(database, 'classes');
-
-        onValue(admissionsRef, (snapshot) => {
-          const admissionsData = snapshot.val();
-          if (admissionsData) {
-            const admissionsArray = Object.keys(admissionsData).map((key) => ({
-              id: key,
-              ...admissionsData[key],
-            }));
-            setAdmissions(admissionsArray);
-          }
-        });
-
-        onValue(classesRef, (snapshot) => {
-          const classesData = snapshot.val();
-          if (classesData) {
-            const classesArray = Object.keys(classesData).map((key) => ({
-              id: key,
-              ...classesData[key],
-            }));
-            setClasses(classesArray);
-          }
-        });
-
-        setIsLoading(false);
-      };
-
       fetchAdmissionsAndClasses();
     } else {
       setIsLoading(false);
     }
-  }, [status]);
+  }, [status, session.user.email]);
 
   const filteredStudents = admissions.filter((student) => {
-    const isClassValid = classes.some((cls) => cls.className === student.studentClassLevel);
+    const isClassValid = classes.some((cls) => cls.className === student.class);
     if (!isClassValid) return false;
 
     const term = searchTerm.toLowerCase();
@@ -57,7 +66,7 @@ const StudentGenderCount = () => {
       student.userID?.toLowerCase().includes(term) ||
       student.firstName?.toLowerCase().includes(term) ||
       student.lastName?.toLowerCase().includes(term) ||
-      student.studentClassLevel?.toLowerCase().includes(term) ||
+      student.class?.toLowerCase().includes(term) ||
       student.gender?.toLowerCase().includes(term) ||
       student.phone?.toLowerCase().includes(term) ||
       student.email?.toLowerCase().includes(term)
@@ -86,7 +95,7 @@ const StudentGenderCount = () => {
   return (
     <div className="w-full text-sm p-4 bg-white">
       <h2 className="text-xl font-semibold mb-4">Students By Gender</h2>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="p-4 bg-blue-100 text-blue-700 rounded-lg shadow flex flex-col items-center justify-center">
           <FaMale className="text-4xl mb-2" />
           <h3 className="text-lg font-semibold">Male</h3>

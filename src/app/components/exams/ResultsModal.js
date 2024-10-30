@@ -18,17 +18,11 @@ const ResultsModal = ({ student, examId, onClose }) => {
 
     try {
       const resultRef = ref(database, `examResults/${student.id}_${examId}`);
-      const examRef = ref(database, `admissions/${student.id}/exams/${examId}`);
 
       // Update the exam results with score and comment
       await update(resultRef, {
         score: parseFloat(score),
         comment: comment, // Add the comment to the database
-      });
-
-      // Update the status to "Completed"
-      await update(examRef, {
-        status: 'Completed',
       });
 
       toast.success("Score and comment submitted successfully!");

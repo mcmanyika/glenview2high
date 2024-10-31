@@ -72,14 +72,12 @@ function AddClasses() {
 
   return (
     <AdminLayout>
-      <div className="flex flex-col md:flex-row">
-        <div className="w-full md:w-1/2 lg:w-1/3">
+      <div className="overflow-y-auto h-screen">
+        <div className="w-full">
           <ClassAllocation />
         </div>
-        <div className="w-full md:w-1/2 lg:w-4/5">
-          <div className="overflow-y-auto">
+        <div className="w-full">
             <UploadedClassesList />
-          </div>
         </div>
       </div>
     </AdminLayout>

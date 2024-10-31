@@ -31,8 +31,6 @@ const ClassAllocation = () => {
               }));
               const filteredTeachers = teachersArray.filter((teacher) => teacher.userType === 'teacher');
               setTeachers(filteredTeachers);
-            } else {
-              console.log('No teachers data found.');
             }
           });
         } catch (error) {
@@ -54,8 +52,6 @@ const ClassAllocation = () => {
                 .filter((item) => item.category === 'level')
                 .map((item) => item.title);
               setClassOptions(optionsArray);
-            } else {
-              console.log('No class options found.');
             }
           });
         } catch (error) {
@@ -144,21 +140,21 @@ const ClassAllocation = () => {
         <form onSubmit={handleClassSubmit} className="space-y-4">
           <div className="mt-2 grid grid-cols-3 gap-4">
             {classOptions.map((option) => (
-              <label key={option} className="flex items-center">
+              <label key={option} className="flex items-center space-x-2">
                 <input
                   type="radio"
                   value={option}
                   checked={className === option}
                   onChange={(e) => setClassName(e.target.value)}
-                  className="mr-2"
+                  className="w-4 h-4 rounded-none mr-2"
                 />
-                <span>{option}</span>
+                <span className="text-base">{option}</span>
               </label>
             ))}
           </div>
           <button
             type="submit"
-            className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
+            className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors"
           >
             Allocate Teacher
           </button>

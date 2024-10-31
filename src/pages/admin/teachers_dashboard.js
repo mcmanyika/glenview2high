@@ -8,7 +8,7 @@ import TeacherClassesList from '../../app/components/teachers/utils/TeacherClass
 const TeacherDashboard = () => {
   return (
     <AdminLayout>
-      <div className="flex flex-col h-screen overflow-y-auto px-4 md:px-6 lg:px-8">
+      <div className="flex flex-col h-screen overflow-y-auto px-2">
         <div className="w-full">
           <StudentGenderCount />
           <div className="w-full flex flex-col md:flex-row md:space-x-4 mt-4 space-y-4 md:space-y-0">

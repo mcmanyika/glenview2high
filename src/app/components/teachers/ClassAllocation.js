@@ -154,7 +154,7 @@ const ClassAllocation = () => {
           </div>
           <button
             type="submit"
-            className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors"
+            className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-full  hover:bg-blue-600 transition-colors"
           >
             Allocate Teacher
           </button>

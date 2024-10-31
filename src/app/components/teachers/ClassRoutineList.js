@@ -72,7 +72,7 @@ const ClassRoutineList = () => {
   };
 
   return (
-    <div className="p-6 bg-white rounded shadow">
+    <div className="p-6 bg-white">
       <h2 className="text-xl font-semibold mb-4">My Class Routines</h2>
       {classRoutines.length === 0 ? (
         <p>No class routines found for you within the last two days.</p>

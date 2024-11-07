@@ -15,17 +15,14 @@ const GenderCount = () => {
         const data = snapshot.val();
         const counts = { male: 0, female: 0 };
 
-        // Check each admission entry for existence and valid structure
         Object.values(data).forEach((admission) => {
-          if (admission && typeof admission === 'object' && admission.gender) {
-            const gender = admission.gender;
-            if (gender === 'Male') {
-              counts.male += 1;
-            } else if (gender === 'Female') {
-              counts.female += 1;
-            }
+          const gender = admission.gender.toLowerCase();
+          if (gender === 'male') {
+            counts.male += 1;
+          } else if (gender === 'female') {
+            counts.female += 1;
           }
-        });
+        }); 
 
         setGenderCounts(counts);
       }

@@ -38,7 +38,7 @@ const Header = () => {
               (a) =>
                 a.category === 'title' &&
                 a.status === 'Active' &&
-                !(a.title === 'Staff')
+                !(a.title === 'Staff' || a.title === 'Store')
             )
             .sort((a, b) => a.title.localeCompare(b.title));
           setTitles(titlesArray);
@@ -98,8 +98,7 @@ const Header = () => {
         <div className="text-right">
           <Link href="/admin/dashboard" className="inline-flex items-center space-x-2 text-white">
             <FaHome />
-            <span className="pr-3">My Dashboard</span>
-             |
+            <span className="pr-3">My Dashboard</span> |
           </Link>
             <button onClick={() => signOut()} className="text-white p-1 rounded">
               Sign Out
@@ -159,34 +158,35 @@ const Header = () => {
             <li key={rw.id} className="pt-4">
               <Link href={`${rw.link}`} passHref>
                 <div className="hover:text-gray-300 text-sm font-sans font-thin uppercase pb-2 border-b-2 border-transparent hover:border-white">
-                  {rw.title}
+                  {rw.title} 
                 </div>
               </Link>
             </li>
           ))}
           <li>
+            <Link href="/web/enroll">
               <button
-                onClick={overlayToggle}
                 className="bg-yellow-500 text-white font-bold py-2 px-6 rounded-tr-full rounded-br-full rounded-tl-full rounded-bl-md hover:bg-yellow-600 transition duration-300"
               >
-                NEW STUDENT
+                ENROLL NOW
               </button>
+            </Link>
             </li>
         </ul>
       </nav>
       <div
-        className={`fixed top-0 right-0 w-full z-50 h-full bg-main transition-transform duration-500 ease-in-out ${
+        className={`fixed top-0 right-0 w-full z-50 h-full bg-main3 transition-transform duration-500 ease-in-out ${
           isOverlay ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         <div className="flex items-center justify-center h-full p-10">
-          <div className="max-w-4xl mx-auto text-white text-center">
-            <h2 className="text-2xl md:text-4xl font-thin">Form 1 Student Application in progress</h2>
-            <p className="mt-4 font-thin md:text-lg">
-            ​We are excited to announce that Form 1 registration for the upcoming academic year has officially begun. All prospective students are invited to complete their registration at the school’s admissions office. Please ensure you bring the necessary documents, including your child’s birth certificate, Grade 7 results, and proof of residence. For more details on the registration process and requirements, visit our school or contact the admissions office. We look forward to welcoming new students to our school community
+          <div className="text-white text-center">
+            <h2 className="text-2xl md:text-4xl font-thin">Student Application</h2>
+            <p className="mt-4 text-base md:text-lg">
+              As a new student you can now apply online, click below to start the process.
             </p>
             <Link href="/admin/dashboard">
-              <button className="inline-block mt-4 px-6 py-2 bg-white text-gray-500 rounded-full transition duration-300">
+              <button className="inline-block mt-4 px-6 py-2 bg-main text-white rounded-full transition duration-300">
                 Apply Now
               </button>
             </Link>

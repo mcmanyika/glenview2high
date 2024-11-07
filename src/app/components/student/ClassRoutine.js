@@ -77,22 +77,22 @@ const ClassRoutine = () => {
             <table className="min-w-full text-left border-collapse">
               <thead>
                 <tr className='uppercase'>
+                  <th className="p-2 border-b">Date</th>
                   <th className="p-2 border-b">Day</th>
                   <th className="p-2 border-b">Time</th>
                   <th className="p-2 border-b">Subject</th>
                   <th className="p-2 border-b">Teacher</th>
-                  <th className="p-2 border-b">Date</th>
                   <th className="p-2 border-b">Room</th>
                 </tr>
               </thead>
               <tbody>
                 {currentItems.map((entry) => (
                   <tr key={entry.id}>
+                    <td className="p-2 border-b">{entry.date}</td>
                     <td className="p-2 border-b">{getDayOfWeek(entry.date)}</td>
                     <td className="p-2 border-b">{entry.time}</td>
                     <td className="p-2 border-b">{entry.subject}</td>
                     <td className="p-2 border-b capitalize">{entry.teacher}</td>
-                    <td className="p-2 border-b">{entry.date}</td>
                     <td className="p-2 border-b">{entry.room}</td>
                   </tr>
                 ))}

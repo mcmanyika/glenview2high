@@ -17,10 +17,10 @@ const GenderPieChart = () => {
         const counts = { male: 0, female: 0 };
 
         Object.values(data).forEach((admission) => {
-          const gender = admission.gender;
-          if (gender === 'Male') {
+          const gender = admission.gender.toLowerCase();
+          if (gender === 'male') {
             counts.male += 1;
-          } else if (gender === 'Female') {
+          } else if (gender === 'female') {
             counts.female += 1;
           }
         });

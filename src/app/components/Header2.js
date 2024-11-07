@@ -36,7 +36,7 @@ const Header2 = () => {
                 status: data[key].status,
                 category: data[key].category,
               }))
-              .filter(a => a.category === 'title' && a.status === 'Active' && !(a.title === 'Staff')) // Filter by active status
+              .filter(a => a.category === 'title' && a.status === 'Active' && !(a.title === 'Staff' || a.title === 'Store')) // Filter by active status
               .sort((a, b) => a.title.localeCompare(b.title));
             setTitles(titlesArray);
           } else {
@@ -145,14 +145,15 @@ const Header2 = () => {
               </div>
             </li>
           ))}
-          <li className="min-w-48">
-            <button
-              onClick={overlayToggle}
-              className="bg-yellow-500 text-white font-bold py-2 px-6 rounded-tr-full rounded-br-full rounded-tl-full rounded-bl-md hover:bg-yellow-600 transition duration-300"
-            >
-              NEW STUDENT
-            </button>
-          </li>
+          <li className='w-40'>
+            <Link href="/web/enroll">
+              <button
+                className="bg-yellow-500 text-white font-bold py-2 px-6 rounded-tr-full rounded-br-full rounded-tl-full rounded-bl-md hover:bg-yellow-600 transition duration-300"
+              >
+                ENROLL NOW
+              </button>
+            </Link>
+            </li>
         </ul>
       </nav>
 

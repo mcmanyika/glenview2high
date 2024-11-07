@@ -72,7 +72,7 @@ const CombinedExamsList = () => {
       ) : (
         <div className="flex flex-col items-center"> {/* Centering items */}
           <div className="w-full flex justify-center mb-4"> {/* Center the PieChart */}
-            <PieChart width={300} height={300}>
+            <PieChart width={500} height={300}>
               <Pie
                 data={filteredExams}
                 dataKey="score"
@@ -92,7 +92,7 @@ const CombinedExamsList = () => {
             </PieChart>
           </div>
 
-          <div className="fw-full overflow-x-auto mb-6">
+          <div className="w-full px-4 overflow-x-auto mb-6">
             <table className="min-w-full text-sm bg-white border">
               <thead>
                 <tr>

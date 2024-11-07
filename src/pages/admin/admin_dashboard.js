@@ -12,7 +12,7 @@ const AdminDashboard = () => {
 
   return (
     <AdminLayout>
-      <div className="flex flex-col p-4 space-y-4">
+      <div className="flex flex-col p-4 h-screen overflow-y-auto space-y-4">
         {/* Gender Count Section */}
         <div className="w-full">
           <GenderCount />

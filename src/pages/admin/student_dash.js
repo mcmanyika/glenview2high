@@ -74,19 +74,20 @@ const StudentDash = () => {
               {studentStatus === "Accepted" ? (
                 <div className='h-screen overflow-y-auto'>
                   <NoticeCount />
-                  <div className="w-full flex flex-col md:flex-row mt-4">
+                  {/* <div className="w-full flex flex-col md:flex-row mt-4">
                     <div className="md:w-2/4 bg-white p-4 m-2">
                       <Student />
                     </div>
-                    <div className="md:w-2/4 bg-white m-2">
+                  </div> */}
+
+                  <div className="w-full bg-white m-2">
                     <ClassRoutine />
                     </div>
-                  </div>
                   <div className="w-full flex flex-col md:flex-row mt-4">
-                    <div className="md:w-2/4 bg-white p-4 m-2">
+                    <div className="w-full  bg-white p-4 m-2">
                         <StudentAssignmentsList />
                   </div>
-                    <div className="md:w-2/4 bg-white m-2">
+                    <div className="w-full bg-white m-2">
                       <CombinedExamsList />
                     </div>
                   </div>

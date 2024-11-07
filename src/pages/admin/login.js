@@ -46,8 +46,7 @@ export default function Login() {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <div className='md:visible md:flex-1 h-screen bg-cover bg-center' style={{ backgroundImage: `url('https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8816.jpg?alt=media&token=2f0385f4-4c0b-4a68-8ddb-0877b203665c')` }}>
-      {/* <div className="absolute inset-0 bg-blue-500 opacity-20"></div> */}
+      <div className='md:visible md:flex-1 h-screen bg-cover bg-center login-background'>
       </div>
       <div className='w-full md:flex-1'>
         <div className=" max-w-xl mx-auto p-6 bg-white bg-opacity-75 text-center">

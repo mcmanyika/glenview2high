@@ -7,11 +7,11 @@ import SmartBlankLayout from "../../app/components/SmartBlankLayout";
 import { useCart } from '../../context/CartContext';
 import { useState, useEffect } from 'react';
 
-if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined) {
+if (process.env.STRIPE_PUBLIC_KEY === undefined) {
   throw new Error("STRIPE_PUBLIC_KEY is not defined");
 }
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
+const stripePromise = loadStripe(process.env.STRIPE_PUBLIC_KEY);
 
 export default function Checkout() {
   const { cart } = useCart();

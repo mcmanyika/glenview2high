@@ -92,7 +92,7 @@ const Hero = () => {
       </div>
       <div className="absolute inset-0 bg-blue-500 opacity-20"></div>
       <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-20">
-        <Link href="/">
+        <Link href="/"> 
           <Image
             src="/images/logo.png" // Replace with your logo path
             alt="Logo"

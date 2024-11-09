@@ -85,7 +85,7 @@ const Gallery = () => {
         contentLabel="Image Modal"
         className="max-w-7xl mx-auto"
         overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
-      >
+      > 
         {currentImage && (
           <div className="relative">
             <Image

@@ -57,7 +57,7 @@ const AdmissionsList = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div></div>;
   }
 
   if (admissions.length === 0) {
@@ -65,7 +65,7 @@ const AdmissionsList = () => {
   }
 
   return (
-    <div className="w-full text-sm">
+    <div className="w-full text-sm h-screen">
       <div className="w-full">
         {admissions.map((admission) => (
           <div key={admission.id} className="w-full p-4 rounded  bg-white mb-4">

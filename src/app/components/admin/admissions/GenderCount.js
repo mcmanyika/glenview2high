@@ -22,7 +22,7 @@ const GenderCount = () => {
           } else if (gender === 'female') {
             counts.female += 1;
           }
-        }); 
+        });
 
         setGenderCounts(counts);
       }

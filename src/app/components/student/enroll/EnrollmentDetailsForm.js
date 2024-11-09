@@ -8,33 +8,32 @@ import { useSession } from 'next-auth/react';
 const EnrollmentDetailsForm = () => {
   const { data: session } = useSession();
   const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
     class: '',
     contactEmail: '',
     contactPhone: '',
     parentName: '',
     parentPhone: '',
     academicPreviousSchool: '',
+    timestamp: new Date().toISOString(),
+    status: 'Pending', // Default status
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [loading, setLoading] = useState(true); // Track loading state
+  const [loading, setLoading] = useState(true);
 
-  // Set email to the logged-in user's email when session is loaded
   useEffect(() => {
     if (session?.user?.email) {
-      setFormData((prevData) => ({
-        ...prevData,
-        contactEmail: session.user.email,
-      }));
-
-      // Check if enrollment details already exist in the database
       const sanitizedEmail = sanitizeEmail(session.user.email);
       const dbRef = ref(database, `enrollments/${sanitizedEmail}`);
       get(dbRef).then((snapshot) => {
         if (snapshot.exists()) {
-          setIsSubmitted(true);  // User has already submitted
+          setIsSubmitted(true);
         }
-        setLoading(false); // Set loading to false after check is done
+        setLoading(false);
       });
+    } else {
+      setLoading(false);
     }
   }, [session]);
 
@@ -53,7 +52,7 @@ const EnrollmentDetailsForm = () => {
 
     if (isSubmitted) {
       toast.error('You have already submitted your enrollment details.');
-      return; // Prevent further submission
+      return;
     }
 
     try {
@@ -63,15 +62,19 @@ const EnrollmentDetailsForm = () => {
       await set(dbRef, formData);
 
       toast.success('Enrollment details submitted successfully!');
-      setIsSubmitted(true);  // Set as submitted after successful form submission
+      setIsSubmitted(true);
 
       setFormData({
+        firstName: '',
+        lastName: '',
         class: '',
-        contactEmail: session?.user?.email || '', // Reset to logged-in user’s email
+        contactEmail: '',
         contactPhone: '',
         parentName: '',
         parentPhone: '',
         academicPreviousSchool: '',
+        timestamp: new Date().toISOString(),
+        status: 'Pending',
       });
     } catch (error) {
       console.error('Error during form submission:', error);
@@ -82,14 +85,14 @@ const EnrollmentDetailsForm = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full border-4 border-blue-500 border-t-transparent w-16 h-16"></div> {/* Spinner */}
+        <div className="animate-spin rounded-full border-4 border-blue-500 border-t-transparent w-16 h-16"></div>
       </div>
     );
   }
 
   return (
     <div className="flex justify-center h-screen">
-      <div className="p-6 bg-white  rounded-lg max-w-2xl w-full">
+      <div className="p-6 bg-white rounded-lg max-w-2xl w-full">
         <h2 className="text-2xl text-center font-semibold mb-4">Enrollment Details</h2>
         {isSubmitted ? (
           <div className="text-center text-xl text-green-500">
@@ -97,7 +100,35 @@ const EnrollmentDetailsForm = () => {
           </div>
         ) : (
           <form onSubmit={handleSubmit}>
+            {/* Personal Information */}
+            <h3 className="text-xl font-semibold mt-6 mb-2">Personal Information</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-gray-700 mb-1">First Name</label>
+                <input
+                  type="text"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 mb-1">Last Name</label>
+                <input
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                  required
+                />
+              </div>
+            </div>
+
             {/* Class Selection */}
+            <h3 className="text-xl font-semibold mt-6 mb-2">Class</h3>
             <div className="grid grid-cols-1 gap-4">
               <div>
                 <select
@@ -105,6 +136,7 @@ const EnrollmentDetailsForm = () => {
                   value={formData.class}
                   onChange={handleChange}
                   className="w-full p-2 border border-gray-300 rounded"
+                  required
                 >
                   <option value="" disabled>Select Grade...</option>
                   <option value="Form 1">Form 1</option>
@@ -124,8 +156,8 @@ const EnrollmentDetailsForm = () => {
                   type="email"
                   name="contactEmail"
                   value={formData.contactEmail}
-                  readOnly
-                  className="w-full p-2 border border-gray-300 rounded bg-gray-100"
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded"
                 />
               </div>
               <div>
@@ -183,11 +215,14 @@ const EnrollmentDetailsForm = () => {
               </div>
             </div>
 
+            {/* Hidden Status Field */}
+            <input type="hidden" name="status" value={formData.status} />
+
             <div className="mt-6">
               <button
                 type="submit"
                 className="w-full p-2 bg-main3 text-white rounded hover:bg-blue-600"
-                disabled={isSubmitted} // Disable the button if already submitted
+                disabled={isSubmitted}
               >
                 Submit Enrollment Details
               </button>

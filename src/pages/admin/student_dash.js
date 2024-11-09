@@ -3,13 +3,11 @@ import { useSession } from 'next-auth/react';
 import withAuth from '../../../utils/withAuth';
 import AdminLayout from './adminLayout';
 import { FaSpinner } from 'react-icons/fa';
-import NoticeCount from '../../app/components/notice/NoticeCount';
 import ClassRoutine from '../../app/components/student/ClassRoutine';
 import { database } from '../../../utils/firebaseConfig';
 import { ref, get } from 'firebase/database';
 import { useRouter } from 'next/router';
 import { useGlobalState, setStudentClass, setStatus } from '../../app/store';
-import Student from '../../app/components/student/Student';
 import CombinedExamsList from '../../app/components/exams/CombinedExamsList';
 import StudentAssignmentsList from '../../app/components/student/assignments/StudentAssignmentsList';
 
@@ -73,13 +71,6 @@ const StudentDash = () => {
             <div>
               {studentStatus === "Accepted" ? (
                 <div className='h-screen overflow-y-auto'>
-                  <NoticeCount />
-                  {/* <div className="w-full flex flex-col md:flex-row mt-4">
-                    <div className="md:w-2/4 bg-white p-4 m-2">
-                      <Student />
-                    </div>
-                  </div> */}
-
                   <div className="w-full bg-white m-2">
                     <ClassRoutine />
                     </div>

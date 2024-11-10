@@ -6,11 +6,12 @@ import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const DocUploads = ({ closeModal }) => {  // Ensure closeModal is passed as a prop
+const DocUploads = ({ closeModal }) => {
   const { data: session } = useSession();
   const [fileInputs, setFileInputs] = useState([{ file: null }]);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
+  // Handle file selection and set state
   const handleDocumentUpload = (index, e) => {
     const file = e.target.files[0];
     setFileInputs((prevInputs) => {
@@ -20,25 +21,39 @@ const DocUploads = ({ closeModal }) => {  // Ensure closeModal is passed as a pr
     });
   };
 
+  // Add new file input
   const addFileInput = () => {
     setFileInputs((prevInputs) => [...prevInputs, { file: null }]);
   };
 
+  // Upload a file and return its download URL
   const uploadFileAndGetUrl = async (file, path) => {
-    const fileRef = storageRef(storage, path);
-    await uploadBytes(fileRef, file);
-    return getDownloadURL(fileRef);
+    try {
+      const fileRef = storageRef(storage, path);
+      console.log(`Uploading file to path: ${path}`); // Logging the file path
+      await uploadBytes(fileRef, file);
+      const fileUrl = await getDownloadURL(fileRef);
+      console.log(`File uploaded successfully to: ${fileUrl}`); // Log file URL
+      return fileUrl;
+    } catch (error) {
+      console.error(`Error uploading file ${file.name} to ${path}:`, error);
+      throw new Error(`Failed to upload ${file.name}`);
+    }
   };
 
+  // Enable or disable submit button based on file selections
   useEffect(() => {
     const allDocumentsUploaded = fileInputs.every((input) => input.file !== null);
     setIsSubmitDisabled(!allDocumentsUploaded);
   }, [fileInputs]);
 
+  // Sanitize email for Firebase paths
   const sanitizeEmail = (email) => email.replace(/\./g, ',');
 
+  // Handle form submission and upload files
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!session || !session.user.email) {
       toast.error("User is not logged in.");
       return;
@@ -48,34 +63,26 @@ const DocUploads = ({ closeModal }) => {  // Ensure closeModal is passed as a pr
       const sanitizedEmail = sanitizeEmail(session.user.email);
       const dbRef = ref(database, `enrollments/${sanitizedEmail}/additionalDocuments`);
 
-      // Prepare all the file URLs
+      // Upload documents and get URLs
       const documentUrls = await Promise.all(
         fileInputs.map(async (input, index) => {
           if (input.file) {
             const filePath = `enrollment_documents/${sanitizedEmail}/document_${index + 1}`;
-            try {
-              const fileUrl = await uploadFileAndGetUrl(input.file, filePath);
-              return { [`document_${index + 1}`]: fileUrl };
-            } catch (uploadError) {
-              console.error(`Error uploading document_${index + 1}:`, uploadError);
-              throw new Error(`Failed to upload document_${index + 1}`);
-            }
+            return { [`document_${index + 1}`]: await uploadFileAndGetUrl(input.file, filePath) };
           }
           return null;
         })
       ).then((results) => results.reduce((acc, curr) => ({ ...acc, ...curr }), {}));
 
-      // Upload the documents directly to the `additionalDocuments` node in Firebase
+      // Save URLs to Firebase database
+      console.log('Uploading document URLs to database:', documentUrls); // Logging data
       await set(dbRef, documentUrls);
 
       toast.success('Documents uploaded successfully!');
       setFileInputs([{ file: null }]);
       setIsSubmitDisabled(true);
 
-      // Close the modal after successful upload
-      closeModal();  // Ensure the modal is closed here
-
-      // Refresh the page after successful upload
+      closeModal();
       window.location.reload();
     } catch (error) {
       console.error('Error during document submission:', error);

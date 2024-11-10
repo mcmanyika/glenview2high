@@ -8,7 +8,7 @@ const Socials = () => {
 
   useEffect(() => {
     const fetchFacebookContent = async () => {
-      const facebookRef = ref(database, 'account/facebook'); // Reference to the 'account/about' node
+      const facebookRef = ref(database, 'account'); // Reference to the 'account/about' node
       const snapshot = await get(facebookRef);
 
       if (snapshot.exists()) {

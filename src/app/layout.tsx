@@ -1,6 +1,7 @@
 import { authOptions } from "../pages/api/auth/[...nextauth]";
 import { getServerSession, Session } from "next-auth"; // Import Session type
 import { Inter } from "next/font/google";
+import { Analytics } from '@vercel/analytics/react';
 import "./globals.css";
 import SessionProvider from "./SessionProvider";
 
@@ -21,6 +22,7 @@ export default async function RootLayout({
       <body className={inter.className}>
         <SessionProvider session={session}>
           {children}
+          <Analytics />
         </SessionProvider>
       </body>
     </html>

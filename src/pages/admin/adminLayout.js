@@ -185,7 +185,7 @@ const AdminLayout = ({ children }) => {
 
       <aside className={`fixed z-40 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 md:relative md:translate-x-0 w-42 bg-dash dark:bg-gray-800 text-white p-4 min-h-screen overflow-y-auto rounded-tr-xl flex flex-col`}>
         <div className="flex justify-center items-center pt-10 mb-10">
-          <Link href='/'>
+          <Link href='https://glenview2high.com'>
             {logoUrl ? (
               <Image src={logoUrl} alt="Logo" width={70} height={60} className='rounded-full' />
             ) : (
@@ -206,7 +206,7 @@ const AdminLayout = ({ children }) => {
         <header className="flex items-center justify-between bg-dash dark:bg-gray-800 text-white p-4 md:hidden">
           <div className="flex items-center">
             <FaBars className="cursor-pointer text-2xl mr-4" onClick={toggleMobileSidebar} />
-            <Link href='/'>
+            <Link href='https://glenview2high.com'>
               {logoUrl ? (
                 <Image src={logoUrl} alt="Logo" width={50} height={30} className='rounded-full' />
               ) : (

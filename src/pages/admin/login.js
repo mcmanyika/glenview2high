@@ -45,40 +45,57 @@ export default function Login() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className='md:visible md:flex-1 h-screen bg-cover bg-center login-background'>
+    <div className="flex items-center justify-center min-h-screen bg-white">
+      <div className='hidden md:block md:flex-1 h-screen bg-cover bg-center login-background'>
       </div>
-      <div className='w-full md:flex-1'>
-        <div className=" max-w-xl mx-auto p-6 bg-white bg-opacity-75 text-center">
-          <Link href='/'>
+      <div className='w-full md:flex-1 p-4'>
+        <div className="max-w-xl mx-auto p-8 bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-100">
+          <Link href='https://glenview2high.com' className="block transition-transform hover:scale-105 duration-200">
             <Image
               src="/images/logo.png"
-              alt=""
+              alt="Logo"
               width={90}
               height={90}
-              className="mx-auto mb-4 rounded-full"
+              className="mx-auto mb-6 rounded-full shadow-md"
+              priority
             />
           </Link>
 
-          {error && <p className="text-red-500 mb-4">{error}</p>}
-          {!session && 
-          <div className=' max-w-4xl mx-auto'>
-            <button
-              onClick={handleAuth0SignIn}
-              className="px-4 py-2 bg-slate-200 text-gray-800 rounded  transition duration-200 mt-4 w-full"
-            >
-              Sign in with Email
-            </button>
-            <div className='p-4'>OR</div>
-            <button
-              onClick={handleGoogleSignIn}
-              className="px-4 py-2 bg-red-500 text-white rounded  transition duration-200 w-full"
-            >
-              Sign in with Google
-            </button>
-          </div> }
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 text-red-600 rounded-lg">
+              {error}
+            </div>
+          )}
 
-          {session && <div className='w-full text-center'>Redirecting to Dashboard...</div>}
+          {!session && (
+            <div className='max-w-sm mx-auto space-y-6'>
+              <button
+                onClick={handleAuth0SignIn}
+                className="px-6 py-3 bg-gray-50 text-gray-800 rounded-lg shadow-sm hover:shadow-md w-full transition-all duration-200 flex items-center justify-center space-x-2 border border-gray-200 hover:bg-gray-100"
+              >
+                <span>Sign in with Email</span>
+              </button>
+
+              <div className='flex items-center justify-center space-x-4'>
+                <div className='flex-1 h-px bg-gray-300'></div>
+                <span className='text-gray-500 text-sm font-medium'>OR</span>
+                <div className='flex-1 h-px bg-gray-300'></div>
+              </div>
+
+              <button
+                onClick={handleGoogleSignIn}
+                className="px-6 py-3 bg-main3 hover:bg-main2 text-white rounded-lg shadow-sm hover:shadow-md w-full transition-all duration-200 flex items-center justify-center space-x-2"
+              >
+                <span>Sign in with Google</span>
+              </button>
+            </div>
+          )}
+
+          {session && (
+            <div className='w-full text-center text-gray-600 animate-pulse'>
+              Redirecting to Dashboard...
+            </div>
+          )}
         </div>
       </div>
     </div>

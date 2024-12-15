@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { ref, onValue, update } from 'firebase/database';
-import { database } from '../../../../../utils/firebaseConfig'; // Adjust path as necessary
+import { database } from '../../../../../utils/firebaseConfig';
 import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
-import CreateAssignment from '../../../components/teachers/assignments/CreateAssignment';
+import CreateAssignment from './CreateAssignment';
 import { useRouter } from 'next/router';
-
 
 const ScoreUploadModal = ({ isOpen, onClose, onUpload, studentID }) => {
   const [score, setScore] = useState('');
@@ -22,34 +21,34 @@ const ScoreUploadModal = ({ isOpen, onClose, onUpload, studentID }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-3xl">
-        <h2 className="text-2xl font-semibold mb-4">Upload Score</h2>
+      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md">
+        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Upload Score</h2>
         <input
           type="number"
           placeholder="Enter Score"
           value={score}
           onChange={(e) => setScore(e.target.value)}
-          className="border rounded py-2 px-3 w-full mb-2"
+          className="w-full p-2 mb-4 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
         <textarea
           placeholder="Enter Comment"
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          className="border rounded py-2 px-3 w-full mb-2"
+          className="w-full p-2 mb-4 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           rows="3"
         />
-        <div className="flex justify-end">
-          <button
-            onClick={handleUpload}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-          >
-            Upload
-          </button>
+        <div className="flex justify-end space-x-2">
           <button
             onClick={onClose}
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            className="px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
           >
             Cancel
+          </button>
+          <button
+            onClick={handleUpload}
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Upload
           </button>
         </div>
       </div>
@@ -179,59 +178,71 @@ const TeacherAssignmentsList = () => {
   };
 
   if (loading) {
-    return <div>Loading assignments and students...</div>;
+    return (
+      <div className="p-4 text-gray-600 dark:text-gray-400">
+        Loading assignments and students...
+      </div>
+    );
   }
 
   if (assignments.length === 0) {
-    return <div>No assignments found.</div>;
+    return (
+      <div className="p-4 text-gray-600 dark:text-gray-400">
+        No assignments found.
+      </div>
+    );
   }
 
   const currentAssignment = assignments[currentPage];
 
   return (
-    <div className="w-full text-sm mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-      <div className='mb-6'>
+    <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+      <div className="mb-6 space-x-2">
         <button
-          className="bg-main3 text-white uppercase px-4 p-2 m-1 rounded-full"
           onClick={() => router.push('/teacher/students_assignments')}
+          className="px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600"
         >
           Students Assignments
         </button>
-      <button
-          className="bg-main3 text-white uppercase px-4 p-2 m-1 rounded-full"
+        <button
           onClick={() => setAssignmentModalOpen(true)}
+          className="px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600"
         >
           Add Assignment
         </button>
       </div>
-      <div className="w-full mb-8 flex  items-center">
-        <h2 className="text-xl font-bold mb-2">{currentAssignment.assignmentName}</h2>
-        
-      </div>
-      <p>Class: {currentAssignment.assignmentClass}</p>
-      <p>Due Date: {new Date(currentAssignment.assignmentDueDate).toLocaleDateString()}</p>
-      <p>Created Date: {new Date(currentAssignment.createdDate).toLocaleDateString()}</p>
 
-      <h4 className="mt-4 font-semibold">Assigned Students:</h4>
-      {students[currentAssignment.id] && students[currentAssignment.id].length > 0 ? (
-        <table className="table-auto w-full text-left border-collapse">
-          <thead>
+      <div className="mb-6">
+        <h2 className="text-xl font-bold mb-2 text-gray-800 dark:text-white">
+          {currentAssignment.assignmentName}
+        </h2>
+        <p className="text-gray-600 dark:text-gray-400">Class: {currentAssignment.assignmentClass}</p>
+        <p className="text-gray-600 dark:text-gray-400">
+          Due Date: {new Date(currentAssignment.assignmentDueDate).toLocaleDateString()}
+        </p>
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead className="bg-gray-50 dark:bg-gray-700">
             <tr>
-              <th className="border-b px-4 py-2">User ID</th>
-              <th className="border-b px-4 py-2">Name</th>
-              <th className="border-b px-4 py-2">Email</th>
-              <th className="border-b px-4 py-2">Action</th>
+              <th className="p-3 text-left text-gray-700 dark:text-gray-200">User ID</th>
+              <th className="p-3 text-left text-gray-700 dark:text-gray-200">Name</th>
+              <th className="p-3 text-left text-gray-700 dark:text-gray-200">Email</th>
+              <th className="p-3 text-left text-gray-700 dark:text-gray-200">Action</th>
             </tr>
           </thead>
-          <tbody>
-            {students[currentAssignment.id].map((student) => (
-              <tr key={student.id}>
-                <td className="border-b px-4 py-2">{student.userID}</td>
-                <td className="border-b px-4 py-2">{student.firstName} {student.lastName}</td>
-                <td className="border-b px-4 py-2">{student.email}</td>
-                <td className="border-b px-4 py-2">
-                  {uploadedScores[currentAssignment.id] && uploadedScores[currentAssignment.id][student.userID] ? (
-                    <span className="text-green-600 font-bold">
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+            {students[currentAssignment.id]?.map((student) => (
+              <tr key={student.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                <td className="p-3 text-gray-800 dark:text-gray-200">{student.userID}</td>
+                <td className="p-3 text-gray-800 dark:text-gray-200">
+                  {student.firstName} {student.lastName}
+                </td>
+                <td className="p-3 text-gray-800 dark:text-gray-200">{student.email}</td>
+                <td className="p-3">
+                  {uploadedScores[currentAssignment.id]?.[student.userID] ? (
+                    <span className="text-green-500 dark:text-green-400 font-semibold">
                       Score: {uploadedScores[currentAssignment.id][student.userID].score}
                     </span>
                   ) : (
@@ -241,7 +252,7 @@ const TeacherAssignmentsList = () => {
                         setSelectedStudentID(student.userID);
                         setScoreModalOpen(true);
                       }}
-                      className="bg-main3 text-white px-4 py-2 rounded-full"
+                      className="px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600"
                     >
                       Upload Score
                     </button>
@@ -251,22 +262,28 @@ const TeacherAssignmentsList = () => {
             ))}
           </tbody>
         </table>
-      ) : (
-        <p>No students assigned for this assignment.</p>
-      )}
+      </div>
 
-      <div className="mt-4 flex justify-between items-center">
+      <div className="mt-6 flex justify-between">
         <button
           onClick={handlePrevPage}
           disabled={currentPage === 0}
-          className={`px-4 py-2 rounded ${currentPage === 0 ? 'bg-gray-200 text-gray-500' : 'bg-gray-800 text-white'}`}
+          className={`px-4 py-2 rounded ${
+            currentPage === 0
+              ? 'bg-gray-300 dark:bg-gray-700 cursor-not-allowed'
+              : 'bg-blue-500 hover:bg-blue-600'
+          } text-white`}
         >
           Previous
         </button>
         <button
           onClick={handleNextPage}
           disabled={currentPage === totalPages - 1}
-          className={`px-4 py-2 rounded ${currentPage === totalPages - 1 ? 'bg-gray-200 text-gray-500' : 'bg-gray-800 text-white'}`}
+          className={`px-4 py-2 rounded ${
+            currentPage === totalPages - 1
+              ? 'bg-gray-300 dark:bg-gray-700 cursor-not-allowed'
+              : 'bg-blue-500 hover:bg-blue-600'
+          } text-white`}
         >
           Next
         </button>
@@ -274,19 +291,15 @@ const TeacherAssignmentsList = () => {
 
       {assignmentModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white rounded-lg  p-6 w-full max-w-5xl"> {/* Increased size */}
-          <div className="flex justify-end mt-16">
-              <button
-                onClick={() => setAssignmentModalOpen(false)} // This button will close the modal
-                className="bg-main3 text-white font-bold py-2 px-4 rounded-full"
-              >
-                Cancel
-              </button>
-            </div>
-            <CreateAssignment onClose={() => setModalOpen(false)} onCreate={handleCreateAssignment} />
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-4xl">
+            <CreateAssignment
+              onClose={() => setAssignmentModalOpen(false)}
+              onCreate={handleCreateAssignment}
+            />
           </div>
         </div>
       )}
+
       <ScoreUploadModal
         isOpen={scoreModalOpen}
         onClose={() => setScoreModalOpen(false)}

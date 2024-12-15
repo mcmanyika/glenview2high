@@ -85,20 +85,20 @@ const Hero = () => {
 
   return (
     <div className="relative h-screen flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 flex transition-transform duration-1000 ease-in-out" style={{ transform: `translateX(${currentIndex * -100}%)` }}>
+      <div className="absolute inset-0 flex transition-transform duration-[2000ms] ease-out" style={{ transform: `translateX(${currentIndex * -100}%)` }}>
         {carouselData.map((slide, index) => (
-          <div key={index} className="min-w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${slide.imageUrl})` }}></div>
+          <div key={index} className="min-w-full h-full bg-cover bg-center transform scale-105 transition-transform duration-[2000ms]" style={{ backgroundImage: `url(${slide.imageUrl})`, filter: 'brightness(0.85)' }}></div>
         ))}
       </div>
-      <div className="absolute inset-0 bg-blue-500 opacity-20"></div>
-      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-20">
-        <Link href="/"> 
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60"></div>
+      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-20 transition-transform hover:scale-105">
+        <Link href="/" className="block"> 
           <Image
-            src="/images/logo.png" // Replace with your logo path
+            src="/images/logo.png"
             alt="Logo"
             width={100}
             height={100}
-            className="rounded w-12 h-12 md:w-24 md:h-24"
+            className="rounded w-16 h-16 md:w-28 md:h-28 transition-all duration-300"
             onClick={handleMenuClick}
           />
         </Link>
@@ -121,9 +121,13 @@ const Hero = () => {
           </div>
         </div>
       )}
-      <section className="relative text-white p-10 md:p-20 text-center">
-        <h1 className="text-2xl md:text-5xl font-thin font-sans">{currentSlide.title}</h1>
-        <p className="mt-4 text-sm md:text-xl text-thin">{currentSlide.description}</p>
+      <section className="relative text-white p-10 md:p-20 text-center max-w-4xl mx-auto">
+        <h1 className="text-3xl md:text-6xl font-thin font-sans tracking-wider animate-fade-in">
+          {currentSlide.title}
+        </h1>
+        <p className="mt-6 text-base md:text-2xl font-light leading-relaxed animate-fade-in-delayed">
+          {currentSlide.description}
+        </p>
       </section>
     </div>
   );

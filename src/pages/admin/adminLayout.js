@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
-import { FaBars, FaUser, FaUpload, FaSignOutAlt } from 'react-icons/fa';
+import { FaBars, FaUser, FaUpload, FaSignOutAlt, FaSun, FaMoon } from 'react-icons/fa';
 import Image from 'next/image';
 import Breadcrumb from '../utils/Breadcrumb';
 import { useGlobalState } from '../../app/store';
@@ -10,7 +10,7 @@ import '../../app/globals.css';
 
 import { useRouter } from 'next/router';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // FontAwesome icons
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // 
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'; // Spinner icon
 import AIAssistantForm from '../../app/components/ai/AIAssistantForm';
 import Footer from '../../app/components/DashFooter';
@@ -21,6 +21,7 @@ import { ref, get } from 'firebase/database';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NoticeCount from '../../app/components/notice/NoticeCount';
+import { useTheme } from 'next-themes';
 
 const AdminLayout = ({ children }) => {
   const { data: session, status } = useSession();
@@ -36,6 +37,14 @@ const AdminLayout = ({ children }) => {
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
   const router = useRouter(); // Router for navigation
+
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const popupRef = useRef(null); // Add this ref for the popup
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (status === 'authenticated') {
@@ -80,34 +89,39 @@ const AdminLayout = ({ children }) => {
           const titleSnapshot = await get(titleRef);
           if (titleSnapshot.exists()) {
             const data = titleSnapshot.val();
-            const titlesArray = Object.keys(data).map((key) => ({
-              id: key,
-              title: data[key].title,
-              link: data[key].link,
-              status: data[key].status,
-              category: data[key].category,
-              icon: data[key].icon,
-            }));
+            
+            // Define allowed titles based on userID
+            const allowedTitles = {
+              'STFF': ['Dashboard', 'Class Routine', 'Notice', 'Admission', 'Applicants', 'Attendance', 'Create Blog', 'Contact Us', 'Payment', 'Class Allocation'],
+              'ADM': ['Dashboard', 'Term Reports', 'Store'],
+              'TCHR': ['Dashboard', 'Assignments', 'Attendance', 'Students Stats', 'Student Report', 'Exams', 'Notice', 'Events']
+            };
 
-            let filteredTitles = titlesArray.filter(title => title.category === 'dashboard');
+            // Get the correct set of allowed titles based on userID prefix
+            let userAllowedTitles = [];
+            if (userID.startsWith('STFF')) userAllowedTitles = allowedTitles['STFF'];
+            else if (userID.startsWith('ADM')) userAllowedTitles = allowedTitles['ADM'];
+            else if (userID.startsWith('TCHR')) userAllowedTitles = allowedTitles['TCHR'];
 
-            if (userID.startsWith('STFF')) {
-              filteredTitles = filteredTitles.filter(title =>
-                ['Dashboard', 'Class Routine', 'Notice', 'Admission', 'Applicants', 'Create Blog', 'Contact Us', 'Payment', 'Class Allocation'].includes(title.title)
-              );
-            }
-
-            if (userID.startsWith('ADM')) {
-              filteredTitles = filteredTitles.filter(title =>
-                ['Dashboard', 'Store'].includes(title.title)
-              );
-            }
-
-            if (userID.startsWith('TCHR')) {
-              filteredTitles = filteredTitles.filter(title =>
-                ['Dashboard', 'Assignments', 'Exams', 'Notice', 'Events'].includes(title.title)
-              );
-            }
+            // Filter while mapping
+            const filteredTitles = Object.keys(data)
+              .reduce((acc, key) => {
+                const item = data[key];
+                if (
+                  item.category === 'dashboard' && 
+                  userAllowedTitles.includes(item.title)
+                ) {
+                  acc.push({
+                    id: key,
+                    title: item.title,
+                    link: item.link,
+                    status: item.status,
+                    category: item.category,
+                    icon: item.icon,
+                  });
+                }
+                return acc;
+              }, []);
 
             setTitles(filteredTitles);
           } else {
@@ -140,6 +154,19 @@ const AdminLayout = ({ children }) => {
     fetchLogo();
   }, [session, status, userID]);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (popupRef.current && !popupRef.current.contains(event.target)) {
+        setIsPopupVisible(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const toggleMobileSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
     setIsPopupVisible(false);
@@ -154,9 +181,9 @@ const AdminLayout = ({ children }) => {
   };
 
   return (
-    <div className="flex min-h-screen overflow-y-auto text-base bg-main ">
+    <div className="flex min-h-screen overflow-y-auto text-base bg-main dark:bg-gray-900">
 
-      <aside className={`fixed z-40 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 md:relative md:translate-x-0 w-42 bg-dash text-white p-4 min-h-screen overflow-y-auto rounded-tr-xl flex flex-col`}>
+      <aside className={`fixed z-40 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 md:relative md:translate-x-0 w-42 bg-dash dark:bg-gray-800 text-white p-4 min-h-screen overflow-y-auto rounded-tr-xl flex flex-col`}>
         <div className="flex justify-center items-center pt-10 mb-10">
           <Link href='/'>
             {logoUrl ? (
@@ -176,7 +203,7 @@ const AdminLayout = ({ children }) => {
       )}
 
       <div className="flex-1 flex flex-col transition-all duration-300 ease-in-out">
-        <header className="flex items-center justify-between bg-dash text-white p-4 md:hidden">
+        <header className="flex items-center justify-between bg-dash dark:bg-gray-800 text-white p-4 md:hidden">
           <div className="flex items-center">
             <FaBars className="cursor-pointer text-2xl mr-4" onClick={toggleMobileSidebar} />
             <Link href='/'>
@@ -188,13 +215,13 @@ const AdminLayout = ({ children }) => {
             </Link>
           </div>
         </header>
-        <main className="bg-gray-100 p-4">
-          <div className="w-full p-2 border shadow-sm rounded-md ">
+        <main className="bg-gray-100 dark:bg-gray-900 p-4">
+          <div className="w-full p-2 border shadow-sm rounded-md dark:bg-gray-800 dark:border-gray-700">
             {session && (
               <div id="profile" className="flex justify-end">
                 <div className="flex items-center">
                   <div className="text-sm mr-2 cursor-pointer" onClick={togglePopup}>
-                    {session.user.name}
+                    <span className="dark:text-white">{session.user.name}</span>
                   </div>
                   <div
                     className="rounded-full mr-4 overflow-hidden relative cursor-pointer"
@@ -213,12 +240,16 @@ const AdminLayout = ({ children }) => {
               </div>
             )}
             {isPopupVisible && (
-              <div className="absolute text-left top-20 right-4 bg-white shadow-lg rounded-md p-4">
+              <div 
+                ref={popupRef}
+                className="absolute text-left top-20 right-4 bg-white dark:bg-gray-800 shadow-lg rounded-md p-4"
+              >
                 <Link href='/admin/profile'>
-                  <span className="flex items-center p-2 text-gray-500">
+                  <span className="flex items-center p-2 text-gray-500 dark:text-gray-300">
                     <FaUser className="mr-2" /> My Profile
                   </span>
                 </Link>
+                
                 <span
                   className="flex items-center p-2 text-gray-500 cursor-pointer"
                   onClick={() => setIsModalOpen(true)}
@@ -234,9 +265,9 @@ const AdminLayout = ({ children }) => {
               </div>
             )}
           </div>
-          <div className="w-full bg-gray-100">
+          <div>
             <Breadcrumb />
-            <div className='h-screen overflow-y-auto'>
+            <div className='h-screen mt-6  overflow-y-auto'>
               {children}
             </div>
           </div>

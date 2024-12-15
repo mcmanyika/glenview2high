@@ -65,51 +65,60 @@ const ClassRoutine = () => {
   const currentItems = routine.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
-    <div className="w-full text-sm p-6">
-      <h2 className="text-xl font-semibold mb-4">Class Routine</h2>
+    <div className="w-full text-sm p-6 bg-white dark:bg-gray-800 transition-colors duration-200">
+      
       {loading ? (
-        <p className="text-center">Loading...</p>
+        <p className="text-center text-gray-600 dark:text-gray-300">Loading...</p>
       ) : routine.length === 0 ? (
-        <p className="text-center">There are no upcoming classes assigned yet.</p>
+        <p className="text-center text-gray-600 dark:text-gray-300">
+          There are no upcoming classes assigned yet.
+        </p>
       ) : (
         <>
           <div className="overflow-x-auto">
             <table className="min-w-full text-left border-collapse">
               <thead>
-                <tr className='uppercase'>
-                  <th className="p-2 border-b">Date</th>
-                  <th className="p-2 border-b">Day</th>
-                  <th className="p-2 border-b">Time</th>
-                  <th className="p-2 border-b">Subject</th>
-                  <th className="p-2 border-b">Teacher</th>
-                  <th className="p-2 border-b">Room</th>
+                <tr className="uppercase bg-gray-50 dark:bg-gray-700">
+                  <th className="p-2 border-b border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300">Date</th>
+                  <th className="p-2 border-b border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300">Day</th>
+                  <th className="p-2 border-b border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300">Time</th>
+                  <th className="p-2 border-b border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300">Subject</th>
+                  <th className="p-2 border-b border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300">Teacher</th>
+                  <th className="p-2 border-b border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300">Room</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="bg-white dark:bg-gray-800">
                 {currentItems.map((entry) => (
-                  <tr key={entry.id}>
-                    <td className="p-2 border-b">{entry.date}</td>
-                    <td className="p-2 border-b">{getDayOfWeek(entry.date)}</td>
-                    <td className="p-2 border-b">{entry.time}</td>
-                    <td className="p-2 border-b">{entry.subject}</td>
-                    <td className="p-2 border-b capitalize">{entry.teacher}</td>
-                    <td className="p-2 border-b">{entry.room}</td>
+                  <tr key={entry.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150">
+                    <td className="p-2 border-b border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300">{entry.date}</td>
+                    <td className="p-2 border-b border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300">{getDayOfWeek(entry.date)}</td>
+                    <td className="p-2 border-b border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300">{entry.time}</td>
+                    <td className="p-2 border-b border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300">{entry.subject}</td>
+                    <td className="p-2 border-b border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 capitalize">{entry.teacher}</td>
+                    <td className="p-2 border-b border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300">{entry.room}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+          
           <div className="flex justify-between mt-4">
             <button
               onClick={handlePreviousPage}
-              className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-700 disabled:opacity-50"
+              className="bg-blue-500 dark:bg-blue-600 text-white py-1 px-3 rounded-md 
+                hover:bg-blue-700 dark:hover:bg-blue-700 
+                disabled:opacity-50 disabled:cursor-not-allowed
+                transition-colors duration-200"
               disabled={currentPage === 1}
             >
               Previous
             </button>
             <button
               onClick={handleNextPage}
-              className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-700 disabled:opacity-50"
+              className="bg-blue-500 dark:bg-blue-600 text-white py-1 px-3 rounded-md 
+                hover:bg-blue-700 dark:hover:bg-blue-700 
+                disabled:opacity-50 disabled:cursor-not-allowed
+                transition-colors duration-200"
               disabled={currentPage === Math.ceil(routine.length / itemsPerPage)}
             >
               Next

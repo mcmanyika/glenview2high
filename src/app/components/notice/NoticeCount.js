@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { ref, onValue } from 'firebase/database';
 import { database } from '../../../../utils/firebaseConfig';
-import { FaEnvelope, FaBell } from 'react-icons/fa'; // Updated icons
+import { FaEnvelope, FaBell, FaSun, FaMoon } from 'react-icons/fa'; // Updated icons
 import { useGlobalState } from '../../store';
 import Modal from './utils/Modal'; // Import Modal component
 import NoticeList from './NoticeList'; // Import the NoticeList component
+import { useTheme } from 'next-themes';
 
 const NoticeCount = () => {
   const [totalNotices, setTotalNotices] = useState(0);
   const [routineCount] = useGlobalState('routineCount'); // Access routineCount from global state
   const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
+
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     const noticesRef = ref(database, 'notices');
@@ -49,6 +52,22 @@ const NoticeCount = () => {
         </span>
         <FaBell className="h-7 w-7 text-gray-400" />
       </div>
+      {/* <div>
+      <button
+                  onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                  className="flex items-center w-full p-2 text-gray-500 dark:text-gray-300"
+                >
+                  {theme === 'dark' ? (
+                    <>
+                      <FaSun className="h-7 w-7 mr-2" /> 
+                    </>
+                  ) : (
+                    <>
+                      <FaMoon className="h-7 w-7 mr-2" />
+                    </>
+                  )}
+                </button>
+      </div> */}
       {/* Modal for Notices */}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <h2 className="text-lg font-bold mb-4">Notices</h2>

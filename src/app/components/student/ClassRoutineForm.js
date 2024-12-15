@@ -101,7 +101,7 @@ const ClassRoutineForm = () => {
   };
 
   return (
-    <div className="p-6 bg-white rounded shadow">
+    <div className="p-6  rounded shadow">
       <h2 className="text-xl font-semibold">Add Class Routine</h2>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 text-sm">
@@ -171,7 +171,7 @@ const ClassRoutineForm = () => {
               name="teacher"
               value={formData.teacher}
               onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded"
+              className="mt-1 block w-full p-2 border border-gray-300 capitalize rounded"
               required
             >
               <option value="">Select Teacher</option>
@@ -237,7 +237,7 @@ const ClassRoutineForm = () => {
 
           {/* Submit button */}
           <div className="m-4">
-            <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
+            <button type="submit" className="bg-main3 text-white py-2 px-4 rounded">
               Add Routine
             </button>
           </div>

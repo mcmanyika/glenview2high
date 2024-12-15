@@ -64,6 +64,22 @@ function StudentsAssignments() {
     );
   }
 
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-red-500 text-center">
+          <p>{error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="mt-4 px-4 py-2 bg-main3 text-white rounded hover:bg-opacity-90"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <AdminLayout>
         <TeacherSubmittedAssignments />

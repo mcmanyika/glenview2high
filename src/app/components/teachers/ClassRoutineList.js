@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { ref, onValue, remove } from 'firebase/database';
+import { ref, onValue } from 'firebase/database';
 import { database } from '../../../../utils/firebaseConfig';
-import { FaTrashAlt } from 'react-icons/fa';
+import { useRouter } from 'next/router';
 
 const ClassRoutineList = () => {
   const { data: session } = useSession();
+  const router = useRouter();
   const [classRoutines, setClassRoutines] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
@@ -43,12 +44,7 @@ const ClassRoutineList = () => {
   const sortedRoutines = [...classRoutines].sort((a, b) => {
     const aValue = a[sortField];
     const bValue = b[sortField];
-
-    if (sortDirection === 'asc') {
-      return aValue > bValue ? 1 : -1;
-    } else {
-      return aValue < bValue ? 1 : -1;
-    }
+    return sortDirection === 'asc' ? (aValue > bValue ? 1 : -1) : (aValue < bValue ? 1 : -1);
   });
 
   const indexOfLastRoutine = currentPage * itemsPerPage;
@@ -56,77 +52,78 @@ const ClassRoutineList = () => {
   const currentRoutines = sortedRoutines.slice(indexOfFirstRoutine, indexOfLastRoutine);
   const totalPages = Math.ceil(sortedRoutines.length / itemsPerPage);
 
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const handleDelete = (id) => {
-    const routineRef = ref(database, `classRoutine/${id}`);
-    remove(routineRef)
-      .then(() => {
-        setClassRoutines(classRoutines.filter((routine) => routine.id !== id));
-      })
-      .catch((error) => {
-        console.error('Error deleting routine:', error);
-      });
+  const handleRoutineClick = (routine) => {
+    router.push({
+      pathname: '/attendance/attendanceForm',
+      query: {
+        className: routine.studentclass,
+        date: routine.date,
+        subject: routine.subject,
+      },
+    });
   };
 
   return (
-    <div className="p-6 bg-white">
-      <h2 className="text-xl font-semibold mb-4">My Class Routines</h2>
+    <div className="p-4 bg-white dark:bg-gray-800 rounded-lg">
+      <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
+        My Class Routines
+      </h2>
+
       {classRoutines.length === 0 ? (
-        <p>No class routines found for you within the last two days.</p>
+        <p className="text-gray-600 dark:text-gray-300">
+          No class routines found for you within the last two days.
+        </p>
       ) : (
         <>
-          {/* Sort Headers */}
-          <div className="grid grid-cols-5 gap-4 text-sm font-semibold border-b pb-2 mb-4">
-            <button onClick={() => handleSort('date')} className="cursor-pointer">
-              Date {sortField === 'date' && (sortDirection === 'asc' ? '↑' : '↓')}
-            </button>
-            <button onClick={() => handleSort('time')} className="cursor-pointer">
-              Time {sortField === 'time' && (sortDirection === 'asc' ? '↑' : '↓')}
-            </button>
-            <button onClick={() => handleSort('subject')} className="cursor-pointer">
-              Subject {sortField === 'subject' && (sortDirection === 'asc' ? '↑' : '↓')}
-            </button>
-            <button onClick={() => handleSort('studentclass')} className="cursor-pointer">
-              Class {sortField === 'studentclass' && (sortDirection === 'asc' ? '↑' : '↓')}
-            </button>
-            <button onClick={() => handleSort('room')} className="cursor-pointer">
-              Room {sortField === 'room' && (sortDirection === 'asc' ? '↑' : '↓')}
-            </button>
+          <div className="overflow-x-auto">
+            <table className="min-w-full">
+              <thead>
+                <tr className="border-b dark:border-gray-700">
+                  <th onClick={() => handleSort('date')} className="p-2 text-left cursor-pointer text-gray-800 dark:text-white">
+                    Date {sortField === 'date' && (sortDirection === 'asc' ? '↑' : '↓')}
+                  </th>
+                  <th onClick={() => handleSort('time')} className="p-2 text-left cursor-pointer text-gray-800 dark:text-white">
+                    Time {sortField === 'time' && (sortDirection === 'asc' ? '↑' : '↓')}
+                  </th>
+                  <th onClick={() => handleSort('subject')} className="p-2 text-left cursor-pointer text-gray-800 dark:text-white">
+                    Subject {sortField === 'subject' && (sortDirection === 'asc' ? '↑' : '↓')}
+                  </th>
+                  <th onClick={() => handleSort('studentclass')} className="p-2 text-left cursor-pointer text-gray-800 dark:text-white">
+                    Class {sortField === 'studentclass' && (sortDirection === 'asc' ? '↑' : '↓')}
+                  </th>
+                  <th onClick={() => handleSort('room')} className="p-2 text-left cursor-pointer text-gray-800 dark:text-white">
+                    Room {sortField === 'room' && (sortDirection === 'asc' ? '↑' : '↓')}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentRoutines.map((routine) => (
+                  <tr
+                    key={routine.id}
+                    onClick={() => handleRoutineClick(routine)}
+                    className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer"
+                  >
+                    <td className="p-2 text-gray-800 dark:text-gray-200">{routine.date}</td>
+                    <td className="p-2 text-gray-800 dark:text-gray-200">{routine.time}</td>
+                    <td className="p-2 text-gray-800 dark:text-gray-200">{routine.subject}</td>
+                    <td className="p-2 text-gray-800 dark:text-gray-200">{routine.studentclass}</td>
+                    <td className="p-2 text-gray-800 dark:text-gray-200">{routine.room}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
 
-          {/* Routine Entries */}
-          {currentRoutines.map((routine) => (
-            <div
-              key={routine.id}
-              className="grid grid-cols-5 gap-4 text-sm border-b py-2 items-center"
-            >
-              <div>{routine.date}</div>
-              <div>{routine.time}</div>
-              <div>{routine.subject}</div>
-              <div>{routine.studentclass}</div>
-              <div>{routine.room}</div>
-              {/* Uncomment if you want to add the delete option
-              <div>
-                <button
-                  className="text-red-500 hover:underline"
-                  onClick={() => handleDelete(routine.id)}
-                >
-                  <FaTrashAlt className="w-5 h-5" />
-                </button>
-              </div> */}
-            </div>
-          ))}
-
-          {/* Pagination Controls */}
-          <div className="mt-4 flex justify-end space-x-2">
-            {Array.from({ length: totalPages }, (_, i) => (
+          <div className="mt-4 flex justify-end gap-2">
+            {Array.from({ length: totalPages }).map((_, i) => (
               <button
                 key={i + 1}
-                className={`px-3 py-1 rounded ${currentPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
-                onClick={() => handlePageChange(i + 1)}
+                onClick={() => setCurrentPage(i + 1)}
+                className={`px-3 py-1 rounded ${
+                  currentPage === i + 1
+                    ? 'bg-blue-500 dark:bg-blue-600 text-white'
+                    : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200'
+                }`}
               >
                 {i + 1}
               </button>

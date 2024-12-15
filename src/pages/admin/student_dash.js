@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import withAuth from '../../../utils/withAuth';
 import AdminLayout from './adminLayout';
-import { FaSpinner } from 'react-icons/fa';
+import { FaSpinner, FaUser } from 'react-icons/fa';
 import ClassRoutine from '../../app/components/student/ClassRoutine';
 import { database } from '../../../utils/firebaseConfig';
 import { ref, get } from 'firebase/database';
@@ -10,6 +10,10 @@ import { useRouter } from 'next/router';
 import { useGlobalState, setStudentClass, setStatus } from '../../app/store';
 import CombinedExamsList from '../../app/components/exams/CombinedExamsList';
 import StudentAssignmentsList from '../../app/components/student/assignments/StudentAssignmentsList';
+import StudentAttendanceHistory from '../../app/components/attendance/StudentAttendanceHistory';
+import QuickStats from '../../app/components/student/stats/QuickStats';
+import AcademicProgress from '../../app/components/student/stats/AcademicProgress';
+import Deadlines from '../../app/components/student/stats/Deadlines';
 
 const StudentDash = () => {
   const { data: session, status } = useSession();
@@ -59,35 +63,77 @@ const StudentDash = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-gray-50 dark:bg-slate-950">
+        <FaSpinner className="text-4xl text-main3 dark:text-main2 animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <AdminLayout>
-      <div className="flex flex-col md:flex-row">
-        <div className="w-full">
-          {loading ? (
-            <div className="flex items-center justify-center h-32">
-              <FaSpinner className="animate-spin text-blue-500 text-3xl" />
+      <div className='min-h-screen space-y-6 pt-6 dark:bg-slate-950 transition-colors duration-200'>
+        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-md p-6 border border-gray-100 dark:border-slate-800">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+            <div className="flex items-center space-x-4">
+              <div className="p-3 bg-main3/10 dark:bg-main2/10 rounded-full">
+                <FaUser className="text-2xl text-main3 dark:text-main2" />
+              </div>
+              <div>
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+                  Welcome, {studentData?.firstName} {studentData?.lastName}
+                </h2>
+                <p className="text-gray-500 dark:text-gray-400">
+                  Student ID: {studentData?.userID} <br />
+                  Class: {studentData?.class}  
+                </p>
+              </div>
             </div>
-          ) : (
-            <div>
-              {studentStatus === "Accepted" ? (
-                <div className='h-screen overflow-y-auto'>
-                  <div className="w-full bg-white m-2">
-                    <ClassRoutine />
-                    </div>
-                  <div className="w-full flex flex-col md:flex-row mt-4">
-                    <div className="w-full  bg-white p-4 m-2">
-                        <StudentAssignmentsList />
-                  </div>
-                    <div className="w-full bg-white m-2">
-                      <CombinedExamsList />
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className='w-full border p-4 text-center'>Your account is under review</div>
-              )}
+          </div>
+        </div>
+
+        {/* <QuickStats /> */}
+
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="bg-white dark:bg-slate-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-slate-800">
+            <div className="p-4 border-b border-gray-100 dark:border-slate-800">
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-white">Class Routine</h3>
             </div>
-          )}
+            <div className="p-4">
+              <ClassRoutine />
+            </div>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-slate-800">
+            <div className="p-4 border-b border-gray-100 dark:border-slate-800">
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-white">Attendance History</h3>
+            </div>
+            <div className="p-4">
+              <StudentAttendanceHistory />
+            </div>
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="bg-white dark:bg-slate-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-slate-800">
+            <div className="p-4 border-b border-gray-100 dark:border-slate-800">
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-white">Assignments</h3>
+            </div>
+            <div className="p-4">
+              <StudentAssignmentsList />
+            </div>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-slate-800">
+            <div className="p-4 border-b border-gray-100 dark:border-slate-800">
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-white">Recent Exams Results</h3>
+            </div>
+            <div className="p-4">
+                <AcademicProgress />
+            </div>
+          </div>
         </div>
       </div>
     </AdminLayout>

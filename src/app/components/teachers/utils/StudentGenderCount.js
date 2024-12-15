@@ -86,27 +86,39 @@ const StudentGenderCount = () => {
 
   if (isLoading) {
     return (
-      <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-200 bg-opacity-75 z-50">
-        <FaSpinner className="animate-spin text-4xl text-gray-500" />
+      <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center 
+        bg-gray-200 dark:bg-gray-800 bg-opacity-75 z-50 transition-colors duration-200">
+        <FaSpinner className="animate-spin text-4xl text-gray-500 dark:text-gray-400" />
       </div>
     );
   }
 
   return (
-    <div className="w-full text-sm p-4 bg-white">
-      <h2 className="text-xl font-semibold mb-4">Students By Gender</h2>
+    <div className="w-full text-sm p-4 bg-white dark:bg-gray-800 transition-colors duration-200">
+      <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
+        Students By Gender
+      </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="p-4 bg-blue-100 text-blue-700 rounded-lg shadow flex flex-col items-center justify-center">
+        <div className="p-4 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 
+          rounded-lg shadow-md hover:shadow-lg dark:shadow-gray-900 
+          flex flex-col items-center justify-center 
+          transition-all duration-200">
           <FaMale className="text-4xl mb-2" />
           <h3 className="text-lg font-semibold">Male</h3>
           <p className="text-2xl">{genderCounts.male}</p>
         </div>
-        <div className="p-4 bg-pink-100 text-pink-700 rounded-lg shadow flex flex-col items-center justify-center">
+        <div className="p-4 bg-pink-100 dark:bg-pink-900 text-pink-700 dark:text-pink-200 
+          rounded-lg shadow-md hover:shadow-lg dark:shadow-gray-900 
+          flex flex-col items-center justify-center 
+          transition-all duration-200">
           <FaFemale className="text-4xl mb-2" />
           <h3 className="text-lg font-semibold">Female</h3>
           <p className="text-2xl">{genderCounts.female}</p>
         </div>
-        <div className="p-4 bg-gray-100 text-gray-700 rounded-lg shadow flex flex-col items-center justify-center">
+        <div className="p-4 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 
+          rounded-lg shadow-md hover:shadow-lg dark:shadow-gray-900 
+          flex flex-col items-center justify-center 
+          transition-all duration-200">
           <FaUsers className="text-4xl mb-2" />
           <h3 className="text-lg font-semibold">Total Count</h3>
           <p className="text-2xl">{genderCounts.TotalCount}</p>

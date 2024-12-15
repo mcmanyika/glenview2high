@@ -3,6 +3,66 @@ import { ref, onValue } from 'firebase/database';
 import { database } from '../../../../../utils/firebaseConfig'; // Adjust path as necessary
 import { useSession } from 'next-auth/react';
 
+const SubmissionModal = ({ submission, onClose }) => {
+  if (!submission) return null;
+  
+  return (
+    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4">
+      <div className="bg-white dark:bg-gray-800 w-full max-w-4xl rounded-lg p-6 
+        max-h-[90vh] overflow-y-auto shadow-xl">
+        <div className="flex justify-between items-start mb-4">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+              {submission.studentName}
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Submitted {new Date(submission.submittedAt).toLocaleString()}
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700 dark:text-gray-400 
+              dark:hover:text-gray-200 transition-colors"
+          >
+            ✕
+          </button>
+        </div>
+        
+        <div className="prose dark:prose-invert max-w-none">
+          <div dangerouslySetInnerHTML={{ __html: submission.submissionText }} />
+        </div>
+        
+        <div className="mt-6 flex justify-end">
+          <button
+            onClick={onClose}
+            className="px-6 py-2 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 
+              dark:hover:bg-blue-700 text-white rounded-lg transition-colors"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const SubmissionCard = ({ submission, onClick }) => (
+  <div
+    onClick={onClick}
+    className="flex flex-col md:flex-row gap-2 items-start md:items-center p-4
+      border border-gray-200 dark:border-gray-700 rounded-lg 
+      bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600
+      cursor-pointer transition-all duration-200"
+  >
+    <div className="flex-1 font-medium text-gray-800 dark:text-gray-200">
+      {submission.studentName}
+    </div>
+    <div className="text-sm text-gray-500 dark:text-gray-400">
+      {new Date(submission.submittedAt).toLocaleString()}
+    </div>
+  </div>
+);
+
 const TeacherSubmittedAssignments = () => {
   const { data: session } = useSession();
   const [groupedAssignments, setGroupedAssignments] = useState({});
@@ -91,96 +151,96 @@ const TeacherSubmittedAssignments = () => {
   };
 
   if (loading) {
-    return <div>Loading submitted assignments...</div>;
+    return (
+      <div className="p-8 text-center text-gray-600 dark:text-gray-400">
+        <div className="animate-spin inline-block w-8 h-8 border-4 border-current 
+          border-t-transparent rounded-full" />
+        <p className="mt-2">Loading submissions...</p>
+      </div>
+    );
   }
 
   if (filteredAssignmentNames.length === 0) {
-    return <div>No submissions found.</div>;
+    return (
+      <div className="p-8 text-center text-gray-600 dark:text-gray-400">
+        No submissions found.
+      </div>
+    );
   }
 
-  // Current assignment group to display based on the current page
   const currentAssignmentName = filteredAssignmentNames[currentGroupPage - 1];
   const currentSubmissions = groupedAssignments[currentAssignmentName];
 
   return (
-    <div className="w-full bg-white text-sm text-md mx-auto rounded p-4 md:px-8 md:pt-6 pb-8 mb-4">
-      <h2 className="text-lg md:text-xl font-bold mb-4">Submitted Assignments</h2>
+    <div className="w-full bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+      <h2 className="text-xl font-bold mb-6 text-gray-800 dark:text-white">
+        Submitted Assignments
+      </h2>
       
-      {/* Search Input */}
-      <div className="mb-10">
+      <div className="mb-6">
         <input
           type="text"
-          placeholder="Search by Assignment Name"
+          placeholder="Search assignments..."
           value={searchTerm}
           onChange={handleSearchChange}
-          className="w-full p-2 border border-gray-300 rounded-lg"
+          className="w-full p-3 rounded-lg border border-gray-200 dark:border-gray-700
+            bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200
+            placeholder-gray-500 dark:placeholder-gray-400
+            focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600
+            focus:border-transparent transition-all"
         />
       </div>
 
-      <div key={currentAssignmentName} className="mb-8">
-        <h3 className="text-md font-semibold mb-3">{currentAssignmentName}</h3>
+      <div className="space-y-6">
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+          {currentAssignmentName}
+        </h3>
         
-        {currentSubmissions.map((submission) => (
-          <div
-            key={submission.assignmentId}
-            onClick={() => handleSubmissionClick(submission)}
-            className="flex flex-col md:flex-row items-start md:items-center mb-4 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-100"
-          >
-            <div className="w-full md:w-1/2 p-1 truncate">{submission.studentName}</div>
-            <div className="w-full md:w-1/2 p-1 text-gray-600 text-sm">
-              {new Date(submission.submittedAt).toLocaleString()}
-            </div>
-          </div>
-        ))}
+        <div className="space-y-2">
+          {currentSubmissions.map((submission) => (
+            <SubmissionCard
+              key={submission.assignmentId}
+              submission={submission}
+              onClick={() => handleSubmissionClick(submission)}
+            />
+          ))}
+        </div>
       </div>
 
-      {/* Pagination Controls */}
-      <div className="flex justify-between items-center mt-4 text-sm">
+      <div className="mt-8 flex items-center justify-between">
         <button
           onClick={handlePreviousGroupPage}
           disabled={currentGroupPage === 1}
-          className={`px-4 py-2 rounded ${
-            currentGroupPage === 1 ? 'bg-gray-300' : 'bg-gray-800 text-white'
+          className={`px-4 py-2 rounded-lg transition-colors ${
+            currentGroupPage === 1 
+              ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 cursor-not-allowed' 
+              : 'bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white'
           }`}
         >
-          Previous Assignment
+          Previous
         </button>
-        <span>
-          Assignment {currentGroupPage} of {totalGroupPages}
+        
+        <span className="text-sm text-gray-600 dark:text-gray-400">
+          Page {currentGroupPage} of {totalGroupPages}
         </span>
+        
         <button
           onClick={handleNextGroupPage}
           disabled={currentGroupPage === totalGroupPages}
-          className={`px-4 py-2 rounded ${
-            currentGroupPage === totalGroupPages ? 'bg-gray-300' : 'bg-gray-800 text-white'
+          className={`px-4 py-2 rounded-lg transition-colors ${
+            currentGroupPage === totalGroupPages 
+              ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 cursor-not-allowed' 
+              : 'bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white'
           }`}
         >
-          Next Assignment
+          Next
         </button>
       </div>
 
-      {/* Modal */}
-      {showModal && selectedSubmission && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white w-full h-full rounded-lg p-6 overflow-y-auto">
-            <p className="text-lg font-semibold">{selectedSubmission.studentName}</p>
-            <p className="text-sm font-semibold mb-2">Assignment: {selectedSubmission.assignmentName}</p>
-            <p className="text-sm text-gray-600 mb-4">
-              {new Date(selectedSubmission.submittedAt).toLocaleString()}
-            </p>
-            <div
-              className="blog-content mb-2 text-gray-700"
-              dangerouslySetInnerHTML={{ __html: selectedSubmission.submissionText }}
-            />
-            <button
-              onClick={closeModal}
-              className="mt-4 px-6 py-3 bg-main3 text-white rounded-full"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+      <SubmissionModal
+        submission={selectedSubmission}
+        onClose={closeModal}
+      />
     </div>
   );
 };

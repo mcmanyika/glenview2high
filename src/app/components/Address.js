@@ -8,7 +8,7 @@ const Address = () => {
   const [address, setAddress] = useState('Loading...');
   const [facebookContent, setFacebookContent] = useState('');
 
-  // Fetch address and facebook content from the account table
+  // Fetch address and facebook content from the account table 
   useEffect(() => {
     const fetchData = async () => {
       try {

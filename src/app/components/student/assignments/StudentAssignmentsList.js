@@ -126,22 +126,21 @@ const StudentAssignmentsList = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
-  if (loading) return <div className="text-center mt-4">Loading assignments...</div>;
-  if (!assignments.length) return <div className="text-center mt-4">No assignments found for your class or user.</div>;
+  if (loading) return <div className="text-center mt-4 dark:text-white">Loading assignments...</div>;
+  if (!assignments.length) return <div className="text-center mt-4 dark:text-white">No assignments found for your class or user.</div>;
 
   return (
-    <div className="w-full px-4 mx-auto text-sm">
-      <h2 className="text-lg font-semibold text-center mb-4">Your Assignments</h2>
+    <div className="w-full px-4 mx-auto text-sm dark:text-white">
       {currentAssignments.map((assignment) => (
         <div
           key={assignment.id}
-          className="mb-4 p-4 border rounded-lg hover:bg-gray-100 cursor-pointer"
+          className="mb-4 p-4 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer dark:bg-gray-800 dark:border-gray-700"
           onClick={() => handleShowModal(assignment)}
         >
-          <h3 className="text-md font-semibold">{assignment.assignmentName}</h3>
-          <p><strong>Due:</strong> {new Date(assignment.assignmentDueDate).toLocaleDateString()}</p>
-          <p><strong>Created:</strong> {new Date(assignment.createdDate).toLocaleDateString()}</p>
-          <p><strong>Teacher:</strong> {assignment.email}</p>
+          <h3 className="text-md font-semibold dark:text-white">{assignment.assignmentName}</h3>
+          <p className="dark:text-gray-300"><strong>Due:</strong> {new Date(assignment.assignmentDueDate).toLocaleDateString()}</p>
+          <p className="dark:text-gray-300"><strong>Created:</strong> {new Date(assignment.createdDate).toLocaleDateString()}</p>
+          <p className="dark:text-gray-300"><strong>Teacher:</strong> {assignment.email}</p>
         </div>
       ))}
 
@@ -151,15 +150,15 @@ const StudentAssignmentsList = () => {
           <button
             onClick={handlePreviousPage}
             disabled={currentPage === 1}
-            className={`px-4 py-2 rounded ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
+            className={`px-4 py-2 rounded ${currentPage === 1 ? 'bg-gray-300 dark:bg-gray-600' : 'bg-blue-500 text-white'}`}
           >
             Previous
           </button>
-          <span className="text-sm">Page {currentPage} of {totalPages}</span>
+          <span className="text-sm dark:text-white">Page {currentPage} of {totalPages}</span>
           <button
             onClick={handleNextPage}
             disabled={currentPage === totalPages}
-            className={`px-4 py-2 rounded ${currentPage === totalPages ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
+            className={`px-4 py-2 rounded ${currentPage === totalPages ? 'bg-gray-300 dark:bg-gray-600' : 'bg-blue-500 text-white'}`}
           >
             Next
           </button>
@@ -169,11 +168,11 @@ const StudentAssignmentsList = () => {
       {/* Assignment submission modal */}
       {showModal && selectedAssignment && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-4 w-full max-w-6xl rounded-md shadow-lg">
-            <h3 className="text-xl font-semibold mb-2">{selectedAssignment.assignmentName}</h3>
-            <p className="mb-4">{selectedAssignment.description || 'No description available'}</p>
+          <div className="bg-white dark:bg-gray-800 p-4 w-full max-w-6xl rounded-md shadow-lg">
+            <h3 className="text-xl font-semibold mb-2 dark:text-white">{selectedAssignment.assignmentName}</h3>
+            <p className="mb-4 dark:text-gray-300">{selectedAssignment.description || 'No description available'}</p>
             {hasSubmitted ? (
-              <div className="text-center text-red-600 font-bold">You have already submitted this assignment.</div>
+              <div className="text-center text-red-600 dark:text-red-400 font-bold">You have already submitted this assignment.</div>
             ) : (
               <>
                 <SunEditor
@@ -190,7 +189,7 @@ const StudentAssignmentsList = () => {
                   }}
                 />
                 <button
-                  className="mt-4 w-full bg-main3 text-white font-bold py-2 rounded"
+                  className="mt-4 w-full bg-main3 text-white font-bold py-2 rounded hover:bg-opacity-90"
                   onClick={handleSubmitAssignment}
                 >
                   Submit
@@ -198,7 +197,7 @@ const StudentAssignmentsList = () => {
               </>
             )}
             <button
-              className="mt-4 w-full bg-gray-500 text-white font-bold py-2 rounded"
+              className="mt-4 w-full bg-gray-500 text-white font-bold py-2 rounded hover:bg-opacity-90 dark:bg-gray-600"
               onClick={handleCloseModal}
             >
               Close

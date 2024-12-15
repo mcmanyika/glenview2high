@@ -58,24 +58,26 @@ const Exams = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center items-center h-screen bg-white dark:bg-slate-900">
         <FontAwesomeIcon
           icon={faSpinner}
-          className="text-4xl text-blue-500 animate-spin"
+          className="text-4xl text-main3 dark:text-main2 animate-spin"
         />
       </div>
     );
   }
 
   if (error) {
-    return <div>{error}</div>; // Display error message if any
+    return <div className="text-red-600 dark:text-red-400 p-4">{error}</div>;
   }
 
   return (
     <AdminLayout>
-      <div className='w-full flex flex-col md:flex-row'>
-        <div className='w-full  m-1'>
-          <AssignedExamsList />
+      <div className='w-full flex flex-col md:flex-row bg-gray-50 dark:bg-slate-900 min-h-screen transition-colors duration-200'>
+        <div className='w-full m-1'>
+          <div className='bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-slate-700'>
+            <AssignedExamsList />
+          </div>
         </div>
       </div>
     </AdminLayout>

@@ -113,35 +113,48 @@ const NoticeList = () => {
   };
 
   return (
-    <div className="w-full space-y-4 p-4 m-2">
-      {selectedComponent}
+    <div className="w-full space-y-4 p-4 m-2 bg-white dark:bg-slate-900 rounded-xl transition-colors duration-200">
+      {selectedComponent && (
+        <div className="flex justify-between items-center dark:text-white">
+          <h2 className="text-lg font-bold">Notices</h2>
+          <button
+            onClick={() => setIsCreateNoticeModalOpen(true)}
+            className="bg-main3 hover:bg-main2 text-white font-bold py-2 px-6 rounded-full transition-colors duration-200"
+          >
+            Create A Notice
+          </button>
+        </div>
+      )}
 
       <div className="text-left">
         {notices.length > 0 ? (
-          <ul className="space-y-2">
+          <ul className="space-y-4">
             {notices.map((notice) => (
-              <li key={notice.id} className="p-1 pt-2 pb-4 border-b">
+              <li 
+                key={notice.id} 
+                className="p-4 border dark:border-slate-700 rounded-lg bg-gray-50 dark:bg-slate-800 transition-colors duration-200"
+              >
                 <button
-                  className={`text-sm ${getRandomColor()} p-2 mb-3 pl-6 pr-6 rounded-2xl text-white`}
+                  className={`text-sm ${getRandomColor()} dark:bg-opacity-80 p-2 mb-3 px-6 rounded-full text-white shadow-sm hover:shadow-md transition-shadow duration-200`}
                 >
                   {formatDate(notice.date)}
                 </button>
-                <p className="text-base text-gray-700">{notice.details}</p>
+                <p className="text-base text-gray-700 dark:text-gray-200">{notice.details}</p>
               </li>
             ))}
           </ul>
         ) : (
-          <p>No notices available.</p>
+          <p className="text-gray-600 dark:text-gray-400">No notices available.</p>
         )}
       </div>
 
       {isCreateNoticeModalOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50"
           onClick={() => setIsCreateNoticeModalOpen(false)}
         >
           <div
-            className="bg-white rounded p-8 w-3/4 max-w-2xl"
+            className="bg-white dark:bg-slate-800 rounded-xl shadow-xl p-8 w-3/4 max-w-2xl border border-gray-100 dark:border-slate-700"
             onClick={(e) => e.stopPropagation()}
           >
             <AddNoticeForm onClose={() => setIsCreateNoticeModalOpen(false)} />

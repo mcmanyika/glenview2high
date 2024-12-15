@@ -18,7 +18,7 @@ const User = () => {
 
   return (
     <SmartBlankLayout>
-      <Link href='/'>
+      <Link href='https://glenview2high.com'>
           <Image
             src="/images/logo.png"
             alt=""

@@ -72,32 +72,32 @@ const RoutineList = () => {
   };
 
   return (
-    <div className="p-6 bg-white rounded shadow mt-3">
-      <h2 className="text-xl font-semibold mb-4">All Class Routines</h2>
+    <div className="p-6 rounded shadow mt-3">
+      <h2 className="text-xl font-semibold mb-4 dark:text-white">All Class Routines</h2>
 
       {classRoutines.length === 0 ? (
-        <p>No class routines available.</p>
+        <p className="dark:text-white">No class routines available.</p>
       ) : (
         <>
-          <table className="min-w-full text-sm bg-white text-left">
+          <table className="min-w-full text-sm text-black dark:text-white text-left">
             <thead>
               <tr>
-                <th className="py-2 px-4 border-b cursor-pointer" onClick={() => handleSort('date')}>
+                <th className="py-2 px-4 border-b dark:border-gray-700 cursor-pointer" onClick={() => handleSort('date')}>
                   Date {sortField === 'date' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}
                 </th>
-                <th className="py-2 px-4 border-b cursor-pointer" onClick={() => handleSort('time')}>
+                <th className="py-2 px-4 border-b dark:border-gray-700 cursor-pointer" onClick={() => handleSort('time')}>
                   Time {sortField === 'time' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}
                 </th>
-                <th className="py-2 px-4 border-b cursor-pointer" onClick={() => handleSort('teacher')}>
+                <th className="py-2 px-4 border-b dark:border-gray-700 cursor-pointer" onClick={() => handleSort('teacher')}>
                   Teacher {sortField === 'teacher' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}
                 </th>
-                <th className="py-2 px-4 border-b cursor-pointer" onClick={() => handleSort('subject')}>
+                <th className="py-2 px-4 border-b dark:border-gray-700 cursor-pointer" onClick={() => handleSort('subject')}>
                   Subject {sortField === 'subject' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}
                 </th>
-                <th className="py-2 px-4 border-b cursor-pointer" onClick={() => handleSort('studentclass')}>
+                <th className="py-2 px-4 border-b dark:border-gray-700 cursor-pointer" onClick={() => handleSort('studentclass')}>
                   Class {sortField === 'studentclass' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}
                 </th>
-                <th className="py-2 px-4 border-b cursor-pointer" onClick={() => handleSort('room')}>
+                <th className="py-2 px-4 border-b dark:border-gray-700 cursor-pointer" onClick={() => handleSort('room')}>
                   Room {sortField === 'room' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}
                 </th>
                 <th className="py-2 px-4 border-b">Actions</th>
@@ -106,12 +106,12 @@ const RoutineList = () => {
             <tbody>
               {currentRoutines.map((routine) => (
                 <tr key={routine.id}>
-                  <td className="py-2 px-4 border-b">{formatDate(routine.date)}</td>
-                  <td className="py-2 px-4 border-b">{routine.time}</td>
-                  <td className="py-2 px-4 border-b capitalize">{routine.teacher}</td>
-                  <td className="py-2 px-4 border-b">{routine.subject}</td>
-                  <td className="py-2 px-4 border-b">{routine.studentclass}</td>
-                  <td className="py-2 px-4 border-b">{routine.room}</td>
+                  <td className="py-2 px-4 border-b dark:border-gray-700">{formatDate(routine.date)}</td>
+                  <td className="py-2 px-4 border-b dark:border-gray-700">{routine.time}</td>
+                  <td className="py-2 px-4 border-b dark:border-gray-700 capitalize">{routine.teacher}</td>
+                  <td className="py-2 px-4 border-b dark:border-gray-700">{routine.subject}</td>
+                  <td className="py-2 px-4 border-b dark:border-gray-700">{routine.studentclass}</td>
+                  <td className="py-2 px-4 border-b dark:border-gray-700">{routine.room}</td>
                   <td className="py-2 px-4 border-b">
                     <button 
                       className="text-red-500 hover:underline" 

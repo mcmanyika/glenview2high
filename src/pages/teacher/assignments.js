@@ -59,24 +59,38 @@ const Assignments = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="fixed inset-0 flex justify-center items-center 
+        bg-white dark:bg-gray-900 
+        transition-colors duration-200">
         <FontAwesomeIcon
           icon={faSpinner}
-          className="text-4xl text-blue-500 animate-spin"
+          className="text-4xl text-blue-500 dark:text-blue-400 animate-spin"
         />
       </div>
     );
   }
 
   if (error) {
-    return <div>{error}</div>; // Display error message if any
+    return (
+      <div className="p-4 text-red-600 dark:text-red-400 
+        bg-red-100 dark:bg-red-900 rounded-lg">
+        {error}
+      </div>
+    );
   }
 
   return (
     <AdminLayout>
-      <div className='w-full flex flex-col h-screen overflow-y-auto'>
-        <div className='w-full m-1'>
-          <TeacherAssignmentsList />
+      <div className="w-full flex flex-col h-screen overflow-y-auto 
+        bg-gray-50 dark:bg-gray-900 
+        transition-colors duration-200">
+        <div className="w-full m-1 space-y-4">
+          <div className="bg-white dark:bg-gray-800 
+            rounded-lg shadow-sm 
+            border border-gray-200 dark:border-gray-700
+            transition-all duration-200">
+            <TeacherAssignmentsList />
+          </div>
         </div>
       </div>
     </AdminLayout>

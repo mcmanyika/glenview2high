@@ -73,7 +73,7 @@ function Notices() {
   return (
     <AdminLayout>
       <div className="flex flex-col md:flex-row">
-        <div className="w-full bg-white overflow-y-auto m-2">
+        <div className="w-full bg-white dark:bg-slate-800 overflow-y-auto mt-4">
             <NoticeList />
         </div>
       </div>

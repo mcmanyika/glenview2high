@@ -82,7 +82,7 @@ const StudentDash = () => {
               </div>
               <div>
                 <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-                  Welcome, {studentData?.firstName} {studentData?.lastName}
+                  Hi, {studentData?.firstName} {studentData?.lastName}
                 </h2>
                 <p className="text-gray-500 dark:text-gray-400">
                   Student ID: {studentData?.userID} <br />

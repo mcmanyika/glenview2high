@@ -4,7 +4,6 @@ import AdminLayout from './adminLayout';
 import GenderCount from '../../app/components/admin/admissions/GenderCount';
 import AdmissionsList from '../../app/components/admin/admissions/AdmissionsList';
 import GenderPieChart from '../../app/components/admin/admissions/GenderPieChart';
-import BlogList from '../../app/components/admin/blog/BlogList';
 
 const AdminDashboard = () => {
   const [userID] = useGlobalState('userID');
@@ -40,14 +39,7 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* Blog List Section */} 
-        <div className="w-full bg-white dark:bg-gray-800 
-          border dark:border-gray-700 
-          shadow-sm dark:shadow-gray-900 
-          rounded-lg
-          transition-all duration-200">
-          <BlogList />
-        </div>
+        
       </div>
     </AdminLayout>
   );

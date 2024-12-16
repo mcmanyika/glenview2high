@@ -22,6 +22,7 @@ const StudentAssignmentsList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [isLoadingSubmission, setIsLoadingSubmission] = useState(false);
 
   // Fetch student information on component mount
   useEffect(() => {
@@ -67,13 +68,18 @@ const StudentAssignmentsList = () => {
 
   // Show modal with assignment details and check submission status
   const handleShowModal = async (assignment) => {
-    setSelectedAssignment(assignment);
-    setShowModal(true);
-    setSubmission('');
+    setIsLoadingSubmission(true);
+    try {
+      setSelectedAssignment(assignment);
+      setShowModal(true);
+      setSubmission('');
 
-    const submissionRef = ref(database, `submissions/${userID}/${assignment.id}`);
-    const submissionSnapshot = await get(submissionRef);
-    setHasSubmitted(submissionSnapshot.exists());
+      const submissionRef = ref(database, `submissions/${userID}/${assignment.id}`);
+      const submissionSnapshot = await get(submissionRef);
+      setHasSubmitted(submissionSnapshot.exists());
+    } finally {
+      setIsLoadingSubmission(false);
+    }
   };
 
   // Close modal
@@ -126,22 +132,33 @@ const StudentAssignmentsList = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
+  const isAssignmentOverdue = (dueDate) => {
+    return new Date(dueDate) < new Date();
+  };
+
   if (loading) return <div className="text-center mt-4 dark:text-white">Loading assignments...</div>;
   if (!assignments.length) return <div className="text-center mt-4 dark:text-white">No assignments found for your class or user.</div>;
 
   return (
     <div className="w-full px-4 mx-auto text-sm dark:text-white">
       {currentAssignments.map((assignment) => (
-        <div
-          key={assignment.id}
-          className="mb-4 p-4 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer dark:bg-gray-800 dark:border-gray-700"
-          onClick={() => handleShowModal(assignment)}
-        >
-          <h3 className="text-md font-semibold dark:text-white">{assignment.assignmentName}</h3>
-          <p className="dark:text-gray-300"><strong>Due:</strong> {new Date(assignment.assignmentDueDate).toLocaleDateString()}</p>
-          <p className="dark:text-gray-300"><strong>Created:</strong> {new Date(assignment.createdDate).toLocaleDateString()}</p>
-          <p className="dark:text-gray-300"><strong>Teacher:</strong> {assignment.email}</p>
+        <>
+        <div className="flex justify-between items-start mb-4">
+          <div
+            key={assignment.id}
+            className="flex-1 p-4 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer dark:bg-gray-800 dark:border-gray-700"
+            onClick={() => handleShowModal(assignment)}
+          >
+            <h3 className="text-md font-semibold dark:text-white">{assignment.assignmentName}</h3>
+            <p className="dark:text-gray-300"><strong>Due:</strong> {new Date(assignment.assignmentDueDate).toLocaleDateString()}</p>
+            <p className="dark:text-gray-300"><strong>Created:</strong> {new Date(assignment.createdDate).toLocaleDateString()}</p>
+            <p className="dark:text-gray-300"><strong>Teacher:</strong> {assignment.email}</p>
+          </div>
+          {isAssignmentOverdue(assignment.assignmentDueDate) && 
+            <button className="text-red-500 font-semibold px-2 py-1 ml-4 h-fit rounded border border-red-500 hover:bg-red-500 hover:text-white transition-colors">Overdue</button>
+          }
         </div>
+        </>
       ))}
 
       {/* Pagination controls */}
@@ -170,7 +187,9 @@ const StudentAssignmentsList = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white dark:bg-gray-800 p-4 w-full max-w-6xl rounded-md shadow-lg">
             <h3 className="text-xl font-semibold mb-2 dark:text-white">{selectedAssignment.assignmentName}</h3>
-            <p className="mb-4 dark:text-gray-300">{selectedAssignment.description || 'No description available'}</p>
+            <div className="mb-4 dark:text-gray-300 prose dark:prose-invert max-w-none">
+              <div dangerouslySetInnerHTML={{ __html: selectedAssignment.description }} />
+            </div>
             {hasSubmitted ? (
               <div className="text-center text-red-600 dark:text-red-400 font-bold">You have already submitted this assignment.</div>
             ) : (

@@ -73,7 +73,7 @@ function ClassRoutine() {
 
   return (
     <AdminLayout>
-      <div className='w-full flex flex-col lg:flex-row'>
+      <div className='w-full bg-white dark:bg-slate-900 flex flex-col lg:flex-row'>
         <div className='w-full lg:w-1/4 m-3 ml-0'>
           <ClassRoutineForm />
         </div>

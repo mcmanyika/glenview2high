@@ -10,9 +10,6 @@ import '../../app/globals.css';
 
 import { useRouter } from 'next/router';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // 
-import { faSpinner } from '@fortawesome/free-solid-svg-icons'; // Spinner icon
-import AIAssistantForm from '../../app/components/ai/AIAssistantForm';
 import Footer from '../../app/components/DashFooter';
 import { database } from '../../../utils/firebaseConfig';
 import TitleList from '../../app/components/TitleList';
@@ -274,7 +271,6 @@ const AdminLayout = ({ children }) => {
         </main>
 
         <Footer />
-        <AIAssistantForm />
 
         {/* Modal for Document Upload */}
         {isModalOpen && (

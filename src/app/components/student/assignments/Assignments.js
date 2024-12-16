@@ -141,13 +141,13 @@ const StudentAssignmentsList = () => {
   if (!assignments.length) return <div className="text-center mt-4 dark:text-white">No assignments found for your class or user.</div>;
 
   return (
-    <div className="w-full px-4 mx-auto text-sm  dark:bg-gray-800 dark:text-white">
+    <div className="w-full px-4 mx-auto text-sm bg-white pt-4 p-2 dark:text-white">
       {currentAssignments.map((assignment) => (
         <>
         <div className="flex justify-between items-start mb-4">
           <div
             key={assignment.id}
-            className="flex-1 p-4 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer dark:bg-gray-800 dark:border-gray-700"
+            className="flex-1 p-4 border rounded-lg cursor-pointer  dark:border-gray-700"
             onClick={() => handleShowModal(assignment)}
           >
             <h3 className="text-md font-semibold dark:text-white">{assignment.assignmentName}</h3>

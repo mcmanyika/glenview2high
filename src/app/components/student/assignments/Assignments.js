@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import dynamic from 'next/dynamic';
 const SunEditor = dynamic(() => import('suneditor-react'), { ssr: false });
 import 'suneditor/dist/css/suneditor.min.css';
+import withAuth from '../../../../../utils/withAuth';
 
 const StudentAssignmentsList = () => {
   const { data: session } = useSession();
@@ -20,7 +21,7 @@ const StudentAssignmentsList = () => {
   const [selectedAssignment, setSelectedAssignment] = useState(null);
   const [submission, setSubmission] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3;
+  const itemsPerPage = 12;
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [isLoadingSubmission, setIsLoadingSubmission] = useState(false);
 
@@ -228,4 +229,4 @@ const StudentAssignmentsList = () => {
   );
 };
 
-export default StudentAssignmentsList;
+export default withAuth(StudentAssignmentsList);

@@ -121,7 +121,6 @@ const AcademicProgress = () => {
               <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                 <thead className="bg-gray-50 dark:bg-gray-700">
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Date</th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Subject</th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Possible Mark</th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Obtained Mark</th>
@@ -134,9 +133,6 @@ const AcademicProgress = () => {
                 <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                   {detailedData && detailedData.map((data, index) => (
                     <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
-                        {new Date(data.date).toLocaleDateString()}
-                      </td>
                       <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
                         {selectedSubject}
                       </td>
@@ -171,13 +167,13 @@ const AcademicProgress = () => {
               </table>
             </div>
 
-            {/* Comments Section */}
+            {/* Comments Section - without date */}
             <div className="mt-4">
               {detailedData && detailedData.map((data, index) => (
                 data.comments && (
                   <div key={index} className="mt-2 p-3 bg-gray-50 dark:bg-gray-700 rounded">
                     <p className="text-sm text-gray-600 dark:text-gray-300">
-                      <span className="font-medium">Comments ({new Date(data.date).toLocaleDateString()}): </span>
+                      <span className="font-medium">Comments: </span>
                       {data.comments}
                     </p>
                   </div>
@@ -185,16 +181,16 @@ const AcademicProgress = () => {
               ))}
             </div>
 
-            {/* Remarks Section */}
+            {/* Remarks Section - without date */}
             <div className="mt-4">
               {detailedData && detailedData.map((data, index) => (
                 data.remarks && (
                   <div key={index} className="mt-2 p-3 bg-gray-50 dark:bg-gray-700 rounded">
                     <p className="text-sm text-gray-600 dark:text-gray-300">
-                      <span className="font-medium">Teacher Remarks : </span>
+                      <span className="font-medium">Teacher Remarks: </span>
                       <br />
                       <p className="pt-2">
-                       {data.remarks}
+                        {data.remarks}
                       </p>
                     </p>
                   </div>

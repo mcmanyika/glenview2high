@@ -112,7 +112,7 @@ const StudentReportView = () => {
   // Show detailed report view when a report is selected
   if (selectedReport) {
     return (
-      <div className="p-6 max-w-7xl mx-auto">
+      <div>
         {/* Back Button */}
         <button
           onClick={handleBackClick}
@@ -222,7 +222,25 @@ const StudentReportView = () => {
 
   // Show reports list view
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div>
+       {/* Add subscription section if status is not active */}
+       
+          <div className="bg-white dark:bg-slate-900 rounded-xl shadow-md p-6 border border-gray-100 dark:border-slate-800 mb-5">
+            <div className="text-center">
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">
+                Subscribe to Access Reports
+              </h3>
+              <div className="flex justify-center gap-4">
+                <button
+                  onClick={() => handleSubscription('monthly')}
+                  className="px-6 py-2 bg-main3 dark:bg-main2 text-white rounded-lg hover:opacity-90 transition-opacity"
+                >
+                  Access Plan - $5/Term
+                </button>
+              </div>
+            </div>
+          </div>
+
       <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">Academic Reports</h2>
       
       {reports.length === 0 ? (

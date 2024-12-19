@@ -2,71 +2,69 @@
 @tailwind components;
 @tailwind utilities;
 
-
 body {
-    font-family: 'sans','Inter', sans-serif; /* Assuming 'Inter' is imported */
-    color: #333; /* Example text color */
-  }
-  
-  html {
-    scroll-behavior: smooth;
-  }
+  font-family: "sans", "Inter", sans-serif; /* Assuming 'Inter' is imported */
+  color: #333; /* Example text color */
+}
 
-  .bg-main {
-    background-color: #85b6fb
-  }
-  .bg-main1{
-    background-color: #f0f2f636;
-  }
-  .bg-main2{
-    background-color: #85b6fb36;
-  }
-  .bg-main3 {
-    background-color: #85b6fb
-  }
-  .bg-admin-footer {
-    background-color: #f3f4f6;
-  }
+html {
+  scroll-behavior: smooth;
+}
 
-  .no-hover-overlay {
-    pointer-events: none;
-  }
-  
-  .map-container {
-    height: 50vh;
-    width: 100%;
-  }
-  
-  
-  .three-dots {
-    display: flex;
-    flex-direction: row; /* Change from column to row */
-    justify-content: space-between;
-    width: 14px; /* Adjust the width to accommodate the horizontal layout */
-    height: 4px; /* Adjust the height */
-  }
-  
-  .three-dots::before,
-  .three-dots::after,
-  .three-dots div {
-    content: '';
-    display: block;
-    width: 4px;
-    height: 4px;
-    background-color: gray;
-    border-radius: 50%;
-  }
-  
-  .custom-quill {
-    font-size: 1.5rem; /* Adjust the size as needed */
+.bg-main {
+  background: linear-gradient(to right, rgb(147, 197, 253), rgb(45, 212, 191));
+}
+.bg-main1 {
+  background-color: #f0f2f636;
+}
+.bg-main2 {
+  background-color: #85b6fb36;
+}
+.bg-main3 {
+  background-color: #85b6fb;
+}
+.bg-admin-footer {
+  background-color: #f3f4f6;
+}
+
+.no-hover-overlay {
+  pointer-events: none;
+}
+
+.map-container {
+  height: 50vh;
+  width: 100%;
+}
+
+.three-dots {
+  display: flex;
+  flex-direction: row; /* Change from column to row */
+  justify-content: space-between;
+  width: 14px; /* Adjust the width to accommodate the horizontal layout */
+  height: 4px; /* Adjust the height */
+}
+
+.three-dots::before,
+.three-dots::after,
+.three-dots div {
+  content: "";
+  display: block;
+  width: 4px;
+  height: 4px;
+  background-color: gray;
+  border-radius: 50%;
+}
+
+.custom-quill {
+  font-size: 1.5rem; /* Adjust the size as needed */
 }
 
 .sun-editor {
-  border: none !important
+  border: none !important;
 }
 
 .login-background {
-  background-image: url('https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8761.jpg?alt=media&token=61d6ab1f-f3e5-4e58-be6b-57501e257f94');
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents%2FDSC_8761.jpg?alt=media&token=61d6ab1f-f3e5-4e58-be6b-57501e257f94");
   background-size: cover;
   background-position: center;
 }

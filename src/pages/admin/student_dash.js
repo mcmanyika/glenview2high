@@ -14,6 +14,10 @@ import StudentAttendanceHistory from '../../app/components/attendance/StudentAtt
 import QuickStats from '../../app/components/student/stats/QuickStats';
 import AcademicProgress from '../../app/components/student/stats/AcademicProgress';
 import Deadlines from '../../app/components/student/stats/Deadlines';
+import { loadStripe } from '@stripe/stripe-js';
+import axios from 'axios';
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 const StudentDash = () => {
   const { data: session, status } = useSession();
@@ -63,6 +67,30 @@ const StudentDash = () => {
     }
   };
 
+  const handleSubscription = async (planType) => {
+    try {
+      const stripe = await stripePromise;
+      
+      // Create checkout session
+      const response = await axios.post('/api/create-checkout-session', {
+        studentId: studentId,
+        studentEmail: session.user.email,
+        planType: planType
+      });
+
+      // Redirect to Stripe checkout
+      const result = await stripe.redirectToCheckout({
+        sessionId: response.data.sessionId,
+      });
+
+      if (result.error) {
+        console.error(result.error);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen bg-gray-50 dark:bg-slate-950">
@@ -74,27 +102,28 @@ const StudentDash = () => {
   return (
     <AdminLayout>
       <div className='min-h-screen space-y-6 pt-6 dark:bg-slate-950 transition-colors duration-200'>
+        
+        
         <div className="bg-white dark:bg-slate-900 rounded-xl shadow-md p-6 border border-gray-100 dark:border-slate-800">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between">
             <div className="flex items-center space-x-4">
               <div className="p-3 bg-main3/10 dark:bg-main2/10 rounded-full">
                 <FaUser className="text-2xl text-main3 dark:text-main2" />
               </div>
-              <div>
-                <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-                  Hi, {studentData?.firstName} {studentData?.lastName}
-                </h2>
-                <p className="text-gray-500 dark:text-gray-400">
-                  Student ID: {studentData?.userID} <br />
-                  Class: {studentData?.class}  
-                </p>
-              </div>
+                <div className='flex flex-col'>
+                  <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+                    Hi, {studentData?.firstName} {studentData?.lastName}
+                  </h2>
+                  <p className="text-gray-500 dark:text-gray-400">
+                    Student ID: {studentData?.userID} <br />
+                    Class: {studentData?.class}  
+                  </p>
+                </div>
             </div>
           </div>
         </div>
 
-        {/* <QuickStats /> */}
-
+       
 
         <div className="grid md:grid-cols-2 gap-6">
           <div className="bg-white dark:bg-slate-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-slate-800">

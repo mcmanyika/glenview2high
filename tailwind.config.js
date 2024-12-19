@@ -15,7 +15,7 @@ module.exports = {
         'spacing': 'margin, padding',
       },
       fontFamily: {
-        sans: ['Inter', 'Roboto', 'Montserrat', 'sans-serif'],
+        sans: ['Inter' ,'sans-serif', 'Roboto', 'Montserrat'],
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

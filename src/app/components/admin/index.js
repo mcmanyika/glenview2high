@@ -119,7 +119,7 @@ const AdminDashboard = () => {
             {/* Sliding Panel */}
             <motion.div
               initial={{ x: "100%" }}
-              animate={{ x: "15%" }}
+              animate={{ x: "2%" }}
               exit={{ x: "100%" }}
               transition={{ type: "tween", duration: 0.3 }}
               className="fixed top-0 right-0 w-[80%] h-full bg-white dark:bg-gray-800 shadow-lg z-50 overflow-y-auto"

@@ -6,7 +6,6 @@ const StudentManagementDashboard = () => {
     <div className="min-h-screen bg-white p-6">
       {/* Quick Actions */}
       <section className="bg-white p-6">
-        <h3 className="text-xl font-bold text-gray-700 mb-4">⚡ Quick Actions</h3>
         <div className="flex flex-wrap gap-4 mb-6">
           <button 
             onClick={() => window.location.href = '/admin/admission'}

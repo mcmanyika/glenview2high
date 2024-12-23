@@ -106,7 +106,7 @@ const Accounts = () => {
   }, [modalOpen]);
 
   return (
-    <div className="p-4 bg-white shadow-md rounded-md">
+    <div className="w-full  p-4 bg-white shadow-md rounded-md">
       {/* Search Bar */}
       <div className="mb-4">
         <input
@@ -119,18 +119,30 @@ const Accounts = () => {
       </div>
 
       {/* Grid of Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2  gap-6">
         {currentAdmissions.map((admission) => (
           <div
             key={admission.id}
-            className="bg-gray-50 p-4 rounded-md shadow-md hover:bg-gray-100 cursor-pointer"
+            className="bg-gray-50 p-4 rounded-md shadow-md hover:bg-gray-100 cursor-pointer overflow-hidden"
             onClick={() => openModal(admission)}
           >
-            <p className="text-lg font-bold mb-2 capitalize">{admission.firstName} {admission.lastName}</p>
-            <p className="text-sm mb-1"><span className="font-semibold">Email:</span> {admission.email}</p>
-            { admission.class && (<p className="text-sm mb-1"><span className="font-semibold">Class:</span> {admission.class}</p>) }
-            <p className="text-sm mb-1"><span className="font-semibold">Phone:</span> {admission.phone}</p>
-            <p className="text-sm mb-1"><span className="font-semibold">Status:</span> {admission.status}</p>
+            <p className="text-lg font-bold mb-2 capitalize truncate">
+              {admission.firstName} {admission.lastName}
+            </p>
+            <p className="text-sm mb-1 truncate">
+              <span className="font-semibold">Email:</span> {admission.email}
+            </p>
+            {admission.class && (
+              <p className="text-sm mb-1 truncate">
+                <span className="font-semibold">Class:</span> {admission.class}
+              </p>
+            )}
+            <p className="text-sm mb-1 truncate">
+              <span className="font-semibold">Phone:</span> {admission.phone}
+            </p>
+            <p className="text-sm mb-1 truncate">
+              <span className="font-semibold">Status:</span> {admission.status}
+            </p>
           </div>
         ))}
       </div>

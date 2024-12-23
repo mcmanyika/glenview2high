@@ -140,7 +140,7 @@ const FeeManagementDashboard = () => {
   }
 
   return (
-    <div className="p-8 bg-white">
+    <div className="w-full  p-8 bg-white">
 
       <SearchBar 
         value={search}

@@ -119,7 +119,7 @@ const PaymentsChart = () => {
           </PieChart>
         </ResponsiveContainer>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-          <p className="text-sm font-medium text-gray-600">Total</p>
+          <p className="text-sm font-medium text-gray-600">Total Revenue</p>
           <p className="text-xl font-bold">
             $
             {startCounter ? (

@@ -102,7 +102,7 @@ const StaffManagementDashboard = () => {
   }
 
   return (
-    <div className="p-6 bg-white shadow-md rounded-lg">
+    <div className="w-full  p-6 bg-white shadow-md rounded-lg">
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div className="p-4 bg-green-100 rounded-lg text-center shadow-sm">
@@ -124,7 +124,7 @@ const StaffManagementDashboard = () => {
       </div>
 
       {/* Search Bar */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="w-full flex items-center justify-between mb-4">
         <input
           type="text"
           placeholder="Search staff by name or email..."

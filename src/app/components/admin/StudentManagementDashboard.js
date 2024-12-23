@@ -3,7 +3,7 @@ import Accounts from "../student/Accounts";
 
 const StudentManagementDashboard = () => {
   return (
-    <div className="min-h-screen bg-white p-6">
+    <div className="w-full min-h-screen bg-white p-2">
       {/* Quick Actions */}
       <section className="bg-white p-6">
         <div className="flex flex-wrap gap-4 mb-6">

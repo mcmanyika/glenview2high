@@ -12,10 +12,10 @@ const features = [
     title: "Student Management",
     icon: "🎓",
   },
-  {
-    title: "Analytics & Reporting",
-    icon: "📊",
-  },
+  // {
+  //   title: "Analytics & Reporting",
+  //   icon: "📊",
+  // },
   {
     title: "Staff Management",
     icon: "🧑🏿‍🏫",
@@ -46,7 +46,7 @@ const AdminDashboard = () => {
       </div>
     ),
     "Analytics & Reporting": (
-      <div className="flex items-center">
+      <div className="flex items-center w-full">
         <AnalyticsAndReportingDashboard />
       </div>
     ),
@@ -85,11 +85,11 @@ const AdminDashboard = () => {
   return (
     <div className="bg-gray-100 overflow-hidden min-h-screen relative">
       <main className="container mx-auto p-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
           {features.map((feature, index) => (
             <div
               key={index}
-              className="relative text-slate-900 text-center overflow-hidden hover:scale-105 transform transition-all duration-300 cursor-pointer"
+              className="relative text-slate-900 text-center shadow-sm rounded-md bg-white overflow-hidden hover:scale-105 transform transition-all duration-300 cursor-pointer"
               onClick={() => handleFeatureClick(feature.title)}
             >
               <div className="p-6 flex flex-col justify-between">
@@ -119,10 +119,10 @@ const AdminDashboard = () => {
             {/* Sliding Panel */}
             <motion.div
               initial={{ x: "100%" }}
-              animate={{ x: "2%" }}
+              animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "tween", duration: 0.3 }}
-              className="fixed top-0 right-0 w-[80%] h-full bg-white dark:bg-gray-800 shadow-lg z-50 overflow-y-auto"
+              className="fixed top-0 right-0 w-full lg:w-[50%] h-full bg-white dark:bg-gray-800 shadow-lg z-50 overflow-y-auto"
             >
               {/* Modal Header */}
               <div className="sticky top-0 bg-white dark:bg-gray-800 border-b dark:border-gray-700 p-4 flex justify-between items-center">
@@ -155,7 +155,7 @@ const AdminDashboard = () => {
               </div>
 
               {/* Modal Content */}
-              <div className="w-full h-full">
+              <div className="w-full h-full p-6">
                 {activeFeature && featureComponents[activeFeature]}
               </div>
             </motion.div>

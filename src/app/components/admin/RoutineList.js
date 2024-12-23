@@ -79,58 +79,58 @@ const RoutineList = () => {
         <p className="dark:text-white">No class routines available.</p>
       ) : (
         <>
-          <table className="min-w-full text-sm text-black dark:text-white text-left">
-            <thead>
-              <tr>
-                <th className="py-2 px-4 border-b dark:border-gray-700 cursor-pointer" onClick={() => handleSort('date')}>
-                  Date {sortField === 'date' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}
-                </th>
-                <th className="py-2 px-4 border-b dark:border-gray-700 cursor-pointer" onClick={() => handleSort('time')}>
-                  Time {sortField === 'time' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}
-                </th>
-                <th className="py-2 px-4 border-b dark:border-gray-700 cursor-pointer" onClick={() => handleSort('teacher')}>
-                  Teacher {sortField === 'teacher' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}
-                </th>
-                <th className="py-2 px-4 border-b dark:border-gray-700 cursor-pointer" onClick={() => handleSort('subject')}>
-                  Subject {sortField === 'subject' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}
-                </th>
-                <th className="py-2 px-4 border-b dark:border-gray-700 cursor-pointer" onClick={() => handleSort('studentclass')}>
-                  Class {sortField === 'studentclass' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}
-                </th>
-                <th className="py-2 px-4 border-b dark:border-gray-700 cursor-pointer" onClick={() => handleSort('room')}>
-                  Room {sortField === 'room' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}
-                </th>
-                <th className="py-2 px-4 border-b">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentRoutines.map((routine) => (
-                <tr key={routine.id}>
-                  <td className="py-2 px-4 border-b dark:border-gray-700">{formatDate(routine.date)}</td>
-                  <td className="py-2 px-4 border-b dark:border-gray-700">{routine.time}</td>
-                  <td className="py-2 px-4 border-b dark:border-gray-700 capitalize">{routine.teacher}</td>
-                  <td className="py-2 px-4 border-b dark:border-gray-700">{routine.subject}</td>
-                  <td className="py-2 px-4 border-b dark:border-gray-700">{routine.studentclass}</td>
-                  <td className="py-2 px-4 border-b dark:border-gray-700">{routine.room}</td>
-                  <td className="py-2 px-4 border-b">
-                    <button 
-                      className="text-red-500 hover:underline" 
-                      onClick={() => handleDelete(routine.id)}
-                    >
-                      <FaTrashAlt className="w-5 h-5" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {/* Header */}
+          <div className="grid grid-cols-[1fr_1.5fr_1.3fr_1fr_0.3fr] gap-4 mb-4 font-semibold text-sm text-black dark:text-white">
+            <div className="cursor-pointer" onClick={() => handleSort('date')}>
+              Date & Time {sortField === 'date' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}
+            </div>
+            <div className="cursor-pointer" onClick={() => handleSort('teacher')}>
+              Teacher {sortField === 'teacher' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}
+            </div>
+            <div className="cursor-pointer" onClick={() => handleSort('subject')}>
+              Subject {sortField === 'subject' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}
+            </div>
+            <div className="cursor-pointer" onClick={() => handleSort('studentclass')}>
+              Class {sortField === 'studentclass' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}
+            </div>
+          </div>
+
+          {/* Routine Items */}
+          <div className="space-y-2">
+            {currentRoutines.map((routine) => (
+              <div 
+                key={routine.id} 
+                className="grid grid-cols-[1fr_1.5fr_1.3fr_1fr_0.3fr] gap-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              >
+                <div className="text-sm dark:text-white">
+                  <div className="font-medium">{formatDate(routine.date)}</div>
+                  <div className="text-gray-500 dark:text-gray-400 text-xs mt-1">{routine.time}</div>
+                </div>
+                <div className="text-sm dark:text-white capitalize">{routine.teacher}</div>
+                <div className="text-sm dark:text-white">{routine.subject}</div>
+                <div className="text-sm dark:text-white">{routine.studentclass}</div>
+                <div className="flex justify-center">
+                  <button 
+                    className="text-red-500 hover:text-red-700 transition-colors" 
+                    onClick={() => handleDelete(routine.id)}
+                  >
+                    <FaTrashAlt className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
 
           {/* Pagination Controls */}
-          <div className="mt-4 flex justify-end space-x-2">
+          <div className="mt-6 flex justify-end space-x-2">
             {Array.from({ length: totalPages }, (_, i) => (
               <button
                 key={i + 1}
-                className={`px-3 py-1 rounded ${currentPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
+                className={`px-3 py-1 rounded transition-colors ${
+                  currentPage === i + 1 
+                    ? 'bg-blue-500 text-white' 
+                    : 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600'
+                }`}
                 onClick={() => handlePageChange(i + 1)}
               >
                 {i + 1}

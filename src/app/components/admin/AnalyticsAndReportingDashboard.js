@@ -26,7 +26,7 @@ const AnalyticsAndReportingDashboard = () => {
       </div>
 
       {/* Chart Placeholder */}
-      <div className="bg-gray-100 p-6 rounded-lg text-center shadow-md">
+      <div className="w-full bg-gray-100 p-6 rounded-lg text-center shadow-md">
         <h3 className="text-xl font-semibold mb-4">Performance Chart</h3>
         <div className="h-48 flex items-center justify-center text-gray-500">
           [Chart Placeholder]

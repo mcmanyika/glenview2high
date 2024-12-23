@@ -6,7 +6,8 @@ import AnalyticsAndReportingDashboard from "./AnalyticsAndReportingDashboard";
 import ScheduleManagementDashboard from "./ScheduleManagementDashboard";
 import NotificationsDashboard from "./NotificationsDashboard";
 import { motion, AnimatePresence } from "framer-motion";
-
+import GenderDonutChart from "../student/stats/GenderDonutChart";
+import PaymentsChart from "../student/stats/Payments";
 const features = [
   {
     title: "Student Management",
@@ -100,6 +101,14 @@ const AdminDashboard = () => {
               </div>
             </div>
           ))}
+        </div>
+        <div className="flex  mt-10 justify-center items-center gap-6">
+          <div className="w-full lg:w-1/2">
+            <PaymentsChart />
+          </div>
+          <div className="w-full lg:w-1/2">
+            <GenderDonutChart />
+          </div>
         </div>
       </main>
 

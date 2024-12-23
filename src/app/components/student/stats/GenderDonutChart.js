@@ -5,7 +5,7 @@ import { database } from '../../../../../utils/firebaseConfig';
 import { ref, onValue } from 'firebase/database';
 import CountUp from 'react-countup';
 
-const COLORS = ["#4CAF50", "#2196F3"]; // Green, Blue
+const COLORS = ["#2196F3", "#64B5F6", "#90CAF9", "#BBDEFB"]; // Different shades of blue from darker to lighter
 
 const GenderDonutChart = () => {
   const [genderData, setGenderData] = useState([]);

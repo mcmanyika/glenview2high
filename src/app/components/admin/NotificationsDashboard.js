@@ -9,8 +9,6 @@ const NotificationsDashboard = () => {
 
   return (
     <div className="p-6 bg-white shadow-md rounded-lg">
-      <h1 className="text-3xl font-bold mb-6 text-blue-600">Notifications</h1>
-
       {/* Notification List */}
       <div className="space-y-4">
         {notifications.map((notification) => (

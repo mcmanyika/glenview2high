@@ -101,8 +101,8 @@ const ClassRoutineForm = () => {
   };
 
   return (
-    <div className="p-6  rounded shadow">
-      <h2 className="text-xl font-semibold">Add Class Routine</h2>
+    <div className="rounded shadow">
+      <h2 className="text-xl p-4 font-semibold">Add Class Routine</h2>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 text-sm">
           {/* Date field */}

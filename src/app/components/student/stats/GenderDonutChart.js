@@ -103,7 +103,7 @@ const GenderDonutChart = () => {
           </PieChart>
         </ResponsiveContainer>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-          <p className="text-sm font-medium text-gray-600">Total Students</p>
+          <p className="text-sm font-medium text-gray-600">Total Accounts</p>
           <p className="text-xl font-bold">{total}</p>
         </div>
       </div>

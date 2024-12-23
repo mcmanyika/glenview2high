@@ -3,12 +3,14 @@ import React, { useState, useEffect } from "react";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import { database } from '../../../../../utils/firebaseConfig';
 import { ref, onValue } from 'firebase/database';
+import CountUp from 'react-countup';
 
 const COLORS = ["#4CAF50", "#2196F3"]; // Green, Blue
 
 const GenderDonutChart = () => {
   const [genderData, setGenderData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [startCounter, setStartCounter] = useState(false);
 
   useEffect(() => {
     const userTypesRef = ref(database, 'userTypes');
@@ -16,7 +18,6 @@ const GenderDonutChart = () => {
     onValue(userTypesRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        // Count males and females
         let maleCount = 0;
         let femaleCount = 0;
 
@@ -32,8 +33,9 @@ const GenderDonutChart = () => {
           { name: "Male", value: maleCount },
           { name: "Female", value: femaleCount }
         ]);
+        setLoading(false);
+        setTimeout(() => setStartCounter(true), 500);
       }
-      setLoading(false);
     });
   }, []);
 
@@ -104,7 +106,29 @@ const GenderDonutChart = () => {
         </ResponsiveContainer>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
           <p className="text-sm font-medium text-gray-600">Total Accounts</p>
-          <p className="text-xl font-bold">{total}</p>
+          <p className="text-xl font-bold">
+            {startCounter ? (
+              <CountUp
+                start={0}
+                end={total}
+                duration={4}
+                separator=","
+                useEasing={true}
+                decimals={0}
+                decimal=","
+                delay={0}
+                enableScrollSpy={false}
+                scrollSpyDelay={0}
+                scrollSpyOnce={true}
+                useGrouping={true}
+                easingFn={(t, b, c, d) => {
+                  // Custom easing function for smoother animation
+                  // t: current time, b: beginning value, c: change in value, d: duration
+                  return c * (-Math.pow(2, -10 * t/d) + 1) * 1024 / 1023 + b;
+                }}
+              />
+            ) : '0'}
+          </p>
         </div>
       </div>
       <Legend />

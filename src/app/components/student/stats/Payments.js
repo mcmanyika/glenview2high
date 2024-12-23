@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import { database } from '../../../../../utils/firebaseConfig';
 import { ref, onValue } from 'firebase/database';
+import CountUp from 'react-countup';
 
 const COLORS = ["#4CAF50", "#2196F3", "#FF9800", "#9C27B0"]; // Green, Blue, Orange, Purple
 
 const PaymentsChart = () => {
   const [paymentsData, setPaymentsData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [startCounter, setStartCounter] = useState(false);
 
   useEffect(() => {
     const paymentsRef = ref(database, 'payments');
@@ -15,7 +17,6 @@ const PaymentsChart = () => {
     onValue(paymentsRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        // Process all payments
         let totalPaid = 0;
         let totalPending = 0;
         let totalPartial = 0;
@@ -42,12 +43,13 @@ const PaymentsChart = () => {
         });
 
         setPaymentsData([
-          { name: "Paid", value: totalPaid },
-          { name: "Pending", value: totalPending },
-          { name: "Partial", value: totalPartial }
+          { name: "Paid", value: Math.round(totalPaid) },
+          { name: "Pending", value: Math.round(totalPending) },
+          { name: "Partial", value: Math.round(totalPartial) }
         ]);
+        setLoading(false);
+        setTimeout(() => setStartCounter(true), 500);
       }
-      setLoading(false);
     });
   }, []);
 
@@ -118,7 +120,27 @@ const PaymentsChart = () => {
         </ResponsiveContainer>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
           <p className="text-sm font-medium text-gray-600">Total</p>
-          <p className="text-xl font-bold">${total.toFixed(2)}</p>
+          <p className="text-xl font-bold">
+            $
+            {startCounter ? (
+              <CountUp
+                start={0}
+                end={total}
+                duration={4}
+                separator=","
+                decimals={0}
+                useEasing={true}
+                delay={0}
+                enableScrollSpy={false}
+                scrollSpyDelay={0}
+                scrollSpyOnce={true}
+                useGrouping={true}
+                easingFn={(t, b, c, d) => {
+                  return c * (-Math.pow(2, -10 * t/d) + 1) * 1024 / 1023 + b;
+                }}
+              />
+            ) : '0'}
+          </p>
         </div>
       </div>
       <Legend />

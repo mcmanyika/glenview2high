@@ -1,0 +1,19 @@
+{
+  "rules": {
+    "globalFees": {
+      ".read": "auth != null",
+      ".write": "auth != null && root.child('userTypes').child(auth.uid).child('userType').val() === 'admin'"
+    },
+    "studentFees": {
+      ".read": "auth != null",
+      ".write": "auth != null && root.child('userTypes').child(auth.uid).child('userType').val() === 'admin'",
+      "$userId": {
+        ".read": "auth != null && (root.child('userTypes').child(auth.uid).child('userType').val() === 'admin' || auth.uid === $userId)"
+      }
+    },
+    "userTypes": {
+      ".read": "auth != null",
+      ".write": "auth != null && root.child('userTypes').child(auth.uid).child('userType').val() === 'admin'"
+    }
+  }
+} 

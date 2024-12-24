@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { database } from '../../../../utils/firebaseConfig';
 import { ref, onValue, update, push } from 'firebase/database';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PaymentHistoryTable from './FeeManagement/components/PaymentHistoryTable';
 import PaymentEditModal from './FeeManagement/components/PaymentEditModal';
@@ -95,13 +95,12 @@ const FeeManagementDashboard = () => {
     setIsPaymentEditModalOpen(true);
   };
 
-  const handlePaymentUpdate = async (e) => {
-    e.preventDefault();
+  const handlePaymentUpdate = async (updatedPayment) => {
     try {
       const paymentRef = ref(database, `payments/${selectedStudent.id}/${selectedPayment.id}`);
       await update(paymentRef, {
-        ...selectedPayment,
-        updatedAt: new Date().toISOString()
+        ...updatedPayment,
+        updatedAt: Date.now()
       });
       setIsPaymentEditModalOpen(false);
       toast.success('Payment updated successfully!');
@@ -114,14 +113,21 @@ const FeeManagementDashboard = () => {
   const handleAddPayment = async (newPayment) => {
     try {
       const paymentRef = ref(database, `payments/${selectedStudent.id}`);
-      await push(paymentRef, {
-        ...newPayment,
-        status: paymentStatus.PAID,
-        timestamp: new Date().toISOString(),
-        studentId: selectedStudent.id,
-        studentName: selectedStudent.name
-      });
+      
+      // Update student's remaining fees
+      const studentFeesRef = ref(database, `studentFees/${selectedStudent.id}`);
+      const updates = {
+        [`payments/${selectedStudent.id}/${push(paymentRef).key}`]: {
+          ...newPayment,
+          status: paymentStatus.PAID,
+          timestamp: Date.now(),
+          studentId: selectedStudent.id,
+          studentName: selectedStudent.name
+        },
+        [`studentFees/${selectedStudent.id}/remainingAmount`]: newPayment.remainingAfterPayment
+      };
 
+      await update(ref(database), updates);
       setIsAddPaymentModalOpen(false);
       toast.success('Payment added successfully!');
     } catch (error) {
@@ -140,8 +146,7 @@ const FeeManagementDashboard = () => {
   }
 
   return (
-    <div className="w-full  p-8 bg-white">
-
+    <div className="w-full p-8 bg-white">
       <SearchBar 
         value={search}
         onChange={(e) => setSearch(e.target.value)}
@@ -153,45 +158,43 @@ const FeeManagementDashboard = () => {
         onStudentClick={handleStudentClick}
       />
 
-      {isModalOpen && (
+      {isModalOpen && selectedStudent && (
         <StudentPaymentModal
           student={selectedStudent}
           payments={payments}
-          onClose={() => setIsModalOpen(false)}
+          onClose={() => {
+            setIsModalOpen(false);
+            setSelectedStudent(null);
+          }}
           onAddPayment={() => setIsAddPaymentModalOpen(true)}
           onPaymentClick={handlePaymentClick}
           paymentStatus={paymentStatus}
         />
       )}
 
-      <PaymentEditModal
-        isOpen={isPaymentEditModalOpen}
-        onClose={() => setIsPaymentEditModalOpen(false)}
-        payment={selectedPayment}
-        onUpdate={handlePaymentUpdate}
-        onChange={setSelectedPayment}
-        paymentStatus={paymentStatus}
-      />
+      {isPaymentEditModalOpen && selectedPayment && (
+        <PaymentEditModal
+          isOpen={isPaymentEditModalOpen}
+          onClose={() => {
+            setIsPaymentEditModalOpen(false);
+            setSelectedPayment(null);
+          }}
+          payment={selectedPayment}
+          onUpdate={handlePaymentUpdate}
+          onChange={setSelectedPayment}
+          paymentStatus={paymentStatus}
+        />
+      )}
 
-      <AddPaymentModal
-        isOpen={isAddPaymentModalOpen}
-        onClose={() => setIsAddPaymentModalOpen(false)}
-        onSubmit={handleAddPayment}
-        studentName={selectedStudent?.name}
-      />
-
-      <ToastContainer
-        position="bottom-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
+      {isAddPaymentModalOpen && selectedStudent && (
+        <AddPaymentModal
+          isOpen={isAddPaymentModalOpen}
+          onClose={() => setIsAddPaymentModalOpen(false)}
+          onSubmit={handleAddPayment}
+          studentId={selectedStudent.id}
+          studentName={selectedStudent.name}
+        />
+      )}
     </div>
   );
 };

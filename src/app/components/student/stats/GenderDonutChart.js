@@ -78,7 +78,7 @@ const GenderDonutChart = () => {
   );
 
   return (
-    <div className="flex flex-col items-center justify-center p-6 bg-white rounded-lg shadow-md">
+    <div className="flex flex-col items-center justify-center  min-h-[440px] p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-lg font-bold mb-4">Gender Distribution</h2>
       <div className="w-full h-64 relative">
         <ResponsiveContainer>

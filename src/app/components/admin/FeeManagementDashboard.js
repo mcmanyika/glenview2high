@@ -31,10 +31,10 @@ const FeeManagementDashboard = () => {
 
   // Fetch students and payments data
   useEffect(() => {
-    const paymentsRef = ref(database, 'payments');
     const studentsRef = ref(database, 'userTypes');
+    const studentFeesRef = ref(database, 'studentFees');
 
-    const paymentsUnsubscribe = onValue(paymentsRef, (snapshot) => {
+    const studentFeesUnsubscribe = onValue(studentFeesRef, (snapshot) => {
       const data = snapshot.val();
       setAllPayments(data || {});
     });
@@ -50,7 +50,7 @@ const FeeManagementDashboard = () => {
             class: user.class || 'Not Assigned',
             email: user.email,
             userID: user.userID || 'N/A',
-            status: user.feeStatus || paymentStatus.PENDING
+            status: paymentStatus.PAID
           }));
         setStudents(studentsArray);
       }
@@ -58,7 +58,7 @@ const FeeManagementDashboard = () => {
     });
 
     return () => {
-      paymentsUnsubscribe();
+      studentFeesUnsubscribe();
       studentsUnsubscribe();
     };
   }, []);
@@ -66,16 +66,28 @@ const FeeManagementDashboard = () => {
   // Fetch selected student's payments
   useEffect(() => {
     if (selectedStudent) {
-      const paymentsRef = ref(database, `payments/${selectedStudent.id}`);
-      const unsubscribe = onValue(paymentsRef, (snapshot) => {
+      const studentFeesRef = ref(database, `studentFees/${selectedStudent.id}`);
+      const unsubscribe = onValue(studentFeesRef, (snapshot) => {
         const data = snapshot.val();
         if (data) {
-          const paymentsArray = Object.entries(data).map(([id, payment]) => ({
-            id,
-            ...payment,
-            date: new Date(payment.date).toLocaleDateString()
-          }));
-          setPayments(paymentsArray.sort((a, b) => new Date(b.date) - new Date(a.date)));
+          const feesArray = Object.entries(data).map(([feeId, fee]) => {
+            const payments = fee.payments || {};
+            const paymentsList = Object.entries(payments).map(([paymentId, payment]) => ({
+              id: paymentId,
+              feeId,
+              ...payment,
+              date: new Date(payment.date).toLocaleDateString()
+            }));
+            return {
+              id: feeId,
+              ...fee,
+              payments: paymentsList
+            };
+          });
+          
+          // Flatten all payments for the payment history
+          const allPayments = feesArray.flatMap(fee => fee.payments);
+          setPayments(allPayments.sort((a, b) => new Date(b.date) - new Date(a.date)));
         } else {
           setPayments([]);
         }
@@ -97,7 +109,8 @@ const FeeManagementDashboard = () => {
 
   const handlePaymentUpdate = async (updatedPayment) => {
     try {
-      const paymentRef = ref(database, `payments/${selectedStudent.id}/${selectedPayment.id}`);
+      const { feeId, id: paymentId } = selectedPayment;
+      const paymentRef = ref(database, `studentFees/${selectedStudent.id}/${feeId}/payments/${paymentId}`);
       await update(paymentRef, {
         ...updatedPayment,
         updatedAt: Date.now()
@@ -110,30 +123,8 @@ const FeeManagementDashboard = () => {
     }
   };
 
-  const handleAddPayment = async (newPayment) => {
-    try {
-      const paymentRef = ref(database, `payments/${selectedStudent.id}`);
-      
-      // Update student's remaining fees
-      const studentFeesRef = ref(database, `studentFees/${selectedStudent.id}`);
-      const updates = {
-        [`payments/${selectedStudent.id}/${push(paymentRef).key}`]: {
-          ...newPayment,
-          status: paymentStatus.PAID,
-          timestamp: Date.now(),
-          studentId: selectedStudent.id,
-          studentName: selectedStudent.name
-        },
-        [`studentFees/${selectedStudent.id}/remainingAmount`]: newPayment.remainingAfterPayment
-      };
-
-      await update(ref(database), updates);
-      setIsAddPaymentModalOpen(false);
-      toast.success('Payment added successfully!');
-    } catch (error) {
-      console.error("Error adding payment:", error);
-      toast.error('Error adding payment');
-    }
+  const handleAddPayment = () => {
+    setIsAddPaymentModalOpen(true);
   };
 
   const filteredStudents = students.filter(student =>
@@ -190,7 +181,6 @@ const FeeManagementDashboard = () => {
         <AddPaymentModal
           isOpen={isAddPaymentModalOpen}
           onClose={() => setIsAddPaymentModalOpen(false)}
-          onSubmit={handleAddPayment}
           studentId={selectedStudent.id}
           studentName={selectedStudent.name}
         />

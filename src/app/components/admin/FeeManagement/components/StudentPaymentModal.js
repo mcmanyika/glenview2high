@@ -1,23 +1,76 @@
 import React from 'react';
 import PaymentHistoryTable from './PaymentHistoryTable';
+import { database } from '../../../../../../utils/firebaseConfig';
+import { ref, get, onValue } from 'firebase/database';
+import { useEffect, useState } from 'react';
 
 const StudentPaymentModal = ({ 
   student, 
-  payments, 
   onClose, 
   onAddPayment, 
   onPaymentClick,
   paymentStatus 
 }) => {
-  const paymentSummary = {
-    total: payments.reduce((sum, payment) => sum + parseFloat(payment.amount || 0), 0),
-    paid: payments.filter(p => p.status === paymentStatus.PAID)
-      .reduce((sum, payment) => sum + parseFloat(payment.amount || 0), 0),
-    pending: payments.filter(p => p.status === paymentStatus.PENDING)
-      .reduce((sum, payment) => sum + parseFloat(payment.amount || 0), 0),
-    partial: payments.filter(p => p.status === paymentStatus.PARTIAL)
-      .reduce((sum, payment) => sum + parseFloat(payment.amount || 0), 0)
-  };
+  const [studentFees, setStudentFees] = useState([]);
+  const [paymentHistory, setPaymentHistory] = useState([]);
+
+  useEffect(() => {
+    const fetchFees = async () => {
+      try {
+        const feesSnapshot = await get(ref(database, `studentFees/${student.id}`));
+        if (feesSnapshot.exists()) {
+          const feesData = feesSnapshot.val();
+          const feesArray = Object.entries(feesData).map(([id, fee]) => ({
+            id,
+            ...fee
+          }));
+          setStudentFees(feesArray);
+        }
+      } catch (error) {
+        console.error('Error fetching fees:', error);
+      }
+    };
+
+    fetchFees();
+  }, [student.id]);
+
+  useEffect(() => {
+    if (student) {
+      const studentFeesRef = ref(database, `studentFees/${student.id}`);
+      const unsubscribe = onValue(studentFeesRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          const feesArray = Object.entries(data).map(([feeId, fee]) => {
+            const payments = fee.payments || {};
+            const paymentsList = Object.entries(payments).map(([paymentId, payment]) => ({
+              id: paymentId,
+              ...payment,
+              feeDescription: fee.description,
+              date: new Date(payment.date).toLocaleDateString()
+            }));
+            return paymentsList;
+          });
+          const allPayments = feesArray.flat();
+          setPaymentHistory(allPayments.sort((a, b) => new Date(b.date) - new Date(a.date)));
+        } else {
+          setPaymentHistory([]);
+        }
+      });
+
+      return () => unsubscribe();
+    }
+  }, [student]);
+
+  // Calculate summary using studentFees data
+  const paymentSummary = studentFees.reduce((summary, fee) => ({
+    total: summary.total + (fee.totalAmount || 0),
+    paid: summary.paid + (fee.totalAmount - (fee.remainingAmount || 0)),
+    remaining: summary.remaining + (fee.remainingAmount || 0)
+  }), {
+    total: 0,
+    paid: 0,
+    remaining: 0
+  });
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4 z-50">
@@ -47,22 +100,24 @@ const StudentPaymentModal = ({
             </button>
           </div>
 
-          <div className="grid grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-3 gap-4 mb-6">
             <div className="bg-blue-50 p-4 rounded-lg">
-              <p className="text-sm text-blue-600 font-medium">Total Amount</p>
-              <p className="text-2xl font-bold text-blue-700">${paymentSummary.total.toFixed(2)}</p>
+              <p className="text-sm text-blue-600 font-medium">Total Fees</p>
+              <p className="text-2xl font-bold text-blue-700">
+                ${paymentSummary.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </p>
             </div>
             <div className="bg-green-50 p-4 rounded-lg">
-              <p className="text-sm text-green-600 font-medium">Paid Amount</p>
-              <p className="text-2xl font-bold text-green-700">${paymentSummary.paid.toFixed(2)}</p>
+              <p className="text-sm text-green-600 font-medium">Total Paid</p>
+              <p className="text-2xl font-bold text-green-700">
+                ${paymentSummary.paid.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </p>
             </div>
-            <div className="bg-yellow-50 p-4 rounded-lg">
-              <p className="text-sm text-yellow-600 font-medium">Partial Amount</p>
-              <p className="text-2xl font-bold text-yellow-700">${paymentSummary.partial.toFixed(2)}</p>
-            </div>
-            <div className="bg-red-50 p-4 rounded-lg">
-              <p className="text-sm text-red-600 font-medium">Pending Amount</p>
-              <p className="text-2xl font-bold text-red-700">${paymentSummary.pending.toFixed(2)}</p>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <p className="text-sm text-gray-600 font-medium">Remaining Balance</p>
+              <p className="text-2xl font-bold text-gray-700">
+                ${paymentSummary.remaining.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </p>
             </div>
           </div>
 
@@ -80,9 +135,8 @@ const StudentPaymentModal = ({
           </div>
 
           <PaymentHistoryTable
-            payments={payments}
+            payments={paymentHistory}
             paymentStatus={paymentStatus}
-            handlePaymentClick={onPaymentClick}
           />
         </div>
       </div>

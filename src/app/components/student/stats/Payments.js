@@ -3,8 +3,8 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import { database } from '../../../../../utils/firebaseConfig';
 import { ref, onValue } from 'firebase/database';
 import CountUp from 'react-countup';
-
-const COLORS = ["#2196F3", "#64B5F6", "#90CAF9", "#BBDEFB"]; // Different shades of blue from darker to lighter
+import Link from 'next/link';
+const COLORS = ["#2196F3", "#64B5F6", "#90CAF9", "#BBDEFB"]; // Different shades of blue
 
 const PaymentsChart = () => {
   const [paymentsData, setPaymentsData] = useState([]);
@@ -12,41 +12,39 @@ const PaymentsChart = () => {
   const [startCounter, setStartCounter] = useState(false);
 
   useEffect(() => {
-    const paymentsRef = ref(database, 'payments');
+    const studentFeesRef = ref(database, 'studentFees');
     
-    onValue(paymentsRef, (snapshot) => {
+    onValue(studentFeesRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        let totalPaid = 0;
-        let totalPending = 0;
-        let totalPartial = 0;
+        // Initialize an object to store totals by fee description
+        const feeTypeTotals = {};
 
-        Object.values(data).forEach(studentPayments => {
-          if (studentPayments) {
-            Object.values(studentPayments).forEach(payment => {
-              const amount = parseFloat(payment.amount) || 0;
-              switch (payment.status) {
-                case 'Paid':
-                  totalPaid += amount;
-                  break;
-                case 'Pending':
-                  totalPending += amount;
-                  break;
-                case 'Partial':
-                  totalPartial += amount;
-                  break;
-                default:
-                  break;
+        // Process all student fees
+        Object.values(data).forEach(studentFees => {
+          if (studentFees) {
+            Object.values(studentFees).forEach(fee => {
+              const description = fee.description || 'Other';
+              const paidAmount = fee.totalAmount - (fee.remainingAmount || 0);
+              
+              if (!feeTypeTotals[description]) {
+                feeTypeTotals[description] = 0;
               }
+              feeTypeTotals[description] += paidAmount;
             });
           }
         });
 
-        setPaymentsData([
-          { name: "Paid", value: Math.round(totalPaid) },
-          { name: "Pending", value: Math.round(totalPending) },
-          { name: "Partial", value: Math.round(totalPartial) }
-        ]);
+        // Convert to array format for the chart
+        const chartData = Object.entries(feeTypeTotals)
+          .map(([name, value]) => ({
+            name,
+            value: Math.round(value)
+          }))
+          .filter(item => item.value > 0) // Only show fee types with payments
+          .sort((a, b) => b.value - a.value); // Sort by value descending
+
+        setPaymentsData(chartData);
         setLoading(false);
         setTimeout(() => setStartCounter(true), 500);
       }
@@ -66,7 +64,7 @@ const PaymentsChart = () => {
       const percentage = ((payload[0].value / total) * 100).toFixed(1);
       return (
         <div className="bg-white p-2 shadow-md rounded border">
-          <p className="font-semibold">{`${payload[0].name}: $${payload[0].value.toFixed(2)}`}</p>
+          <p className="font-semibold">{`${payload[0].name}: $${payload[0].value.toLocaleString()}`}</p>
           <p className="text-gray-600">{`${percentage}%`}</p>
         </div>
       );
@@ -81,10 +79,10 @@ const PaymentsChart = () => {
         <div key={entry.name} className="flex items-center">
           <div 
             className="w-3 h-3 rounded-full mr-2" 
-            style={{ backgroundColor: COLORS[index] }}
+            style={{ backgroundColor: COLORS[index % COLORS.length] }}
           />
           <span className="text-sm">
-            {entry.name} (${entry.value.toFixed(2)} - {((entry.value / total) * 100).toFixed(1)}%)
+            {entry.name} (${entry.value.toLocaleString()} - {((entry.value / total) * 100).toFixed(1)}%)
           </span>
         </div>
       ))}
@@ -92,8 +90,12 @@ const PaymentsChart = () => {
   );
 
   return (
-    <div className="flex flex-col items-center justify-center p-6  min-h-[440px] bg-white rounded-lg shadow-md">
-      <h2 className="text-lg font-bold mb-4">Payment Distribution</h2>
+    <div className="flex flex-col items-center justify-center p-6 min-h-[440px] bg-white rounded-lg shadow-md">
+      <h2 className="text-lg font-bold mb-4">
+        <Link href="/finance" className="hover:text-blue-600 transition-colors">
+          Fee Type Distribution
+        </Link>
+      </h2>
       <div className="w-full h-64 relative">
         <ResponsiveContainer>
           <PieChart>
@@ -135,9 +137,6 @@ const PaymentsChart = () => {
                 scrollSpyDelay={0}
                 scrollSpyOnce={true}
                 useGrouping={true}
-                easingFn={(t, b, c, d) => {
-                  return c * (-Math.pow(2, -10 * t/d) + 1) * 1024 / 1023 + b;
-                }}
               />
             ) : '0'}
           </p>

@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import GenderDonutChart from "../student/stats/GenderDonutChart";
 import PaymentsChart from "../student/stats/Payments";
 import FeesManagement from "./FeesManagement";
+
 const features = [
   {
     title: "Student Management",
@@ -108,7 +109,7 @@ const AdminDashboard = () => {
             </div>
           ))}
         </div>
-        <div className="flex  mt-10 justify-center items-center gap-6">
+        <div className="flex mt-10 justify-center items-center gap-6">
           <div className="w-full lg:w-1/2">
             <PaymentsChart />
           </div>

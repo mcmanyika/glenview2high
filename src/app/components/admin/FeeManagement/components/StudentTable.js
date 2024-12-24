@@ -9,7 +9,7 @@ const StudentTable = ({ filteredStudents, paymentStatus, onStudentClick }) => (
           <th className="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
           <th className="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
           <th className="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Class</th>
-          <th className="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+         
         </tr>
       </thead>
       <tbody className="divide-y divide-gray-200">
@@ -22,9 +22,7 @@ const StudentTable = ({ filteredStudents, paymentStatus, onStudentClick }) => (
             <td className="py-4 px-6 text-sm font-medium text-gray-900">{student.userID}</td>
             <td className="py-4 px-6 text-sm text-gray-500">{student.name}</td>
             <td className="py-4 px-6 text-sm text-gray-500">{student.class}</td>
-            <td className="py-4 px-6">
-              <StatusBadge status={student.status} paymentStatus={paymentStatus} />
-            </td>
+            
           </tr>
         ))}
       </tbody>

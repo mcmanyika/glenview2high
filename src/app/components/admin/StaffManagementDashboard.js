@@ -136,12 +136,11 @@ const StaffManagementDashboard = () => {
 
       {/* Staff Table */}
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-200 rounded-lg">
+        <table className="min-w-full bg-white border text-sm border-gray-200 rounded-lg">
           <thead className="bg-blue-500 text-white">
             <tr>
               <th className="py-2 px-4 text-left">Name</th>
               <th className="py-2 px-4 text-left">Role</th>
-              <th className="py-2 px-4 text-left">Email</th>
               <th className="py-2 px-4 text-left">Phone</th>
               <th className="py-2 px-4 text-left">Status</th>
             </tr>
@@ -155,7 +154,6 @@ const StaffManagementDashboard = () => {
               >
                 <td className="py-2 px-4 capitalize">{staff.name}</td>
                 <td className="py-2 px-4">{staff.role}</td>
-                <td className="py-2 px-4">{staff.email}</td>
                 <td className="py-2 px-4">{staff.phone}</td>
                 <td
                   className={`py-2 px-4 font-semibold ${

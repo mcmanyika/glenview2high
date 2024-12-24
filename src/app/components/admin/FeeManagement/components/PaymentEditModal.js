@@ -11,6 +11,11 @@ const PaymentEditModal = ({
 }) => {
   if (!isOpen || !payment) return null;
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onUpdate(payment);
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4 z-[70]">
       <motion.div
@@ -33,22 +38,31 @@ const PaymentEditModal = ({
           </div>
         </div>
 
-        <form onSubmit={onUpdate} className="p-6">
-          {/* Form fields */}
+        <form onSubmit={handleSubmit} className="p-6">
           <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-              <select
-                value={payment.status || paymentStatus.PENDING}
-                onChange={(e) => onChange({ ...payment, status: e.target.value })}
-                className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
-              >
-                {Object.values(paymentStatus).map((status) => (
-                  <option key={status} value={status}>{status}</option>
-                ))}
-              </select>
+            {/* Payment Details */}
+            <div className="bg-gray-50 p-4 rounded-md space-y-2">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm text-gray-600">Amount</p>
+                  <p className="font-semibold">${payment.amount?.toLocaleString()}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">Date</p>
+                  <p className="font-semibold">{payment.date}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">Method</p>
+                  <p className="font-semibold">{payment.method}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">Status</p>
+                  <p className="font-semibold">{paymentStatus.PAID}</p>
+                </div>
+              </div>
             </div>
 
+            {/* Notes */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
               <textarea
@@ -56,6 +70,7 @@ const PaymentEditModal = ({
                 onChange={(e) => onChange({ ...payment, notes: e.target.value })}
                 className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
                 rows="3"
+                placeholder="Add any additional notes about this payment..."
               />
             </div>
           </div>

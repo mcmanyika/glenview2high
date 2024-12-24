@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { database } from '../../../../../../utils/firebaseConfig';
-import { ref, get } from 'firebase/database';
+import { ref, get, update } from 'firebase/database';
 import { toast } from 'react-toastify';
 
-const AddPaymentModal = ({ isOpen, onClose, onSubmit, studentId, studentName }) => {
+const AddPaymentModal = ({ isOpen, onClose, studentId, studentName }) => {
   const [newPayment, setNewPayment] = useState({
     amount: '',
     date: new Date().toISOString().split('T')[0],
     method: 'Cash',
+    feeId: '',
     notes: ''
   });
 
-  const [remainingFees, setRemainingFees] = useState(0);
+  const [studentFees, setStudentFees] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const selectedFee = newPayment.feeId 
+    ? studentFees.find(fee => fee.id === newPayment.feeId) 
+    : null;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,7 +26,22 @@ const AddPaymentModal = ({ isOpen, onClose, onSubmit, studentId, studentName }) 
         const feesSnapshot = await get(ref(database, `studentFees/${studentId}`));
         
         if (feesSnapshot.exists()) {
-          setRemainingFees(feesSnapshot.val().remainingAmount || 0);
+          const feesData = feesSnapshot.val();
+          const feesArray = Object.entries(feesData).map(([id, fee]) => ({
+            id,
+            ...fee
+          }))
+          .filter(fee => fee.remainingAmount > 0)
+          .sort((a, b) => b.datePosted - a.datePosted);
+          
+          setStudentFees(feesArray);
+          
+          if (!newPayment.feeId && feesArray.length > 0) {
+            setNewPayment(prev => ({
+              ...prev,
+              feeId: feesArray[0].id
+            }));
+          }
         }
         setLoading(false);
       } catch (error) {
@@ -36,32 +56,76 @@ const AddPaymentModal = ({ isOpen, onClose, onSubmit, studentId, studentName }) 
     }
   }, [isOpen, studentId]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Validate payment amount
+    const selectedFee = studentFees.find(fee => fee.id === newPayment.feeId);
+    if (!selectedFee) {
+      toast.error('Please select a valid fee to pay');
+      return;
+    }
+
     const paymentAmount = parseFloat(newPayment.amount);
-    if (paymentAmount > remainingFees) {
+    if (paymentAmount > selectedFee.remainingAmount) {
       toast.error('Payment amount cannot exceed remaining fees');
       return;
     }
 
-    // Add remaining amount to payment data
     const paymentData = {
       ...newPayment,
       amount: paymentAmount,
-      remainingBeforePayment: remainingFees,
-      remainingAfterPayment: remainingFees - paymentAmount,
+      remainingBeforePayment: selectedFee.remainingAmount,
+      remainingAfterPayment: selectedFee.remainingAmount - paymentAmount,
       timestamp: Date.now()
     };
 
-    onSubmit(paymentData);
-    setNewPayment({
-      amount: '',
-      date: new Date().toISOString().split('T')[0],
-      method: 'Cash',
-      notes: ''
-    });
+    try {
+      const { feeId, amount } = paymentData;
+      
+      // Create payment record
+      const paymentId = Date.now().toString();
+      const updates = {};
+      
+      // Update the specific fee's remaining amount
+      updates[`studentFees/${studentId}/${feeId}/remainingAmount`] = paymentData.remainingAfterPayment;
+      
+      // Add the payment record
+      updates[`studentFees/${studentId}/${feeId}/payments/${paymentId}`] = {
+        ...paymentData,
+        id: paymentId
+      };
+
+      // Update the database
+      await update(ref(database), updates);
+      
+      // Refresh the fees data after payment
+      const feesSnapshot = await get(ref(database, `studentFees/${studentId}`));
+      if (feesSnapshot.exists()) {
+        const feesData = feesSnapshot.val();
+        const feesArray = Object.entries(feesData).map(([id, fee]) => ({
+          id,
+          ...fee
+        }))
+        .filter(fee => fee.remainingAmount > 0)
+        .sort((a, b) => b.datePosted - a.datePosted);
+        
+        setStudentFees(feesArray);
+      }
+
+      setNewPayment(prev => ({
+        amount: '',
+        date: new Date().toISOString().split('T')[0],
+        method: 'Cash',
+        feeId: prev.feeId,
+        notes: ''
+      }));
+
+      toast.success('Payment recorded successfully');
+      onClose();
+    } catch (error) {
+      console.error('Error submitting payment:', error);
+      toast.error('Failed to submit payment');
+    }
   };
 
   if (!isOpen) return null;
@@ -98,13 +162,35 @@ const AddPaymentModal = ({ isOpen, onClose, onSubmit, studentId, studentName }) 
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="p-6">
-            <div className="mb-4 p-3 bg-blue-50 rounded-md">
-              <p className="text-sm text-blue-800">
-                Remaining Fees: <span className="font-bold">${remainingFees.toLocaleString()}</span>
-              </p>
-            </div>
-
             <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Select Fee to Pay
+                </label>
+                <select
+                  value={newPayment.feeId}
+                  onChange={(e) => setNewPayment({ ...newPayment, feeId: e.target.value })}
+                  className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+                  required
+                >
+                  <option value="">Select a fee to pay</option>
+                  {studentFees.map(fee => (
+                    <option key={fee.id} value={fee.id}>
+                      {fee.description} (${fee.remainingAmount.toLocaleString()} remaining)
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {selectedFee && (
+                <div className="mb-4 p-3 bg-blue-50 rounded-md">
+                  <p className="text-sm text-blue-800">
+                    Remaining Balance for {selectedFee.description}:{' '}
+                    <span className="font-bold">${selectedFee.remainingAmount.toLocaleString()}</span>
+                  </p>
+                </div>
+              )}
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Payment Amount ($)
@@ -116,8 +202,10 @@ const AddPaymentModal = ({ isOpen, onClose, onSubmit, studentId, studentName }) 
                   className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
                   required
                   min="0"
-                  max={remainingFees}
+                  max={selectedFee?.remainingAmount || 0}
                   step="0.01"
+                  placeholder={selectedFee ? `Max: $${selectedFee.remainingAmount.toLocaleString()}` : 'Select a fee first'}
+                  disabled={!selectedFee}
                 />
               </div>
 
@@ -176,7 +264,12 @@ const AddPaymentModal = ({ isOpen, onClose, onSubmit, studentId, studentName }) 
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+                disabled={!selectedFee}
+                className={`px-4 py-2 text-white rounded-md ${
+                  selectedFee 
+                    ? 'bg-blue-500 hover:bg-blue-600' 
+                    : 'bg-gray-400 cursor-not-allowed'
+                }`}
               >
                 Add Payment
               </button>

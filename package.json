@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "preload-roles": "node -r esm utils/scripts/preloadRoles.js",
+    "preload-titles": "node -r esm utils/scripts/preloadTitles.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
@@ -60,6 +62,7 @@
     "cmdk": "^1.0.0",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.3.0",
+    "esm": "^3.2.25",
     "firebase": "^10.12.2",
     "framer-motion": "^11.0.8",
     "http-proxy-middleware": "^3.0.0",

@@ -123,7 +123,7 @@ const Accounts = () => {
         {currentAdmissions.map((admission) => (
           <div
             key={admission.id}
-            className="bg-gray-50 p-4 rounded-md shadow-md hover:bg-gray-100 cursor-pointer overflow-hidden"
+            className="bg-gray-10 p-4 rounded-md shadow hover:bg-gray-50 cursor-pointer overflow-hidden"
             onClick={() => openModal(admission)}
           >
             <p className="text-lg font-bold mb-2 capitalize truncate">

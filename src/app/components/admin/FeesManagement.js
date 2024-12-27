@@ -79,8 +79,6 @@ const FeesManagement = () => {
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6">Global Fees Management</h2>
-
       <form onSubmit={handlePostFees} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">

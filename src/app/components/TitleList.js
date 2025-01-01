@@ -44,7 +44,7 @@ const TitleList = ({ titles, onSignOut, isExpanded = false }) => {
         return (
           <div 
             key={rw.id} 
-            className="relative mb-4 w-full group"
+            className="relative mb-2 w-full group"
           >
             <Link 
               href={rw.link} 

@@ -78,7 +78,7 @@ const defaultTitles = {
       "category": "dashboard",
       "status": "Active",
       "link": "/admin/contact_us",
-      "icon": "MdOutlineLibraryBooks"
+      "icon": "FaEnvelope"
     },
     "title10": {
       "title": "Assignments",
@@ -92,7 +92,7 @@ const defaultTitles = {
       "category": "dashboard",
       "status": "Active",
       "link": "/admin/admissions_list",
-      "icon": "IoPeopleOutline"
+      "icon": "FaUserGraduate"
     },
     "title12": {
       "title": "Applicants",

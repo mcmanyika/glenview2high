@@ -119,7 +119,7 @@ const FeesManagement = () => {
           className={`w-full py-2 px-4 rounded-md text-white font-medium
             ${loading 
               ? 'bg-gray-400 cursor-not-allowed' 
-              : 'bg-blue-600 hover:bg-blue-700'
+              : 'bg-blue-300 hover:bg-blue-400'
             } transition-colors`}
         >
           {loading ? 'Posting...' : 'Post Fees to All Students'}

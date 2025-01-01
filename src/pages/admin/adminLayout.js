@@ -192,7 +192,7 @@ const AdminLayout = ({ children }) => {
         onMouseEnter={() => setIsExpanded(true)}
         onMouseLeave={() => setIsExpanded(false)}
       >
-        <div className={`flex ${isExpanded ? 'justify-center' : 'justify-center'} items-center pt-6 mb-8`}>
+        <div className={`flex ${isExpanded ? 'justify-center' : 'justify-center'} items-center`}>
           <Link href={websiteUrl || '#'}>
             {logoUrl ? (
               <Image 
@@ -200,7 +200,7 @@ const AdminLayout = ({ children }) => {
                 alt="Logo" 
                 width={isExpanded ? 70 : 55} 
                 height={isExpanded ? 60 : 55} 
-                className='rounded-full transition-all duration-300' 
+                className='rounded-full transition-all duration-300 m-2 mb-8' 
               />
             ) : (
               <div className={`${isExpanded ? 'w-14 h-14' : 'w-11 h-11'} bg-gray-300 rounded-full animate-pulse`} />

@@ -96,10 +96,10 @@ const TitleList = ({ titles, onSignOut, isExpanded = false }) => {
         >
           <div className={`flex items-center ${isExpanded ? 'w-full' : 'justify-center'}`}>
             <div className={`${isExpanded ? 'w-6' : 'w-12 flex justify-center'}`}>
-              <FaSignOutAlt className="text-2xl" />
+              <FaSignOutAlt className="text-3xl" />
             </div>
             <div 
-              className={`text-left font-thin p-2 cursor-pointer overflow-hidden transition-all duration-200
+              className={`text-left font-thin px-4 p-2 cursor-pointer overflow-hidden transition-all duration-200
                 ${isExpanded ? 'opacity-100 w-full' : 'w-0 opacity-0 p-0'}`}
             >
               Sign Out

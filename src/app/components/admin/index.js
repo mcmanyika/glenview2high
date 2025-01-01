@@ -109,7 +109,7 @@ const AdminDashboard = () => {
             </div>
           ))}
         </div>
-        <div className="flex mt-10 justify-center items-center gap-6">
+        <div className="flex flex-col lg:flex-row mt-10 justify-center items-center gap-6">
           <div className="w-full lg:w-1/2">
             <PaymentsChart />
           </div>

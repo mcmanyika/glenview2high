@@ -137,7 +137,7 @@ const StaffManagementDashboard = () => {
       {/* Staff Table */}
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border text-sm border-gray-200 rounded-lg">
-          <thead className="bg-blue-500 text-white">
+          <thead className="bg-blue-300 text-white">
             <tr>
               <th className="py-2 px-4 text-left">Name</th>
               <th className="py-2 px-4 text-left">Role</th>

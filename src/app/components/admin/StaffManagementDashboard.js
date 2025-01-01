@@ -105,19 +105,19 @@ const StaffManagementDashboard = () => {
     <div className="w-full  p-6 bg-white shadow-md rounded-lg">
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="p-4 bg-green-100 rounded-lg text-center shadow-sm">
+        <div className="p-4 bg-blue-200 rounded-lg text-center shadow-sm">
           <h3 className="text-lg font-semibold">Total Staff</h3>
-          <p className="text-2xl font-bold text-green-600">{staffList.length}</p>
+          <p className="text-2xl font-bold text-white">{staffList.length}</p>
         </div>
-        <div className="p-4 bg-blue-100 rounded-lg text-center shadow-sm">
+        <div className="p-4 bg-blue-300 rounded-lg text-center shadow-sm">
           <h3 className="text-lg font-semibold">Active Staff</h3>
-          <p className="text-2xl font-bold text-blue-600">
+          <p className="text-2xl font-bold text-white">
             {staffList.filter((staff) => staff.status === "Active").length}
           </p>
         </div>
-        <div className="p-4 bg-yellow-100 rounded-lg text-center shadow-sm">
+        <div className="p-4 bg-blue-200 rounded-lg text-center shadow-sm">
           <h3 className="text-lg font-semibold">Inactive Staff</h3>
-          <p className="text-2xl font-bold text-yellow-600">
+          <p className="text-2xl font-bold text-white">
             {staffList.filter((staff) => staff.status === "Inactive").length}
           </p>
         </div>

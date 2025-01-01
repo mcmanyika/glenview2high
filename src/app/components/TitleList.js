@@ -50,16 +50,16 @@ const TitleList = ({ titles, onSignOut, isExpanded = false }) => {
               href={rw.link} 
               className={`flex items-center w-full p-1 transition-all duration-200
                 ${isExpanded 
-                  ? 'hover:px-4 hover:bg-slate-50 hover:rounded-full hover:text-black' 
+                  ? 'px-4 hover:bg-slate-50 hover:rounded-full hover:text-black' 
                   : 'hover:bg-slate-50/10 rounded-xl'}`}
               aria-label={rw.title}
             >
               <div className={`flex items-center ${isExpanded ? 'w-full' : 'justify-center'}`}>
                 <div className={`${isExpanded ? 'w-6' : 'w-12 flex justify-center'}`}>
-                  <IconComponent className="text-2xl" />
+                  <IconComponent className="text-3xl" />
                 </div>
                 <div 
-                  className={`text-left font-thin p-2 cursor-pointer overflow-hidden transition-all duration-200
+                  className={`text-left font-thin pl-4 p-2 cursor-pointer overflow-hidden transition-all duration-200
                     ${isExpanded ? 'opacity-100 w-full' : 'w-0 opacity-0 p-0'}`}
                 >
                   {rw.title}
@@ -84,7 +84,7 @@ const TitleList = ({ titles, onSignOut, isExpanded = false }) => {
           onClick={onSignOut}
           className={`flex items-center w-full p-1 transition-all duration-200
             ${isExpanded 
-              ? 'hover:px-4 hover:bg-slate-50 hover:rounded-full hover:text-black' 
+              ? 'px-4 hover:bg-slate-50 hover:rounded-full hover:text-black' 
               : 'hover:bg-slate-50/10 rounded-xl'}`}
           aria-label="Sign Out"
         >

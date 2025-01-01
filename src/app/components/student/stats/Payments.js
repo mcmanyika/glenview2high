@@ -90,7 +90,7 @@ const PaymentsChart = () => {
   );
 
   return (
-    <div className="flex flex-col items-center justify-center p-6 min-h-[400px] bg-white rounded-lg shadow-md">
+    <div className="flex flex-col items-center justify-center p-6 min-h-[300px] bg-white rounded-lg shadow-md">
       <h2 className="text-lg font-bold mb-4">
         <Link href="/finance" className="hover:text-blue-600 transition-colors">
           Fee Type Distribution

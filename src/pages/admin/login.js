@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import { database } from '../../../utils/firebaseConfig';
+import { ref, get } from 'firebase/database';
 import SmartBlankLayout from '../../app/components/SmartBlankLayout';
 import SignIn from '../../app/components/user/SignIn';
 import SignUp from '../../app/components/user/SignUp';
@@ -13,6 +15,8 @@ export default function Login() {
   const router = useRouter();
   const [error, setError] = useState(null);
   const [isSignUp, setIsSignUp] = useState(false); // For toggling between login and signup
+  const [logoUrl, setLogoUrl] = useState('');
+  const [websiteUrl, setWebsiteUrl] = useState('');
 
   // Redirect authenticated users to the dashboard
   useEffect(() => {
@@ -20,6 +24,29 @@ export default function Login() {
       router.push('/admin/dashboard');
     }
   }, [status, router]);
+
+  // Add this useEffect to fetch website URL
+  useEffect(() => {
+    const fetchAccountData = async () => {
+      try {
+        const accountRef = ref(database, 'account');
+        const accountSnapshot = await get(accountRef);
+        if (accountSnapshot.exists()) {
+          const accountData = accountSnapshot.val();
+          setWebsiteUrl(accountData.website);
+          setLogoUrl(accountData.logo);
+        } else {
+          console.error('No account data found');
+          setWebsiteUrl('#'); // Fallback URL
+        }
+      } catch (error) {
+        console.error('Error fetching account data:', error);
+        setWebsiteUrl('#'); // Fallback URL
+      }
+    };
+
+    fetchAccountData();
+  }, []);
 
   const handleGoogleSignIn = async () => {
     try {
@@ -37,6 +64,21 @@ export default function Login() {
       console.error('Error signing in with Auth0:', error);
       setError(error.message);
     }
+    const fetchLogo = async () => {
+      try {
+        const accountRef = ref(database, `account`);
+        const accountSnapshot = await get(accountRef);
+        if (accountSnapshot.exists()) {
+          const accountData = accountSnapshot.val();
+          setLogoUrl(accountData.logo);
+          setWebsiteUrl(accountData.website);
+        } else {
+          console.error('No account data found');
+        }
+      } catch (error) {
+        console.error('Error fetching logo:', error);
+      }
+    };
   };
 
   const toggleSignUp = () => {
@@ -50,9 +92,9 @@ export default function Login() {
       </div>
       <div className='w-full md:flex-1 p-4'>
         <div className="max-w-xl mx-auto p-8 bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-100">
-          <Link href='https://glenview2high.com' className="block transition-transform hover:scale-105 duration-200">
+          <Link href={websiteUrl || '#'} className="block transition-transform hover:scale-105 duration-200">
             <Image
-              src="/images/logo.png"
+              src={logoUrl}
               alt="Logo"
               width={90}
               height={90}

@@ -225,7 +225,7 @@ const StudentReportView = () => {
     <div>
        {/* Add subscription section if status is not active */}
        
-          <div className="bg-white dark:bg-slate-900 rounded-xl shadow-md p-6 border border-gray-100 dark:border-slate-800 mb-5">
+          {/* <div className="bg-white dark:bg-slate-900 rounded-xl shadow-md p-6 border border-gray-100 dark:border-slate-800 mb-5">
             <div className="text-center">
               <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">
                 Subscribe to Access Reports
@@ -239,7 +239,7 @@ const StudentReportView = () => {
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
 
       <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">Academic Reports</h2>
       

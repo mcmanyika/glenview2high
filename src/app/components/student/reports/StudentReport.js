@@ -321,16 +321,17 @@ const StudentReport = () => {
   }
 
   return (
-    <div className="p-6  bg-white rounded-lg dark:bg-slate-900">
-      {/* Student Selection */}
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 mb-6">
-        <label className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
+    <div className="p-6 max-w-7xl mx-auto">
+      {/* Student Selection - Updated styling */}
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 mb-6 border border-gray-100 dark:border-slate-700">
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">Student Report Card</h1>
+        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
           Select Student
         </label>
         <select
           value={selectedStudent}
           onChange={(e) => setSelectedStudent(e.target.value)}
-          className="w-full px-4 py-2  max-w-md rounded-lg border-gray-300 dark:border-white dark:bg-white dark:text-black shadow-sm appearance-none focus:border-main3 focus:ring-main3"
+          className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:ring-2 focus:ring-main3 focus:border-transparent transition-all duration-200"
         >
           <option value="">Choose a student</option>
           {students.map((student) => (
@@ -341,33 +342,34 @@ const StudentReport = () => {
         </select>
       </div>
 
-      {/* Show form immediately when student is selected */}
       {selectedStudent && (
-        <form onSubmit={handleSubmit} className="bg-white dark:bg-slate-800 rounded-xl shadow-md p-8 mt-6">
-          {/* Student Info Display */}
+        <form onSubmit={handleSubmit} className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 border border-gray-100 dark:border-slate-700">
+          {/* Student Info Display - Enhanced */}
           <div className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">
+            <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white border-b pb-4 dark:border-slate-700">
               Report for {selectedStudentData?.name}
             </h2>
-            <div className="grid grid-cols-2 gap-6 bg-gray-50 dark:bg-slate-700 p-6 rounded-lg">
-              <p className="text-base text-gray-600 dark:text-white">
-                <span className="font-medium">Class:</span> {selectedStudentData?.class}
-              </p>
-              <p className="text-base text-gray-600 dark:text-white">
-                <span className="font-medium">Admission Number:</span> {selectedStudentData?.admissionNumber}
-              </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 dark:bg-slate-700 p-6 rounded-lg">
+              <div className="flex items-center space-x-2">
+                <span className="font-semibold text-gray-600 dark:text-gray-300">Class:</span>
+                <span className="text-gray-800 dark:text-white">{selectedStudentData?.class}</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="font-semibold text-gray-600 dark:text-gray-300">Admission Number:</span>
+                <span className="text-gray-800 dark:text-white">{selectedStudentData?.admissionNumber}</span>
+              </div>
             </div>
           </div>
 
-          {/* Term Selection */}
+          {/* Term Selection - Enhanced */}
           <div className="mb-8">
-            <label className="block text-base font-medium text-gray-700 dark:text-white mb-2">
-              Term
+            <label className="block text-base font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              Academic Term
             </label>
             <select
               value={formData.term}
               onChange={(e) => setFormData(prev => ({ ...prev, term: e.target.value }))}
-              className="w-full px-4 py-3 rounded-lg border-gray-300 dark:border-white dark:bg-white dark:text-black text-base focus:ring-2 focus:ring-main3"
+              className="w-full md:w-1/3 px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:ring-2 focus:ring-main3 focus:border-transparent transition-all duration-200"
             >
               <option value="First Term">First Term</option>
               <option value="Second Term">Second Term</option>
@@ -375,23 +377,24 @@ const StudentReport = () => {
             </select>
           </div>
 
-          {/* Subjects */}
+          {/* Subjects Section - Enhanced */}
           <div className="mb-8">
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-xl font-medium text-gray-800 dark:text-white">Subjects</h3>
-              
+              <h3 className="text-xl font-bold text-gray-800 dark:text-white">Subject Grades</h3>
             </div>
 
             {formData.subjects.map((subject, index) => (
-              <div key={index} className="mb-6 p-6 bg-gray-50 dark:bg-slate-700 rounded-lg">
+              <div key={index} className="mb-6 p-6 bg-gray-50 dark:bg-slate-700 rounded-lg border border-gray-200 dark:border-slate-600 transition-all duration-200 hover:shadow-md">
                 <div className="flex justify-between items-center mb-4">
                   <div className="flex-1 mr-4">
-                    <label className="block text-base text-gray-600 dark:text-gray-400 mb-2">Subject Name</label>
+                    <label className="block text-sm font-semibold text-gray-600 dark:text-gray-300 mb-2">
+                      Subject Name
+                    </label>
                     <input
                       type="text"
                       value={subject.name}
                       onChange={(e) => handleSubjectChange(index, 'name', e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg border-gray-300 dark:border-white dark:bg-white dark:text-gray-800 text-base focus:ring-2 focus:ring-main3"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:ring-2 focus:ring-main3 focus:border-transparent transition-all duration-200"
                       placeholder="Enter subject name"
                       required
                     />
@@ -399,9 +402,11 @@ const StudentReport = () => {
                   <button
                     type="button"
                     onClick={() => removeSubject(index)}
-                    className="text-red-500 hover:text-red-700 transition-colors"
+                    className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-all duration-200"
                   >
-                    Remove
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
                   </button>
                 </div>
 
@@ -478,27 +483,37 @@ const StudentReport = () => {
             )}
           </div>
 
-          {/* Submit Button */}
-          <div className="flex justify-end space-x-4">
-          <button
-                type="button"
-                onClick={addSubject}
-                className="px-4 py-2 bg-main3 text-white rounded-lg hover:bg-opacity-90 transition-colors"
-              >
-                Add Subject
-              </button>
+          {/* Action Buttons - Enhanced */}
+          <div className="flex justify-end space-x-4 border-t dark:border-slate-700 pt-6">
+            <button
+              type="button"
+              onClick={addSubject}
+              className="px-6 py-3 bg-main3 text-white rounded-lg hover:bg-opacity-90 transition-all duration-200 flex items-center space-x-2"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              <span>Add Subject</span>
+            </button>
             <button
               type="submit"
-              className="px-6 py-3 text-base font-medium bg-main text-white rounded-lg hover:bg-opacity-90 transition-colors"
+              className="px-6 py-3 bg-main text-white rounded-lg hover:bg-opacity-90 transition-all duration-200 flex items-center space-x-2"
               disabled={loading}
             >
-              {loading ? 'Saving...' : 'Save Report'}
+              {loading ? (
+                <span className="flex items-center space-x-2">
+                  <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                    {/* ... loading spinner SVG ... */}
+                  </svg>
+                  <span>Saving...</span>
+                </span>
+              ) : (
+                <span>Save Report</span>
+              )}
             </button>
           </div>
         </form>
       )}
-
-      
     </div>
   );
 };

@@ -27,10 +27,9 @@ const iconMapping = {
   FaShoppingBag: FaShoppingBag,
 };
 
-const TitleList = ({ titles, onSignOut }) => {
-  const defaultIcon = FaHome; // Fallback icon
+const TitleList = ({ titles, onSignOut, isExpanded = false }) => {
+  const defaultIcon = FaHome;
   
-  // Separate "Dashboard" and sort the rest
   const dashboardItem = titles.find((item) => item.title === 'Dashboard');
   const otherItems = titles
     .filter((item) => item.title !== 'Dashboard')
@@ -41,33 +40,74 @@ const TitleList = ({ titles, onSignOut }) => {
   return (
     <div className="flex flex-col items-center">
       {sortedTitles.map((rw) => {
-        const IconComponent = iconMapping[rw.icon] || defaultIcon; // Fallback to default icon if not found
+        const IconComponent = iconMapping[rw.icon] || defaultIcon;
         return (
-          <div key={rw.id} className="mb-4 flex items-center w-full hover:px-4 hover:rounded-full hover:bg-slate-50 hover:text-black p-1">
-            <Link href={rw.link} className="flex items-center w-full" aria-label={rw.title}>
-              <div className="flex items-center space-x-2 w-full"> {/* Reduced space to space-x-2 */}
-                <div className="w-5">
+          <div 
+            key={rw.id} 
+            className="relative mb-4 w-full group"
+          >
+            <Link 
+              href={rw.link} 
+              className={`flex items-center w-full p-1 transition-all duration-200
+                ${isExpanded 
+                  ? 'hover:px-4 hover:bg-slate-50 hover:rounded-full hover:text-black' 
+                  : 'hover:bg-slate-50/10 rounded-xl'}`}
+              aria-label={rw.title}
+            >
+              <div className={`flex items-center ${isExpanded ? 'w-full' : 'justify-center'}`}>
+                <div className={`${isExpanded ? 'w-6' : 'w-12 flex justify-center'}`}>
                   <IconComponent className="text-2xl" />
                 </div>
-                <div className="text-left font-thin p-2 cursor-pointer w-full">{rw.title}</div>
+                <div 
+                  className={`text-left font-thin p-2 cursor-pointer overflow-hidden transition-all duration-200
+                    ${isExpanded ? 'opacity-100 w-full' : 'w-0 opacity-0 p-0'}`}
+                >
+                  {rw.title}
+                </div>
               </div>
             </Link>
+            {/* Tooltip */}
+            {!isExpanded && (
+              <div className="absolute left-full ml-2 pl-2 py-1 px-3 bg-white text-black rounded-md 
+                opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200
+                whitespace-nowrap z-50 shadow-lg -translate-x-2 group-hover:translate-x-0">
+                {rw.title}
+              </div>
+            )}
           </div>
         );
       })}
-      <div className="flex items-center w-full hover:bg-slate-50 hover:px-4 hover:rounded-full hover:text-black p-1"> {/* Reduced space here as well */}
-        <div className="w-6">
-          <FaSignOutAlt className="text-2xl" />
-        </div>
-        <div className="text-left font-thin  cursor-pointer w-full">
-          <button
-            onClick={onSignOut}
-            className="flex items-center font-thin p-2 rounded-full cursor-pointer w-full"
-            aria-label="Sign Out"
-          >
+      
+      {/* Sign Out Button */}
+      <div className="relative w-full group">
+        <button
+          onClick={onSignOut}
+          className={`flex items-center w-full p-1 transition-all duration-200
+            ${isExpanded 
+              ? 'hover:px-4 hover:bg-slate-50 hover:rounded-full hover:text-black' 
+              : 'hover:bg-slate-50/10 rounded-xl'}`}
+          aria-label="Sign Out"
+        >
+          <div className={`flex items-center ${isExpanded ? 'w-full' : 'justify-center'}`}>
+            <div className={`${isExpanded ? 'w-6' : 'w-12 flex justify-center'}`}>
+              <FaSignOutAlt className="text-2xl" />
+            </div>
+            <div 
+              className={`text-left font-thin p-2 cursor-pointer overflow-hidden transition-all duration-200
+                ${isExpanded ? 'opacity-100 w-full' : 'w-0 opacity-0 p-0'}`}
+            >
+              Sign Out
+            </div>
+          </div>
+        </button>
+        {/* Tooltip for Sign Out */}
+        {!isExpanded && (
+          <div className="absolute left-full ml-2 pl-2 py-1 px-3 bg-white text-black rounded-md 
+            opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200
+            whitespace-nowrap z-50 shadow-lg -translate-x-2 group-hover:translate-x-0">
             Sign Out
-          </button>
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -83,6 +123,7 @@ TitleList.propTypes = {
     })
   ).isRequired,
   onSignOut: PropTypes.func.isRequired,
+  isExpanded: PropTypes.bool,
 };
 
 export default TitleList;

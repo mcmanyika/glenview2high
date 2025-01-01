@@ -27,7 +27,7 @@ const ProtectedRoute = ({ children, requiredPermission }) => {
 
   if (!session) {
     router.push('/');
-    return null;
+    return null; 
   }
 
   if (!hasPermission) {

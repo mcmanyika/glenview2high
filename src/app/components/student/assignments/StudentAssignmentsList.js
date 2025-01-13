@@ -20,7 +20,7 @@ const StudentAssignmentsList = () => {
   const [selectedAssignment, setSelectedAssignment] = useState(null);
   const [submission, setSubmission] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3;
+  const itemsPerPage = 2;
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [isLoadingSubmission, setIsLoadingSubmission] = useState(false);
 
@@ -151,7 +151,6 @@ const StudentAssignmentsList = () => {
           >
             <h3 className="text-md font-semibold dark:text-white">{assignment.assignmentName}</h3>
             <p className="dark:text-gray-300"><strong>Due:</strong> {new Date(assignment.assignmentDueDate).toLocaleDateString()}</p>
-            <p className="dark:text-gray-300"><strong>Created:</strong> {new Date(assignment.createdDate).toLocaleDateString()}</p>
             <p className="dark:text-gray-300"><strong>Teacher:</strong> {assignment.email}</p>
           </div>
           {isAssignmentOverdue(assignment.assignmentDueDate) && 

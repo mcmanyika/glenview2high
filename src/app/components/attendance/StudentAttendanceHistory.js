@@ -9,7 +9,39 @@ function StudentAttendanceHistory() {
   const [userID, setUserID] = useState(null);
   const [attendanceRecords, setAttendanceRecords] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 3;
+  const [selectedRecord, setSelectedRecord] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sortConfig, setSortConfig] = useState({ key: 'date', direction: 'desc' });
+
+  // Move sortRecords function before it's used
+  const sortRecords = (records) => {
+    const sortedRecords = [...records].sort((a, b) => {
+      if (sortConfig.key === 'date') {
+        // Convert dates to timestamps for comparison
+        const dateA = new Date(a.date).getTime();
+        const dateB = new Date(b.date).getTime();
+        return sortConfig.direction === 'asc' ? dateA - dateB : dateB - dateA;
+      }
+      
+      if (a[sortConfig.key] < b[sortConfig.key]) {
+        return sortConfig.direction === 'asc' ? -1 : 1;
+      }
+      if (a[sortConfig.key] > b[sortConfig.key]) {
+        return sortConfig.direction === 'asc' ? 1 : -1;
+      }
+      return 0;
+    });
+    return sortedRecords;
+  };
+
+  // Handle sort function
+  const handleSort = (key) => {
+    setSortConfig((prevConfig) => ({
+      key,
+      direction: prevConfig.key === key && prevConfig.direction === 'asc' ? 'desc' : 'asc',
+    }));
+  };
 
   // Fetch userID from userTypes table based on logged-in user's email
   useEffect(() => {
@@ -58,7 +90,8 @@ function StudentAttendanceHistory() {
   // Pagination logic
   const indexOfLastRecord = currentPage * itemsPerPage;
   const indexOfFirstRecord = indexOfLastRecord - itemsPerPage;
-  const currentRecords = attendanceRecords.slice(indexOfFirstRecord, indexOfLastRecord);
+  const sortedRecords = sortRecords(attendanceRecords);
+  const currentRecords = sortedRecords.slice(indexOfFirstRecord, indexOfLastRecord);
   const totalPages = Math.ceil(attendanceRecords.length / itemsPerPage);
 
   // Handle page change
@@ -85,22 +118,48 @@ function StudentAttendanceHistory() {
             <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
               <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Date
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Subject
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Status
-                  </th>
+                  {[
+                    { key: 'date', label: 'Date' },
+                    { key: 'subject', label: 'Subject' },
+                    { key: 'status', label: 'Status' },
+                  ].map((column) => (
+                    <th 
+                      key={column.key}
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
+                      onClick={() => handleSort(column.key)}
+                    >
+                      <div className="flex items-center space-x-1">
+                        <span>{column.label}</span>
+                        <span className="inline-flex flex-col text-gray-400 dark:text-gray-500">
+                          <svg className={`w-3 h-3 ${
+                            sortConfig.key === column.key && sortConfig.direction === 'asc' 
+                              ? 'text-blue-500 dark:text-blue-400' 
+                              : ''
+                          }`} viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z" />
+                          </svg>
+                          <svg className={`w-3 h-3 ${
+                            sortConfig.key === column.key && sortConfig.direction === 'desc'
+                              ? 'text-blue-500 dark:text-blue-400'
+                              : ''
+                          }`} viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" />
+                          </svg>
+                        </span>
+                      </div>
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                 {currentRecords.map((record, index) => (
                   <tr 
                     key={index}
-                    className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150"
+                    className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150 cursor-pointer"
+                    onClick={() => {
+                      setSelectedRecord(record);
+                      setIsModalOpen(true);
+                    }}
                   >
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
                       {record.date}
@@ -128,7 +187,7 @@ function StudentAttendanceHistory() {
               onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
               className="px-4 py-2 text-sm font-medium text-white bg-blue-500 dark:bg-blue-600 
-                rounded-md hover:bg-blue-600 dark:hover:bg-blue-700 
+                rounded-full hover:bg-blue-600 dark:hover:bg-blue-700 
                 disabled:opacity-50 disabled:cursor-not-allowed
                 transition-colors duration-200"
             >
@@ -143,7 +202,7 @@ function StudentAttendanceHistory() {
               )}
               disabled={currentPage >= Math.ceil(attendanceRecords.length / itemsPerPage)}
               className="px-4 py-2 text-sm font-medium text-white bg-blue-500 dark:bg-blue-600 
-                rounded-md hover:bg-blue-600 dark:hover:bg-blue-700 
+                rounded-full hover:bg-blue-600 dark:hover:bg-blue-700 
                 disabled:opacity-50 disabled:cursor-not-allowed
                 transition-colors duration-200"
             >
@@ -151,6 +210,71 @@ function StudentAttendanceHistory() {
             </button>
           </div>
         </>
+      )}
+
+      {/* Add Modal */}
+      {isModalOpen && selectedRecord && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 animate-fadeIn"
+          onClick={() => setIsModalOpen(false)}
+        >
+          <div 
+            className="bg-white dark:bg-gray-800 rounded-lg p-8 max-w-lg w-full shadow-xl transform animate-modalSlide"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
+                Attendance Details
+              </h2>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors duration-200"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="space-y-4 mb-6">
+              <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Date</p>
+                <p className="text-gray-800 dark:text-gray-200">{selectedRecord.date}</p>
+              </div>
+
+              <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Subject</p>
+                <p className="text-gray-800 dark:text-gray-200">{selectedRecord.subject}</p>
+              </div>
+
+              <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Status</p>
+                <div className="flex items-center space-x-2">
+                  {statusIcons[selectedRecord.status]}
+                  <span className={`text-gray-800 dark:text-gray-200 ${
+                    selectedRecord.status === 'Present' 
+                      ? 'text-green-600 dark:text-green-400'
+                      : selectedRecord.status === 'Late'
+                      ? 'text-yellow-600 dark:text-yellow-400'
+                      : 'text-red-600 dark:text-red-400'
+                  }`}>
+                    {selectedRecord.status}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="w-full bg-blue-500 dark:bg-blue-600 text-white py-3 px-4 rounded-lg
+                hover:bg-blue-600 dark:hover:bg-blue-700 
+                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                transition-colors duration-200"
+            >
+              Close
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );

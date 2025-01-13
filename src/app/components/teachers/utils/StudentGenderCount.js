@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { ref, onValue } from 'firebase/database';
 import { database } from '../../../../../utils/firebaseConfig';
-import { FaSpinner, FaMale, FaFemale, FaUsers } from 'react-icons/fa'; // Importing icons
+import { FaSpinner } from 'react-icons/fa';
 import { useSession } from 'next-auth/react';
+import { Pie } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+
+// Register ChartJS components
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const StudentGenderCount = () => {
   const { data: session, status } = useSession();
@@ -55,7 +60,7 @@ const StudentGenderCount = () => {
     } else {
       setIsLoading(false);
     }
-  }, [status, session.user.email]);
+  }, [status, session?.user?.email]);
 
   const filteredStudents = admissions.filter((student) => {
     const isClassValid = classes.some((cls) => cls.className === student.class);
@@ -73,7 +78,6 @@ const StudentGenderCount = () => {
     );
   });
 
-  // Calculate gender counts
   const genderCounts = filteredStudents.reduce(
     (acc, student) => {
       const gender = student.gender ? student.gender.toLowerCase() : 'unknown';
@@ -83,6 +87,52 @@ const StudentGenderCount = () => {
     },
     { male: 0, female: 0, TotalCount: 0 }
   );
+
+  const chartData = {
+    labels: ['Male', 'Female'],
+    datasets: [
+      {
+        data: [genderCounts.male, genderCounts.female],
+        backgroundColor: [
+          'rgba(54, 162, 235, 0.8)', // blue for male
+          'rgba(255, 99, 132, 0.8)', // pink for female
+        ],
+        borderColor: [
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 99, 132, 1)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: {
+          color: 'rgb(156, 163, 175)', // text-gray-400
+          font: {
+            size: 14,
+          },
+          padding: 20,
+        },
+      },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            const label = context.label || '';
+            const value = context.raw || 0;
+            const total = genderCounts.TotalCount;
+            const percentage = ((value / total) * 100).toFixed(1);
+            return `${label}: ${value} (${percentage}%)`;
+          }
+        }
+      }
+    },
+  };
 
   if (isLoading) {
     return (
@@ -96,32 +146,31 @@ const StudentGenderCount = () => {
   return (
     <div className="w-full text-sm p-4 bg-white dark:bg-gray-800 transition-colors duration-200">
       <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
-        Students By Gender
+        My Students By Gender
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="p-4 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 
-          rounded-lg shadow-md hover:shadow-lg dark:shadow-gray-900 
-          flex flex-col items-center justify-center 
-          transition-all duration-200">
-          <FaMale className="text-4xl mb-2" />
-          <h3 className="text-lg font-semibold">Male</h3>
-          <p className="text-2xl">{genderCounts.male}</p>
+      
+      <div className="relative h-[300px] mb-4">
+        <Pie data={chartData} options={chartOptions} />
+      </div>
+
+      <div className="grid grid-cols-3 gap-4 mt-6">
+        <div className="p-4 bg-blue-100 dark:bg-blue-900 rounded-lg text-center">
+          <p className="text-sm text-blue-600 dark:text-blue-200">Male</p>
+          <p className="text-2xl font-semibold text-blue-700 dark:text-blue-100">
+            {genderCounts.male}
+          </p>
         </div>
-        <div className="p-4 bg-pink-100 dark:bg-pink-900 text-pink-700 dark:text-pink-200 
-          rounded-lg shadow-md hover:shadow-lg dark:shadow-gray-900 
-          flex flex-col items-center justify-center 
-          transition-all duration-200">
-          <FaFemale className="text-4xl mb-2" />
-          <h3 className="text-lg font-semibold">Female</h3>
-          <p className="text-2xl">{genderCounts.female}</p>
+        <div className="p-4 bg-pink-100 dark:bg-pink-900 rounded-lg text-center">
+          <p className="text-sm text-pink-600 dark:text-pink-200">Female</p>
+          <p className="text-2xl font-semibold text-pink-700 dark:text-pink-100">
+            {genderCounts.female}
+          </p>
         </div>
-        <div className="p-4 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 
-          rounded-lg shadow-md hover:shadow-lg dark:shadow-gray-900 
-          flex flex-col items-center justify-center 
-          transition-all duration-200">
-          <FaUsers className="text-4xl mb-2" />
-          <h3 className="text-lg font-semibold">Total Count</h3>
-          <p className="text-2xl">{genderCounts.TotalCount}</p>
+        <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg text-center">
+          <p className="text-sm text-gray-600 dark:text-gray-200">Total</p>
+          <p className="text-2xl font-semibold text-gray-700 dark:text-gray-100">
+            {genderCounts.TotalCount}
+          </p>
         </div>
       </div>
     </div>

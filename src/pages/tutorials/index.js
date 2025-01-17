@@ -7,10 +7,7 @@ export default function index() {
   return (
     <AdminLayout>
       <div className="flex gap-4">
-        <div className="w-1/3">
-          <AddTutorial />
-        </div>
-        <div className="w-2/3">
+        <div className='w-full'>
           <TutorialList />
         </div>
       </div>

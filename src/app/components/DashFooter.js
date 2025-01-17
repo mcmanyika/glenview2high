@@ -1,13 +1,21 @@
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import AddTutorial from './tutorials/AddTutorial';
 
 const Footer = () => {
   const { data: session } = useSession();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showAddTutorial, setShowAddTutorial] = useState(false);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
+    setShowAddTutorial(false); // Reset tutorial modal when closing main modal
+  };
+
+  const handleTutorialClick = (e) => {
+    e.preventDefault();
+    setShowAddTutorial(true);
   };
 
   return (
@@ -90,9 +98,46 @@ const Footer = () => {
                   <p className="mt-1 text-white/70">Upload banners links</p>
                 </div>
               </div>
+
+              <div className="group flex gap-x-6 rounded-lg p-4 hover:bg-white/10 transition-colors">
+                <div className="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-white/10 group-hover:bg-white/20">
+                  <svg className="h-6 w-6 text-white group-hover:text-white" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.042 21.672 13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672ZM12 2.25V4.5m5.834.166-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243-1.59-1.59" />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <button
+                    onClick={handleTutorialClick}
+                    className="font-semibold text-white block hover:text-white/80"
+                  >
+                    Tutorials
+                  </button>
+                  <p className="mt-1 text-white/70">Add new tutorials</p>
+                </div>
+              </div>
             </div>
           </div>
           
+        </div>
+      )}
+
+      {/* Add Tutorial Modal */}
+      {showAddTutorial && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] flex items-center justify-center">
+          <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold">Add New Tutorial</h2>
+              <button
+                onClick={() => setShowAddTutorial(false)}
+                className="p-2 hover:bg-gray-100 rounded-full"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <AddTutorial />
+          </div>
         </div>
       )}
     </>

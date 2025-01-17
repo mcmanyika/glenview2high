@@ -41,7 +41,7 @@ const AddTutorial = () => {
       });
       
       toast.success('Tutorial added successfully!', {
-        position: "top-right",
+        position: "bottom-center",
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,

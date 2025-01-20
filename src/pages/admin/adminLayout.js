@@ -92,9 +92,9 @@ const AdminLayout = ({ children }) => {
             
             // Define allowed titles based on userID
             const allowedTitles = {
-              'STFF': ['Dashboard', 'Class Routine', 'Notice', 'Admissions', 'Applicants', 'Attendance', 'Payment', 'Class Allocation'],
-              'ADM': ['Dashboard', 'Finance', 'My Assignments', 'Term Reports', 'Store'],
-              'TCHR': ['Dashboard', 'Assignments', 'Attendance', 'Students Stats', 'Student Report', 'Exams', 'Notice', 'Events']
+              'STFF': ['Dashboard', 'Class Routine', 'Notice', 'Tutorials', 'Admissions', 'Applicants', 'Attendance', 'Payment', 'Class Allocation'],
+              'ADM': ['Dashboard', 'Finance', 'My Assignments', 'Term Reports', 'Store', 'Tutorials'],
+              'TCHR': ['Dashboard', 'Assignments', 'Attendance', 'Students Stats', 'Student Report', 'Exams', 'Notice', 'Tutorials', 'Events']
             };
 
             // Get the correct set of allowed titles based on userID prefix

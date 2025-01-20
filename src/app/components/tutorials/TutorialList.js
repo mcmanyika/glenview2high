@@ -145,7 +145,7 @@ const TutorialList = () => {
           currentTutorials.map((tutorial) => (
             <div
               key={tutorial.id}
-              className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer"
+              className="bg-white rounded-lg  overflow-hidden cursor-pointer"
               onClick={() => handleTutorialClick(tutorial)}
             >
               <div className="p-4">

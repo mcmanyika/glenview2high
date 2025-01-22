@@ -94,7 +94,8 @@ const AdminLayout = ({ children }) => {
             const allowedTitles = {
               'STFF': ['Dashboard', 'Class Routine', 'Notice', 'Tutorials', 'Admissions', 'Applicants', 'Attendance', 'Payment', 'Class Allocation'],
               'ADM': ['Dashboard', 'Finance', 'My Assignments', 'Term Reports', 'Store', 'Tutorials'],
-              'TCHR': ['Dashboard', 'Assignments', 'Attendance', 'Students Stats', 'Student Report', 'Exams', 'Notice', 'Tutorials', 'Events']
+              'TCHR': ['Dashboard', 'Assignments', 'Attendance', 'Students Stats', 'Student Report', 'Exams', 'Notice', 'Tutorials', 'Events'],
+              'PRNT': ['Dashboard']
             };
 
             // Get the correct set of allowed titles based on userID prefix
@@ -102,6 +103,7 @@ const AdminLayout = ({ children }) => {
             if (userID.startsWith('STFF')) userAllowedTitles = allowedTitles['STFF'];
             else if (userID.startsWith('ADM')) userAllowedTitles = allowedTitles['ADM'];
             else if (userID.startsWith('TCHR')) userAllowedTitles = allowedTitles['TCHR'];
+            else if (userID.startsWith('PRNT')) userAllowedTitles = allowedTitles['PRNT'];
 
             // Filter while mapping
             const filteredTitles = Object.keys(data)

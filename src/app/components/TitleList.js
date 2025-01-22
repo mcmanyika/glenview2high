@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import {
-  FaSignOutAlt, FaTachometerAlt, FaShoppingBag, FaPencilRuler, FaCalendarAlt, FaClipboardList, FaUserGraduate, FaHome, FaCashRegister,  FaChartLine, FaEnvelope, FaDollarSign, FaMoneyBillWave, FaWallet, FaCoins, FaFileAlt, 
+  FaSignOutAlt, FaTachometerAlt, FaShoppingBag, FaPencilRuler, FaCalendarAlt, FaClipboardList, FaUserGraduate, FaHome, FaCashRegister,  FaChartLine, FaEnvelope, FaDollarSign, FaMoneyBillWave, FaWallet, FaCoins, FaFileAlt, FaVideo
 } from 'react-icons/fa';
 import { MdOutlineLibraryBooks } from 'react-icons/md';
 import { LiaChalkboardTeacherSolid } from 'react-icons/lia';
@@ -12,6 +12,7 @@ import { FaCheckCircle } from 'react-icons/fa';
 // Mapping icon names to their respective components
 const iconMapping = {
   FaChartLine: FaChartLine,
+  FaVideo: FaVideo,
   FaEnvelope: FaEnvelope,
   FaTachometerAlt: FaTachometerAlt,
   FaPencilRuler: FaPencilRuler,

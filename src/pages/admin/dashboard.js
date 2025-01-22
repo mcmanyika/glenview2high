@@ -8,6 +8,7 @@ import { ref, get } from 'firebase/database';
 import StudentDash from './student_dash';
 import TeacherDashboard from './teachers_dashboard';
 import AdminDashboard from './admin_dashboard';
+import ParentDashboard from './parent_dashboard';
 import { useGlobalState, setUserID } from '../../app/store';
 
 const Dashboard = () => {
@@ -50,6 +51,9 @@ const Dashboard = () => {
                   break;
                 case 'staff':
                   setSelectedComponent(<AdminDashboard />);
+                  break;
+                case 'parent':
+                  setSelectedComponent(<ParentDashboard />);
                   break;
               }
             } else {

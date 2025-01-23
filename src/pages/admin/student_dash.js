@@ -178,7 +178,7 @@ const StudentDash = () => {
       <div className='min-h-screen space-y-6 pt-6 dark:bg-slate-950 transition-colors duration-200'>
         <div className="bg-white dark:bg-slate-900 rounded-xl shadow-md p-6 border border-gray-100 dark:border-slate-800">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 cursor-pointer" onClick={handleEditClick}>
               <div className="p-3 bg-main3/10 dark:bg-main2/10 rounded-full">
                 <FaUser className="text-2xl text-main3 dark:text-main2" />
               </div>
@@ -186,7 +186,6 @@ const StudentDash = () => {
                   <p className="text-gray-500 dark:text-gray-400">
                     Student ID: {studentData?.userID} <br />
                     Class: {studentData?.class}  <br />
-                    <button onClick={handleEditClick} className="text-blue-500 hover:underline">Student Details</button>
                   </p>
                 </div>
             </div>
@@ -240,8 +239,14 @@ const StudentDash = () => {
         </div>
 
         {isEditModalOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-slate-900 rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div 
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            onClick={() => setIsEditModalOpen(false)}
+          >
+            <div 
+              className="bg-white dark:bg-slate-900 rounded-xl p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto mx-4"
+              onClick={(e) => e.stopPropagation()}
+            >
               <h2 className="text-xl font-semibold mb-6 text-gray-800 dark:text-white border-b pb-2 dark:border-slate-700">
                 {studentDetails ? 'Edit Student Details' : 'Add Student Details'}
               </h2>

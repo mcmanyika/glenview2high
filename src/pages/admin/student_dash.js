@@ -175,8 +175,8 @@ const StudentDash = () => {
         pauseOnHover
         theme="colored"
       />
-      <div className='min-h-screen space-y-6 pt-6 dark:bg-slate-950 transition-colors duration-200'>
-        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-md p-6 border border-gray-100 dark:border-slate-800">
+      <div className='min-h-screen pt-6 dark:bg-slate-950 transition-colors duration-200'>
+        <div className="bg-white  dark:bg-slate-900 rounded-xl shadow-md p-6 mb-6 border border-gray-100 dark:border-slate-800">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between">
             <div className="flex items-center space-x-4 cursor-pointer" onClick={handleEditClick}>
               <div className="p-3 bg-main3/10 dark:bg-main2/10 rounded-full">
@@ -194,7 +194,7 @@ const StudentDash = () => {
 
        
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-6 mb-6">
           <div className="bg-white dark:bg-slate-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-slate-800">
             <div className="p-4 border-b border-gray-100 dark:border-slate-800">
               <h3 className="text-lg font-semibold text-gray-800 dark:text-white">Class Routine</h3>

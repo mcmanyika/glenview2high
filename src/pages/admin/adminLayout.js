@@ -41,6 +41,7 @@ const AdminLayout = ({ children }) => {
   const popupRef = useRef(null); // Add this ref for the popup
 
   const [websiteUrl, setWebsiteUrl] = useState('');
+  const [teacherData, setTeacherData] = useState(null);
 
   useEffect(() => {
     setMounted(true);
@@ -182,6 +183,33 @@ const AdminLayout = ({ children }) => {
   const togglePopup = () => {
     setIsPopupVisible(!isPopupVisible);
   };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (session?.user?.email) {
+        try {
+          const userRef = ref(database, 'userTypes');
+          const snapshot = await get(userRef);
+
+          if (snapshot.exists()) {
+            const allUserData = snapshot.val();
+            const matchedUser = Object.entries(allUserData).find(
+              ([_, user]) => user.email === session.user.email
+            );
+
+            if (matchedUser) {
+              const [userId, userInfo] = matchedUser;
+              setTeacherData(userInfo);
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching user data: ', error);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [session]);
 
   return (
     <div className="flex min-h-screen overflow-y-auto text-base bg-main dark:bg-gray-900">

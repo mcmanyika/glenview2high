@@ -252,9 +252,9 @@ const StudentDash = () => {
           </div>
         </div>
 
-        <div className="mt-8">
+        {/* <div className="mt-8">
           <SubscriptionPlans />
-        </div>
+        </div> */}
 
         {isEditModalOpen && (
           <div 

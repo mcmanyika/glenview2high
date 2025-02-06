@@ -33,8 +33,9 @@ const Accounts = () => {
     });
   }, []);
 
-  // Filter admissions based on search query
+  // Filter admissions based on search query AND userType
   const filteredAdmissions = admissions.filter((admission) =>
+    admission.userType === "student" &&
     Object.values(admission).some((value) =>
       value.toString().toLowerCase().includes(searchQuery.toLowerCase())
     )

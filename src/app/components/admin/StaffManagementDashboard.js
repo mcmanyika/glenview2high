@@ -147,7 +147,7 @@ const StaffManagementDashboard = () => {
         <div className="p-4 bg-blue-300 rounded-lg text-center shadow-sm">
           <h3 className="text-lg font-semibold">Active Staff</h3>
           <p className="text-2xl font-bold text-white">
-            {staffList.filter((staff) => staff.status === "Active").length}
+            {staffList.filter((staff) => staff.status === "Accepted").length}
           </p>
         </div>
         <div className="p-4 bg-blue-200 rounded-lg text-center shadow-sm">
@@ -159,13 +159,13 @@ const StaffManagementDashboard = () => {
       </div>
 
       {/* Search Bar */}
-      <div className="w-full flex items-center justify-between mb-4">
+      <div className="w-full mb-4">
         <input
           type="text"
           placeholder="Search staff by name or email..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="p-2 border border-gray-300 rounded-md w-full md:w-1/3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="p-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
       </div>
 

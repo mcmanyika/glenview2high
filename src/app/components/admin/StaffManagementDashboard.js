@@ -10,6 +10,12 @@ const StaffManagementDashboard = () => {
   const [selectedStaff, setSelectedStaff] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editForm, setEditForm] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12;
+  const [sortConfig, setSortConfig] = useState({
+    key: 'name',
+    direction: 'asc'
+  });
 
   const staffRoles = [
     "Staff Member",
@@ -30,13 +36,12 @@ const StaffManagementDashboard = () => {
     onValue(staffRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        // Filter users where userType is 'staff' and transform into array
         const staffArray = Object.entries(data)
-          .filter(([_, user]) => user.userType === 'staff')
+          .filter(([_, user]) => user.userType === 'teacher' || user.userType === 'staff')
           .map(([id, user]) => ({
             id,
             name: `${user.firstName || ''} ${user.lastName || ''}`.trim(),
-            role: user.role || 'Staff Member',
+            userType: user.userType || 'staff',
             email: user.email,
             status: user.status || 'Active',
             phone: user.phone,
@@ -54,6 +59,36 @@ const StaffManagementDashboard = () => {
     staff.name.toLowerCase().includes(search.toLowerCase()) ||
     staff.email.toLowerCase().includes(search.toLowerCase())
   );
+
+  // Sorting function
+  const sortData = (data, key, direction) => {
+    return [...data].sort((a, b) => {
+      if (a[key] < b[key]) return direction === 'asc' ? -1 : 1;
+      if (a[key] > b[key]) return direction === 'asc' ? 1 : -1;
+      return 0;
+    });
+  };
+
+  const handleSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  // Apply sorting to filtered staff
+  const sortedAndFilteredStaff = sortData(filteredStaff, sortConfig.key, sortConfig.direction);
+  
+  // Calculate pagination values
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = sortedAndFilteredStaff.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(sortedAndFilteredStaff.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   const handleStaffClick = (staff) => {
     // Split the name into firstName and lastName if they don't exist
@@ -139,21 +174,69 @@ const StaffManagementDashboard = () => {
         <table className="min-w-full bg-white border text-sm border-gray-200 rounded-lg">
           <thead className="bg-blue-300 text-white">
             <tr>
-              <th className="py-2 px-4 text-left">Name</th>
-              <th className="py-2 px-4 text-left">Role</th>
-              <th className="py-2 px-4 text-left">Phone</th>
-              <th className="py-2 px-4 text-left">Status</th>
+              <th 
+                className="py-2 px-4 text-left cursor-pointer hover:bg-blue-400"
+                onClick={() => handleSort('name')}
+              >
+                <div className="flex items-center">
+                  Name
+                  {sortConfig.key === 'name' && (
+                    <span className="ml-1">
+                      {sortConfig.direction === 'asc' ? '↑' : '↓'}
+                    </span>
+                  )}
+                </div>
+              </th>
+              <th 
+                className="py-2 px-4 text-left cursor-pointer hover:bg-blue-400"
+                onClick={() => handleSort('userType')}
+              >
+                <div className="flex items-center">
+                  User Type
+                  {sortConfig.key === 'userType' && (
+                    <span className="ml-1">
+                      {sortConfig.direction === 'asc' ? '↑' : '↓'}
+                    </span>
+                  )}
+                </div>
+              </th>
+              <th 
+                className="py-2 px-4 text-left cursor-pointer hover:bg-blue-400"
+                onClick={() => handleSort('phone')}
+              >
+                <div className="flex items-center">
+                  Phone
+                  {sortConfig.key === 'phone' && (
+                    <span className="ml-1">
+                      {sortConfig.direction === 'asc' ? '↑' : '↓'}
+                    </span>
+                  )}
+                </div>
+              </th>
+              <th 
+                className="py-2 px-4 text-left cursor-pointer hover:bg-blue-400"
+                onClick={() => handleSort('status')}
+              >
+                <div className="flex items-center">
+                  Status
+                  {sortConfig.key === 'status' && (
+                    <span className="ml-1">
+                      {sortConfig.direction === 'asc' ? '↑' : '↓'}
+                    </span>
+                  )}
+                </div>
+              </th>
             </tr>
           </thead>
           <tbody>
-            {filteredStaff.map((staff) => (
+            {currentItems.map((staff) => (
               <tr 
                 key={staff.id} 
                 className="border-b hover:bg-gray-100 cursor-pointer"
                 onClick={() => handleStaffClick(staff)}
               >
                 <td className="py-2 px-4 capitalize">{staff.name}</td>
-                <td className="py-2 px-4">{staff.role}</td>
+                <td className="py-2 px-4 capitalize">{staff.userType}</td>
                 <td className="py-2 px-4">{staff.phone}</td>
                 <td
                   className={`py-2 px-4 font-semibold ${
@@ -164,7 +247,7 @@ const StaffManagementDashboard = () => {
                 </td>
               </tr>
             ))}
-            {filteredStaff.length === 0 && (
+            {currentItems.length === 0 && (
               <tr>
                 <td colSpan="5" className="py-4 text-center text-gray-500">
                   No staff members found.
@@ -174,6 +257,49 @@ const StaffManagementDashboard = () => {
           </tbody>
         </table>
       </div>
+
+      {/* Pagination */}
+      {sortedAndFilteredStaff.length > 0 && (
+        <div className="flex justify-center items-center space-x-2 mt-4">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className={`px-3 py-1 rounded ${
+              currentPage === 1
+                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                : 'bg-blue-500 text-white hover:bg-blue-600'
+            }`}
+          >
+            Previous
+          </button>
+          
+          {[...Array(totalPages)].map((_, index) => (
+            <button
+              key={index + 1}
+              onClick={() => handlePageChange(index + 1)}
+              className={`px-3 py-1 rounded ${
+                currentPage === index + 1
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-gray-100 hover:bg-gray-200'
+              }`}
+            >
+              {index + 1}
+            </button>
+          ))}
+          
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className={`px-3 py-1 rounded ${
+              currentPage === totalPages
+                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                : 'bg-blue-500 text-white hover:bg-blue-600'
+            }`}
+          >
+            Next
+          </button>
+        </div>
+      )}
 
       {/* Edit Modal */}
       <AnimatePresence>
@@ -256,11 +382,11 @@ const StaffManagementDashboard = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      Role
+                      User Type
                     </label>
                     <select
-                      name="role"
-                      value={editForm.role || 'Staff Member'}
+                      name="userType"
+                      value={editForm.userType || 'Staff Member'}
                       onChange={handleInputChange}
                       className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
                     >

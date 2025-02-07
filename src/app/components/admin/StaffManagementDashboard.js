@@ -197,7 +197,7 @@ const StaffManagementDashboard = () => {
         <div className="p-4 bg-blue-300 rounded-lg text-center shadow-sm">
           <h3 className="text-lg font-semibold">Active Staff</h3>
           <p className="text-2xl font-bold text-white">
-            {staffList.filter((staff) => staff.status === "Accepted").length}
+            {staffList.filter((staff) => staff.status === "Active").length}
           </p>
         </div>
         <div className="p-4 bg-blue-200 rounded-lg text-center shadow-sm">

@@ -21,6 +21,7 @@ const UserTypeSelector = ({ userEmail }) => {
     studentClassLevel: '',
     userID: '',
     status: 'Inactive',
+    accessLevel: 1, // Add default access level
   });
 
   // State for loading and error tracking
@@ -110,6 +111,9 @@ const UserTypeSelector = ({ userEmail }) => {
         toast.success('User data saved successfully', {
           position: 'bottom-center',
         });
+
+        // Redirect to admin dashboard after successful submission
+        router.push('/admin/dashboard');
 
         // Reset form data
         setFormData((prevFormData) => ({
@@ -229,12 +233,12 @@ const UserTypeSelector = ({ userEmail }) => {
 
           <div className="flex flex-col mb-4">
             <label className="text-lg font-semibold mb-2">Specify your Account</label>
-            <div className="flex space-x-4 mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
               {/* UserType Options */}
               {['student', 'teacher', 'staff', 'parent', 'alumni', 'contractor'].map((type) => (
                 <div
                   key={type}
-                  className={`cursor-pointer p-2 border border-gray-300 rounded ${
+                  className={`cursor-pointer p-2 border border-gray-300 rounded text-center ${
                     formData.userType === type ? 'bg-main2' : ''
                   }`}
                   onClick={() => handleUserTypeSelect(type)}
@@ -245,33 +249,47 @@ const UserTypeSelector = ({ userEmail }) => {
             </div>
           </div>
 
+          {/* Date of Birth field for student, staff, or teacher */}
+          {(formData.userType === 'student' || formData.userType === 'staff' || formData.userType === 'teacher') && (
+            <div>
+              <label>Date Of Birth</label>
+              <input
+                type="date"
+                name="dateOfBirth"
+                value={formData.dateOfBirth}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+            </div>
+          )}
+
+          {/* Student Class Level (keep existing student-specific field) */}
           {formData.userType === 'student' && (
-            <>
-              <div>
-                <label>Date Of Birth</label>
-                <input
-                  type="date"
-                  name="dateOfBirth"
-                  value={formData.dateOfBirth}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
-                />
-              </div>
-              <div>
-                <select
-                  name="studentClassLevel"
-                  value={formData.studentClassLevel}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
-                >
-                  <option value="" disabled>Select Class Level...</option>
-                  <option value="Form 1">Form 1</option>
-                  <option value="Form 2">Form 2</option>
-                  <option value="O' Level">O Level</option>
-                  <option value="A' Level">A Level</option>
-                </select>
-              </div>
-            </>
+            <div>
+              <select
+                name="studentClassLevel"
+                value={formData.studentClassLevel}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded"
+              >
+                <option value="" disabled>Select Class Level...</option>
+                <option value="Form 1">Form 1</option>
+                <option value="Form 2">Form 2</option>
+                <option value="O' Level">O Level</option>
+                <option value="A' Level">A Level</option>
+              </select>
+            </div>
+          )}
+
+          {/* Access Level field for staff */}
+          {formData.userType === 'staff' && (
+            <div>
+              <input
+                type="hidden"
+                name="accessLevel"
+                value={formData.accessLevel}
+              />
+            </div>
           )}
 
           {/* Submit button */}

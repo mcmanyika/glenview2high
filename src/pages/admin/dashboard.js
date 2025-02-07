@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import withAuth from '../../../utils/withAuth';
 import { FaSpinner } from 'react-icons/fa';
 import { useRouter } from 'next/router';
@@ -10,6 +10,7 @@ import TeacherDashboard from './teachers_dashboard';
 import AdminDashboard from './admin_dashboard';
 import ParentDashboard from './parent_dashboard';
 import { useGlobalState, setUserID } from '../../app/store';
+import { toast } from 'react-toastify';
 
 const Dashboard = () => {
   const { data: session, status } = useSession();
@@ -50,19 +51,33 @@ const Dashboard = () => {
                   setSelectedComponent(<TeacherDashboard />);
                   break;
                 case 'staff':
-                  setSelectedComponent(<AdminDashboard />);
+                  if (userData.accessLevel === 5) {
+                    setSelectedComponent(<AdminDashboard />);
+                  } else {
+                    toast.error('Access denied. Your account is under review, please contact the system administrator.');
+                    setTimeout(async () => {
+                      await signOut({ redirect: false });
+                      router.push('/');
+                    }, 6000);
+                  }
                   break;
                 case 'parent':
                   setSelectedComponent(<ParentDashboard />);
                   break;
               }
             } else {
-              console.log('No user found with this email.');
-              router.push('/admin/user'); // Redirect if user not found
+              toast.error('User not found. Please try again.');
+              setTimeout(async () => {
+                await signOut({ redirect: false });
+                router.push('/');
+              }, 2000);
             }
           } else {
-            console.log('No userTypes found.');
-            router.push('/admin/user'); // Redirect if no userTypes are found
+            toast.error('System error. Please try again later.');
+            setTimeout(async () => {
+              await signOut({ redirect: false });
+              router.push('/');
+            }, 2000);
           }
         } catch (error) {
           console.error('Error fetching user type:', error);

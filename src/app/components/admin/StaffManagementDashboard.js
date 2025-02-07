@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { database } from '../../../../utils/firebaseConfig';
 import { ref, onValue, update } from 'firebase/database';
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 
 const StaffManagementDashboard = () => {
   const [search, setSearch] = useState("");
@@ -37,7 +39,10 @@ const StaffManagementDashboard = () => {
       const data = snapshot.val();
       if (data) {
         const staffArray = Object.entries(data)
-          .filter(([_, user]) => user.userType === 'teacher' || user.userType === 'staff')
+          .filter(([_, user]) => 
+            (user.userType === 'teacher' || user.userType === 'staff') && 
+            !user.deleted
+          )
           .map(([id, user]) => ({
             id,
             name: `${user.firstName || ''} ${user.lastName || ''}`.trim(),
@@ -125,6 +130,51 @@ const StaffManagementDashboard = () => {
       setIsModalOpen(false);
     } catch (error) {
       console.error("Error updating staff member:", error);
+    }
+  };
+
+  const handleDelete = async (e, staffId) => {
+    e.stopPropagation(); // Prevent row click event
+    
+    toast.info(
+      <div>
+        <p>Are you sure you want to delete this staff member?</p>
+        <div className="mt-2 flex justify-end gap-2">
+          <button
+            onClick={() => {
+              toast.dismiss();
+              deleteStaffMember(staffId);
+            }}
+            className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+          >
+            Delete
+          </button>
+          <button
+            onClick={() => toast.dismiss()}
+            className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>,
+      {
+        position: "bottom-center",
+        autoClose: false,
+        closeOnClick: false,
+        draggable: false,
+        closeButton: false,
+      }
+    );
+  };
+
+  const deleteStaffMember = async (staffId) => {
+    try {
+      const staffRef = ref(database, `userTypes/${staffId}`);
+      await update(staffRef, { deleted: true });
+      toast.success('Staff member deleted successfully');
+    } catch (error) {
+      console.error("Error deleting staff member:", error);
+      toast.error('Failed to delete staff member');
     }
   };
 
@@ -226,6 +276,9 @@ const StaffManagementDashboard = () => {
                   )}
                 </div>
               </th>
+              <th className="py-2 px-4 text-left">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -244,6 +297,26 @@ const StaffManagementDashboard = () => {
                   }`}
                 >
                   {staff.status}
+                </td>
+                <td className="py-2 px-4">
+                  <button
+                    onClick={(e) => handleDelete(e, staff.id)}
+                    className="text-red-600 hover:text-red-800 p-2"
+                  >
+                    <svg 
+                      className="w-5 h-5" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        strokeWidth="2" 
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                      />
+                    </svg>
+                  </button>
                 </td>
               </tr>
             ))}
@@ -433,6 +506,8 @@ const StaffManagementDashboard = () => {
           </div>
         )}
       </AnimatePresence>
+
+     
     </div>
   );
 };

@@ -29,7 +29,7 @@ const AdminDashboard = () => {
             if (matchedAdmin) {
               const [adminId, adminInfo] = matchedAdmin;
               setAdminData(adminInfo);
-              setIsActiveUser(adminInfo.status === 'Accepted');
+              setIsActiveUser(adminInfo.status === 'Active');
             }
           }
         } catch (error) {

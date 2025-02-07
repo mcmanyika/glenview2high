@@ -47,6 +47,11 @@ const PaymentsChart = () => {
         setPaymentsData(chartData);
         setLoading(false);
         setTimeout(() => setStartCounter(true), 500);
+      } else {
+        // Handle case when no data exists
+        setPaymentsData([]);
+        setLoading(false);
+        setTimeout(() => setStartCounter(true), 500);
       }
     });
   }, []);

@@ -58,7 +58,7 @@ const Dashboard = () => {
                     setTimeout(async () => {
                       await signOut({ redirect: false });
                       router.push('/');
-                    }, 6000);
+                    }, 2000);
                   }
                   break;
                 case 'parent':
@@ -66,16 +66,14 @@ const Dashboard = () => {
                   break;
               }
             } else {
-              toast.error('User not found. Please try again.');
-              setTimeout(async () => {
-                await signOut({ redirect: false });
-                router.push('/');
+              toast.error('User not found. Create an account.');
+              setTimeout(() => {
+                router.push('/admin/user');
               }, 2000);
             }
           } else {
             toast.error('System error. Please try again later.');
-            setTimeout(async () => {
-              await signOut({ redirect: false });
+            setTimeout(() => {
               router.push('/');
             }, 2000);
           }

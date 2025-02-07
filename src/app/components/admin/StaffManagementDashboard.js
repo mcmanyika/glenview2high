@@ -40,7 +40,9 @@ const StaffManagementDashboard = () => {
       if (data) {
         const staffArray = Object.entries(data)
           .filter(([_, user]) => 
-            (user.userType === 'teacher' || user.userType === 'staff') && 
+            user.userType !== 'student' && 
+            user.userType !== 'contractor' && 
+            user.userType !== 'parent' &&
             !user.deleted
           )
           .map(([id, user]) => ({

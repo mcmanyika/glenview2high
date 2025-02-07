@@ -31,7 +31,7 @@ const TeacherDashboard = () => {
             if (matchedTeacher) {
               const [teacherId, teacherInfo] = matchedTeacher;
               setTeacherData(teacherInfo);
-              setIsActiveUser(teacherInfo.status === 'Accepted');
+              setIsActiveUser(teacherInfo.status === 'Active');
             }
           }
         } catch (error) {

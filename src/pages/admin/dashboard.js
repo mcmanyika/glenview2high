@@ -50,7 +50,10 @@ const Dashboard = () => {
                 case 'teacher':
                   setSelectedComponent(<TeacherDashboard />);
                   break;
-                case 'staff':
+                case 'parent':
+                  setSelectedComponent(<ParentDashboard />);
+                  break;
+                default:
                   if (userData.accessLevel === 5) {
                     setSelectedComponent(<AdminDashboard />);
                   } else {
@@ -60,9 +63,6 @@ const Dashboard = () => {
                       router.push('/');
                     }, 2000);
                   }
-                  break;
-                case 'parent':
-                  setSelectedComponent(<ParentDashboard />);
                   break;
               }
             } else {

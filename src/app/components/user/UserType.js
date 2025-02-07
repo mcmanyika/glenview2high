@@ -70,6 +70,13 @@ const UserTypeSelector = ({ userEmail }) => {
     setIsSubmitting(true);
     setErrorMessage(''); // Reset error message
 
+    // Check specifically for first name and last name
+    if (!formData.firstName.trim() || !formData.lastName.trim()) {
+      toast.warning('First name and last name are required');
+      setIsSubmitting(false);
+      return;
+    }
+
     if (
       formData.email &&
       formData.userType &&

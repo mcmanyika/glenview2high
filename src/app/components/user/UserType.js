@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ref, set } from 'firebase/database';
+import { ref, set, get } from 'firebase/database';
 import { database } from '../../../../utils/firebaseConfig'; // Adjust the path as needed
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -77,15 +77,30 @@ const UserTypeSelector = ({ userEmail }) => {
       return;
     }
 
-    if (
-      formData.email &&
-      formData.userType &&
-      formData.firstName &&
-      formData.lastName &&
-      (formData.userType !== 'contractor' || (formData.companyName && formData.typeOfService)) &&
-      formData.phone
-    ) {
-      try {
+    try {
+      // Check if user already exists
+      const usersRef = ref(database, 'userTypes');
+      const snapshot = await get(usersRef);
+      const existingUsers = snapshot.val() || {};
+      
+      const userExists = Object.values(existingUsers).some(
+        user => user.email === formData.email
+      );
+
+      if (userExists) {
+        toast.error('You have already submitted your details');
+        setIsSubmitting(false);
+        return;
+      }
+
+      if (
+        formData.email &&
+        formData.userType &&
+        formData.firstName &&
+        formData.lastName &&
+        (formData.userType !== 'contractor' || (formData.companyName && formData.typeOfService)) &&
+        formData.phone
+      ) {
         const createdAt = new Date().toISOString();
         const userRef = ref(database, `userTypes/${formData.userID}`);
         await set(userRef, {
@@ -110,17 +125,15 @@ const UserTypeSelector = ({ userEmail }) => {
           userID: generateId(prevFormData.userType),
           status: 'Inactive',
         }));
-      } catch (error) {
-        const errorMsg = error.message || 'Error saving user data';
-        setErrorMessage(errorMsg);
-        toast.error(errorMsg);
-        console.error('Error saving user data: ', error);
-      } finally {
+      } else {
+        toast.warning('Please fill in all required fields');
         setIsSubmitting(false);
-        if (router) await router.push('/admin/dashboard');
       }
-    } else {
-      toast.warning('Please fill in all required fields');
+    } catch (error) {
+      const errorMsg = error.message || 'Error checking/saving user data';
+      setErrorMessage(errorMsg);
+      toast.error(errorMsg);
+      console.error('Error: ', error);
       setIsSubmitting(false);
     }
   };

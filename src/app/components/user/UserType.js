@@ -16,6 +16,7 @@ const UserTypeSelector = ({ userEmail }) => {
     typeOfService: '',
     dateOfBirth: '',
     phone: '',
+    countryCode: '+263', // Add default country code
     userType: '',
     email: userEmail || '',
     studentClassLevel: '',
@@ -60,7 +61,27 @@ const UserTypeSelector = ({ userEmail }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevFormData) => ({
+    
+    // Special handling for phone number
+    if (name === 'phone') {
+      let formattedPhone = value;
+      if (!value.startsWith('+263')) {
+        // If input starts with 0, replace it with +263
+        if (value.startsWith('0')) {
+          formattedPhone = '+263' + value.substring(1);
+        } else {
+          // If input doesn't start with +263 or 0, prepend +263
+          formattedPhone = '+263' + value;
+        }
+      }
+      setFormData(prev => ({
+        ...prev,
+        phone: formattedPhone
+      }));
+      return;
+    }
+
+    setFormData(prevFormData => ({
       ...prevFormData,
       [name]: value,
     }));
@@ -150,159 +171,177 @@ const UserTypeSelector = ({ userEmail }) => {
   };
 
   return (
-    <div className="p-4 bg-white shadow-md rounded-md">
-      <h2 className="text-2xl font-semibold mb-4">Account Details Registration</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 gap-4 mb-4">
-          <div>
-            <input
-              type="text"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
-              placeholder="First Name"
-              required
-            />
-          </div>
-          <div>
-            <input
-              type="text"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
-              placeholder="Last Name"
-              required
-            />
-          </div>
-
-          {/* Conditional fields for Contractor */}
-          {formData.userType === 'contractor' ? (
-            <>
-              <div>
-                <input
-                  type="text"
-                  name="companyName"
-                  value={formData.companyName}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
-                  placeholder="Company Name"
-                  required
-                />
-              </div>
-              <div>
-                <input
-                  type="text"
-                  name="typeOfService"
-                  value={formData.typeOfService}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
-                  placeholder="Type of Service"
-                  required
-                />
-              </div>
-            </>
-          ) : (
+    <>
+      <div className="background-image"></div>
+      <div className="p-4 bg-white shadow-md rounded-md">
+        <h2 className="text-2xl font-semibold mb-4">Account Details Registration</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="grid grid-cols-1 gap-4 mb-4">
             <div>
-              <select
-                name="gender"
-                value={formData.gender}
+              <input
+                type="text"
+                name="firstName"
+                value={formData.firstName}
                 onChange={handleChange}
                 className="w-full p-2 border border-gray-300 rounded"
+                placeholder="First Name"
+                required
+              />
+            </div>
+            <div>
+              <input
+                type="text"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded"
+                placeholder="Last Name"
+                required
+              />
+            </div>
+
+            {/* Conditional fields for Contractor */}
+            {formData.userType === 'contractor' ? (
+              <>
+                <div>
+                  <input
+                    type="text"
+                    name="companyName"
+                    value={formData.companyName}
+                    onChange={handleChange}
+                    className="w-full p-2 border border-gray-300 rounded"
+                    placeholder="Company Name"
+                    required
+                  />
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    name="typeOfService"
+                    value={formData.typeOfService}
+                    onChange={handleChange}
+                    className="w-full p-2 border border-gray-300 rounded"
+                    placeholder="Type of Service"
+                    required
+                  />
+                </div>
+              </>
+            ) : (
+              <div>
+                <select
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                  required
+                >
+                  <option value="">Select Gender...</option>
+                  <option value="Female">Female</option>
+                  <option value="Male">Male</option>
+                </select>
+              </div>
+            )}
+
+            <div className="flex gap-2">
+              <select
+                name="countryCode"
+                value={formData.countryCode}
+                onChange={handleChange}
+                className="w-24 p-2 border border-gray-300 rounded"
                 required
               >
-                <option value="">Select Gender...</option>
-                <option value="Female">Female</option>
-                <option value="Male">Male</option>
+                <option value="+263">+263</option>
+                <option value="+27">+27</option>
+                <option value="+260">+260</option>
+                <option value="+267">+267</option>
+                <option value="+258">+258</option>
               </select>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                className="flex-1 p-2 border border-gray-300 rounded"
+                placeholder="Phone Number"
+                pattern="[0-9]{9}"
+                title="Please enter 9 digits"
+                required
+              />
             </div>
-          )}
 
-          <div>
-            <input
-              type="tel"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
-              placeholder="Phone Number"
-              required
-            />
-          </div>
+            <div className="flex flex-col mb-4">
+              <label className="text-lg font-semibold mb-2">Specify your Account</label>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
+                {/* UserType Options */}
+                {['student', 'teacher', 'staff', 'parent', 'alumni', 'contractor'].map((type) => (
+                  <div
+                    key={type}
+                    className={`cursor-pointer p-2 border border-gray-300 rounded text-center ${
+                      formData.userType === type ? 'bg-main2' : ''
+                    }`}
+                    onClick={() => handleUserTypeSelect(type)}
+                  >
+                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                  </div>
+                ))}
+              </div>
+            </div>
 
-          <div className="flex flex-col mb-4">
-            <label className="text-lg font-semibold mb-2">Specify your Account</label>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
-              {/* UserType Options */}
-              {['student', 'teacher', 'staff', 'parent', 'alumni', 'contractor'].map((type) => (
-                <div
-                  key={type}
-                  className={`cursor-pointer p-2 border border-gray-300 rounded text-center ${
-                    formData.userType === type ? 'bg-main2' : ''
-                  }`}
-                  onClick={() => handleUserTypeSelect(type)}
+            {/* Date of Birth field for student, staff, or teacher */}
+            {(formData.userType === 'student' || formData.userType === 'staff' || formData.userType === 'teacher') && (
+              <div>
+                <label>Date Of Birth</label>
+                <input
+                  type="date"
+                  name="dateOfBirth"
+                  value={formData.dateOfBirth}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </div>
+            )}
+
+            {/* Student Class Level (keep existing student-specific field) */}
+            {formData.userType === 'student' && (
+              <div>
+                <select
+                  name="studentClassLevel"
+                  value={formData.studentClassLevel}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded"
                 >
-                  {type.charAt(0).toUpperCase() + type.slice(1)}
-                </div>
-              ))}
-            </div>
+                  <option value="" disabled>Select Class Level...</option>
+                  <option value="Form 1">Form 1</option>
+                  <option value="Form 2">Form 2</option>
+                  <option value="O' Level">O Level</option>
+                  <option value="A' Level">A Level</option>
+                </select>
+              </div>
+            )}
+
+            {/* Access Level field for staff */}
+            {formData.userType === 'staff' && (
+              <div>
+                <input
+                  type="hidden"
+                  name="accessLevel"
+                  value={formData.accessLevel}
+                />
+              </div>
+            )}
+
+            {/* Submit button */}
+            <button type="submit" className="mt-4 bg-blue-500 text-white py-2 rounded" disabled={isSubmitting}>
+              {isSubmitting ? 'Submitting...' : 'Submit'}
+            </button>
           </div>
+        </form>
 
-          {/* Date of Birth field for student, staff, or teacher */}
-          {(formData.userType === 'student' || formData.userType === 'staff' || formData.userType === 'teacher') && (
-            <div>
-              <label>Date Of Birth</label>
-              <input
-                type="date"
-                name="dateOfBirth"
-                value={formData.dateOfBirth}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-          )}
-
-          {/* Student Class Level (keep existing student-specific field) */}
-          {formData.userType === 'student' && (
-            <div>
-              <select
-                name="studentClassLevel"
-                value={formData.studentClassLevel}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
-              >
-                <option value="" disabled>Select Class Level...</option>
-                <option value="Form 1">Form 1</option>
-                <option value="Form 2">Form 2</option>
-                <option value="O' Level">O Level</option>
-                <option value="A' Level">A Level</option>
-              </select>
-            </div>
-          )}
-
-          {/* Access Level field for staff */}
-          {formData.userType === 'staff' && (
-            <div>
-              <input
-                type="hidden"
-                name="accessLevel"
-                value={formData.accessLevel}
-              />
-            </div>
-          )}
-
-          {/* Submit button */}
-          <button type="submit" className="mt-4 bg-blue-500 text-white py-2 rounded" disabled={isSubmitting}>
-            {isSubmitting ? 'Submitting...' : 'Submit'}
-          </button>
-        </div>
-      </form>
-
-      {/* Error message display */}
-      {errorMessage && <div className="text-red-500 mt-2">{errorMessage}</div>}
-      <ToastContainer />
-    </div>
+        {/* Error message display */}
+        {errorMessage && <div className="text-red-500 mt-2">{errorMessage}</div>}
+        <ToastContainer />
+      </div>
+    </>
   );
 };
 

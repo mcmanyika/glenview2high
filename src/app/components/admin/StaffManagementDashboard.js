@@ -142,7 +142,7 @@ const StaffManagementDashboard = () => {
   }
 
   return (
-    <div className="w-full  p-6 bg-white shadow-md rounded-lg">
+    <div className="w-full bg-white">
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div className="p-4 bg-blue-200 rounded-lg text-center shadow-sm">

@@ -16,6 +16,8 @@ const Accounts = () => {
   const [modalOpen, setModalOpen] = useState(false); // For modal visibility
   const [formData, setFormData] = useState({}); // For the form data
   const [searchQuery, setSearchQuery] = useState(''); // For search query
+  const [sortField, setSortField] = useState('firstName');
+  const [sortDirection, setSortDirection] = useState('asc');
 
   useEffect(() => {
     const admissionsRef = ref(database, 'userTypes');
@@ -43,7 +45,31 @@ const Accounts = () => {
 
   const indexOfLastAdmission = currentPage * itemsPerPage;
   const indexOfFirstAdmission = indexOfLastAdmission - itemsPerPage;
-  const currentAdmissions = filteredAdmissions.slice(indexOfFirstAdmission, indexOfLastAdmission);
+
+  const handleSort = (field) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
+
+  const sortedAdmissions = [...filteredAdmissions].sort((a, b) => {
+    let aValue = a[sortField];
+    let bValue = b[sortField];
+    
+    if (sortField === 'firstName') {
+      aValue = `${a.firstName} ${a.lastName}`.toLowerCase();
+      bValue = `${b.firstName} ${b.lastName}`.toLowerCase();
+    }
+    
+    if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
+    if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  const currentAdmissions = sortedAdmissions.slice(indexOfFirstAdmission, indexOfLastAdmission);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -107,7 +133,7 @@ const Accounts = () => {
   }, [modalOpen]);
 
   return (
-    <div className="w-full  p-4 bg-white shadow-md rounded-md">
+    <div className="w-full p-4 bg-white shadow-md rounded-md">
       {/* Search Bar */}
       <div className="mb-4">
         <input
@@ -119,38 +145,59 @@ const Accounts = () => {
         />
       </div>
 
-      {/* Grid of Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-2  gap-6">
-        {currentAdmissions.map((admission) => (
-          <div
-            key={admission.id}
-            className="bg-gray-10 p-4 rounded-md shadow hover:bg-gray-50 cursor-pointer overflow-hidden"
-            onClick={() => openModal(admission)}
-          >
-            <p className="text-lg font-bold mb-2 capitalize truncate">
-              {admission.firstName} {admission.lastName}
-            </p>
-            <p className="text-sm mb-1 truncate">
-              <span className="font-semibold">Email:</span> {admission.email}
-            </p>
-            {admission.class && (
-              <p className="text-sm mb-1 truncate">
-                <span className="font-semibold">Class:</span> {admission.class}
-              </p>
-            )}
-            <p className="text-sm mb-1 truncate">
-              <span className="font-semibold">Phone:</span> {admission.phone}
-            </p>
-            <p className="text-sm mb-1 truncate">
-              <span className="font-semibold">Status:</span> {admission.status}
-            </p>
-          </div>
-        ))}
+      {/* Table */}
+      <div className="overflow-x-auto">
+        <table className="min-w-full table-auto text-base">
+          <thead>
+            <tr className="bg-gray-100">
+              <th 
+                className="px-3 py-1.5 text-left text-sm font-medium cursor-pointer hover:bg-gray-200"
+                onClick={() => handleSort('firstName')}
+              >
+                Name {sortField === 'firstName' && (sortDirection === 'asc' ? '↑' : '↓')}
+              </th>
+              <th 
+                className="px-3 py-1.5 text-left text-sm font-medium cursor-pointer hover:bg-gray-200"
+                onClick={() => handleSort('email')}
+              >
+                Email {sortField === 'email' && (sortDirection === 'asc' ? '↑' : '↓')}
+              </th>
+              <th 
+                className="px-3 py-1.5 text-left text-sm font-medium cursor-pointer hover:bg-gray-200"
+                onClick={() => handleSort('phone')}
+              >
+                Phone {sortField === 'phone' && (sortDirection === 'asc' ? '↑' : '↓')}
+              </th>
+              <th 
+                className="px-3 py-1.5 text-left text-sm font-medium cursor-pointer hover:bg-gray-200"
+                onClick={() => handleSort('status')}
+              >
+                Status {sortField === 'status' && (sortDirection === 'asc' ? '↑' : '↓')}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentAdmissions.map((admission) => (
+              <tr
+                key={admission.id}
+                className="border-b hover:bg-gray-50 cursor-pointer text-sm"
+                onClick={() => openModal(admission)}
+              >
+                <td className="px-3 py-1.5 capitalize">
+                  {admission.firstName} {admission.lastName}
+                </td>
+                <td className="px-3 py-1.5">{admission.email}</td>
+                <td className="px-3 py-1.5">{admission.phone || '-'}</td>
+                <td className="px-3 py-1.5">{admission.status}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       {/* Pagination */}
       <div className="flex justify-between items-center mt-4">
-        <p className="text-sm">
+        <p className="text-base">
           Showing {indexOfFirstAdmission + 1} to{" "}
           {Math.min(indexOfLastAdmission, filteredAdmissions.length)} of{" "}
           {filteredAdmissions.length} admissions
@@ -160,7 +207,7 @@ const Accounts = () => {
             <button
               key={i + 1}
               onClick={() => paginate(i + 1)}
-              className={`px-3 py-1 mx-1 text-sm rounded ${currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+              className={`px-3 py-1 mx-1 text-base rounded ${currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200"}`}
             >
               {i + 1}
             </button>

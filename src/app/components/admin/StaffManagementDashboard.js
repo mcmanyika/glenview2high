@@ -246,7 +246,7 @@ const StaffManagementDashboard = () => {
                 <td className="py-2 px-4">
                   {staff.status === "Active" ? (
                     <svg 
-                      className="w-5 h-5 text-green-600" 
+                      className="w-5 h-5 text-blue-400" 
                       fill="none" 
                       stroke="currentColor" 
                       viewBox="0 0 24 24"
@@ -260,7 +260,7 @@ const StaffManagementDashboard = () => {
                     </svg>
                   ) : (
                     <svg 
-                      className="w-5 h-5 text-yellow-600" 
+                      className="w-5 h-5 text-blue-400" 
                       fill="none" 
                       stroke="currentColor" 
                       viewBox="0 0 24 24"

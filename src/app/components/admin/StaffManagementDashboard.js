@@ -290,15 +290,15 @@ const StaffManagementDashboard = () => {
                 className="border-b hover:bg-gray-100 cursor-pointer"
                 onClick={() => handleStaffClick(staff)}
               >
-                <td className="py-2 px-4 capitalize">{staff.name}</td>
-                <td className="py-2 px-4 capitalize">{staff.userType}</td>
+                <td className="py-2 px-4">{staff.name.toLowerCase().replace(/\b\w/g, letter => letter.toUpperCase())}</td>
+                <td className="py-2 px-4">{staff.userType.toLowerCase().replace(/\b\w/g, letter => letter.toUpperCase())}</td>
                 <td className="py-2 px-4">{staff.phone}</td>
                 <td
                   className={`py-2 px-4 font-semibold ${
                     staff.status === "Active" ? "text-green-600" : "text-yellow-600"
                   }`}
                 >
-                  {staff.status}
+                  {staff.status.toLowerCase().replace(/\b\w/g, letter => letter.toUpperCase())}
                 </td>
                 <td className="py-2 px-4">
                   <button

@@ -161,7 +161,7 @@ const StudentDash = () => {
     );
   }
 
-  if (studentStatus !== 'Accepted') {
+  if (studentStatus !== 'Active') {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="text-red-500 text-center p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">

@@ -17,6 +17,7 @@ const NoticeList = () => {
   const [isCreateNoticeModalOpen, setIsCreateNoticeModalOpen] = useState(false);
   const [userType, setUserType] = useGlobalState('userType');
   const [selectedNotice, setSelectedNotice] = useState(null);
+  const [accessLevel, setAccessLevel] = useState(0);
 
   useEffect(() => {
     if (status === 'authenticated') {
@@ -33,8 +34,9 @@ const NoticeList = () => {
             if (foundUserID) {
               const userData = users[foundUserID];
               setUserType(userData.userType);
+              setAccessLevel(userData.accessLevel || 0);
 
-              if (userData.userType !== 'student') {
+              if (userData.accessLevel === 5) {
                 setSelectedComponent(
                   <div className="flex justify-between items-center dark:text-white">
                     <h2 className="text-lg font-bold">Notices</h2>
@@ -203,10 +205,10 @@ const NoticeList = () => {
                     >
                       {formatDate(notice.date)}
                     </button>
-                    {userType !== 'student' && (
+                    {accessLevel === 5 && (
                       <button
                         onClick={(e) => {
-                          e.stopPropagation(); // Prevent modal from opening when delete is clicked
+                          e.stopPropagation();
                           handleDeleteNotice(notice.id);
                         }}
                         className="text-red-500 hover:text-red-700 p-2 rounded-full hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors duration-200"

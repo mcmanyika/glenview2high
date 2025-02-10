@@ -296,7 +296,7 @@ const StaffManagementDashboard = () => {
             className={`px-3 py-1 rounded ${
               currentPage === 1
                 ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                : 'bg-blue-500 text-white hover:bg-blue-600'
+                : 'bg-blue-400 text-white hover:bg-blue-500'
             }`}
           >
             Previous
@@ -308,7 +308,7 @@ const StaffManagementDashboard = () => {
               onClick={() => handlePageChange(index + 1)}
               className={`px-3 py-1 rounded ${
                 currentPage === index + 1
-                  ? 'bg-blue-500 text-white'
+                  ? 'bg-blue-400 text-white'
                   : 'bg-gray-100 hover:bg-gray-200'
               }`}
             >
@@ -322,7 +322,7 @@ const StaffManagementDashboard = () => {
             className={`px-3 py-1 rounded ${
               currentPage === totalPages
                 ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                : 'bg-blue-500 text-white hover:bg-blue-600'
+                : 'bg-blue-400 text-white hover:bg-blue-500'
             }`}
           >
             Next

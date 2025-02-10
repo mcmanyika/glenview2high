@@ -16,7 +16,7 @@ const UserTypeSelector = ({ userEmail }) => {
     typeOfService: '',
     dateOfBirth: '',
     phone: '',
-    countryCode: '+263', // Add default country code
+    countryCode: '+263',
     userType: '',
     email: userEmail || '',
     studentClassLevel: '',
@@ -62,21 +62,11 @@ const UserTypeSelector = ({ userEmail }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     
-    // Special handling for phone number
+    // Updated phone handling - just store the raw input value
     if (name === 'phone') {
-      let formattedPhone = value;
-      if (!value.startsWith('+263')) {
-        // If input starts with 0, replace it with +263
-        if (value.startsWith('0')) {
-          formattedPhone = '+263' + value.substring(1);
-        } else {
-          // If input doesn't start with +263 or 0, prepend +263
-          formattedPhone = '+263' + value;
-        }
-      }
       setFormData(prev => ({
         ...prev,
-        phone: formattedPhone
+        phone: value
       }));
       return;
     }

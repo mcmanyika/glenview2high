@@ -14,6 +14,7 @@ const AddNoticeForm = ({ onClose }) => {
   const [details, setDetails] = useState("");
   const [postedByState, setPostedBy] = useState(postedBy); // Corrected state name
   const [date, setDate] = useState("");
+  const [audience, setAudience] = useState("all"); // Add new state for audience
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,7 +23,8 @@ const AddNoticeForm = ({ onClose }) => {
       title,
       details,
       postedBy: postedByState,
-      date // Store the original date format
+      date,
+      audience // Add audience to notice data
     };
 
     try {
@@ -42,7 +44,24 @@ const AddNoticeForm = ({ onClose }) => {
   };
 
   return (
-    <div className="bg-white border shadow-sm rounded p-4 ml-0 m-2">
+    <div className="bg-white  p-4 ml-0 m-2 relative">
+      <button
+        onClick={onClose}
+        className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+        type="button"
+      >
+        <svg
+          className="h-6 w-6"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
       <div className="text-2xl font-bold pb-4">Create A Notice</div>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -64,6 +83,8 @@ const AddNoticeForm = ({ onClose }) => {
             value={details}
             onChange={(e) => setDetails(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+            rows="5"
+            minRows="5"
           />
         </div>
         <div>
@@ -82,6 +103,21 @@ const AddNoticeForm = ({ onClose }) => {
             onChange={(e) => setDate(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
           />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Target Audience
+          </label>
+          <select
+            value={audience}
+            onChange={(e) => setAudience(e.target.value)}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+          >
+            <option value="all">All</option>
+            <option value="teachers">Teachers</option>
+            <option value="students">Students</option>
+            <option value="parents">Parents</option>
+          </select>
         </div>
         <button
           type="submit"

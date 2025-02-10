@@ -6,13 +6,16 @@ import { useGlobalState } from '../../store';
 import Modal from './utils/Modal'; // Import Modal component
 import NoticeList from './NoticeList'; // Import the NoticeList component
 import { useTheme } from 'next-themes';
+import { useRouter } from 'next/router'; // Add this import
 
 const NoticeCount = () => {
   const [totalNotices, setTotalNotices] = useState(0);
-  const [routineCount] = useGlobalState('routineCount'); // Access routineCount from global state
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
+  const [routineCount] = useGlobalState('routineCount');
+  const [userType] = useGlobalState('userType'); // Add this line to get userType
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { theme, setTheme } = useTheme();
+  const router = useRouter(); // Add router
 
   useEffect(() => {
     const noticesRef = ref(database, 'notices');
@@ -25,8 +28,15 @@ const NoticeCount = () => {
           ...data[key],
         }));
 
-        // Update total notices count
-        setTotalNotices(noticesArray.length);
+        // Filter notices based on userType
+        const filteredNotices = userType === 'student' 
+          ? noticesArray.filter(notice => 
+              notice.audience === 'all' || notice.audience === 'students'
+            )
+          : noticesArray;
+
+        // Update total notices count with filtered notices
+        setTotalNotices(filteredNotices.length);
       } else {
         setTotalNotices(0);
       }
@@ -36,11 +46,18 @@ const NoticeCount = () => {
 
     // Cleanup subscription on unmount
     return () => unsubscribe();
-  }, []);
+  }, [userType]); // Add userType to dependency array
+
+  const handleNoticeClick = () => {
+    router.push('/admin/notices');
+  };
 
   return (
     <div className="flex">
-      <div className="relative link cursor-pointer flex items-center p-2 mr-4" onClick={() => setIsModalOpen(true)}>
+      <div 
+        className="relative link cursor-pointer flex items-center p-2 mr-4" 
+        onClick={handleNoticeClick} // Changed from setIsModalOpen to handleNoticeClick
+      >
         <span className="absolute top-0 right-4 md:left-6 h-6 w-6 border-2 border-white bg-blue-400 text-center rounded-full text-white font-bold">
           {totalNotices}
         </span>

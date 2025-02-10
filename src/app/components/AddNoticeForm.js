@@ -6,7 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSession } from 'next-auth/react';
 
-const AddNoticeForm = () => {
+const AddNoticeForm = ({ onClose }) => {
   const { data: session } = useSession();
   const postedBy = session.user.name;
 
@@ -17,11 +17,12 @@ const AddNoticeForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     const noticeData = {
       title,
       details,
-      postedBy: postedByState, // Using correct state variable
-      date
+      postedBy: postedByState,
+      date // Store the original date format
     };
 
     try {
@@ -32,6 +33,8 @@ const AddNoticeForm = () => {
       setDetails("");
       setPostedBy(postedBy); // Reset postedBy to session user's name
       setDate("");
+      // Close the modal
+      if (onClose) onClose();
     } catch (error) {
       console.error("Error adding notice: ", error);
       toast.error("Failed to add notice. Please try again.");

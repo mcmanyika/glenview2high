@@ -62,11 +62,15 @@ const UserTypeSelector = ({ userEmail }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     
-    // Updated phone handling - just store the raw input value
+    // Updated phone handling - ensure it starts with 0
     if (name === 'phone') {
+      let phoneValue = value;
+      if (phoneValue && !phoneValue.startsWith('0')) {
+        phoneValue = '0' + phoneValue;
+      }
       setFormData(prev => ({
         ...prev,
-        phone: value
+        phone: phoneValue
       }));
       return;
     }

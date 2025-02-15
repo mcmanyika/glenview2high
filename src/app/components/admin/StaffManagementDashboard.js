@@ -260,7 +260,7 @@ const StaffManagementDashboard = () => {
                     </svg>
                   ) : (
                     <svg 
-                      className="w-5 h-5 text-blue-400" 
+                      className="w-5 h-5 text-red-400" 
                       fill="none" 
                       stroke="currentColor" 
                       viewBox="0 0 24 24"

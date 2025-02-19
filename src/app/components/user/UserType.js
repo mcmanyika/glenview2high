@@ -170,7 +170,7 @@ const UserTypeSelector = ({ userEmail }) => {
         <div className="overlay"></div>
       </div>
       <div className="relative p-4">
-        <div className="bg-white/90 shadow-md rounded-md p-4">
+        <div className="bg-white/80 shadow-md rounded-md p-4">
           <h2 className="text-2xl font-semibold mb-4">Account Details Registration</h2>
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 gap-4 mb-4">

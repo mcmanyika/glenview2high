@@ -260,8 +260,6 @@ const UserTypeSelector = ({ userEmail }) => {
                   onChange={handleChange}
                   className="flex-1 p-2 border border-gray-300 rounded"
                   placeholder="Phone Number"
-                  pattern="[0-9]{9}"
-                  title="Please enter 9 digits"
                   required
                 />
               </div>

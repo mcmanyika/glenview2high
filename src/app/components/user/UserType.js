@@ -268,7 +268,7 @@ const UserTypeSelector = ({ userEmail }) => {
                 <label className="text-lg font-semibold mb-2">Specify your Account</label>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
                   {/* UserType Options */}
-                  {['student', 'teacher', 'staff', 'parent', 'alumni', 'contractor'].map((type) => (
+                  {['student', 'teacher', 'staff', 'parent', 'contractor'].map((type) => (
                     <div
                       key={type}
                       className={`cursor-pointer p-2 border border-gray-300 rounded text-center ${

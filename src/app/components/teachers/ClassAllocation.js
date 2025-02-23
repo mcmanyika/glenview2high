@@ -90,9 +90,9 @@ const ClassAllocation = () => {
     try {
       await push(ref(database, 'classes'), classData);
       toast.success("Class name uploaded successfully!");
-      setTimeout(() => {
-        window.location.reload();
-      }, 4000);
+      setClassName('');
+      setSelectedTeacher('');
+      setTeacherDetails({ firstName: '', lastName: '', email: '', userID: '' });
     } catch (error) {
       console.error("Error uploading class name: ", error);
       toast.error("Failed to upload class name. Please try again.");

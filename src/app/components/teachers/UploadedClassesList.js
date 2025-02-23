@@ -1,8 +1,10 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { ref, onValue } from 'firebase/database';
+import { ref, onValue, remove } from 'firebase/database';
 import { database } from '../../../../utils/firebaseConfig';
 import { useSession } from 'next-auth/react';
+import {  toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UploadedClassesList = () => {
   const { data: session } = useSession();
@@ -13,12 +15,14 @@ const UploadedClassesList = () => {
   const [sortOrder, setSortOrder] = useState('asc'); // Default sort order
   const [currentPage, setCurrentPage] = useState(1); // For pagination
   const classesPerPage = 15; // Number of classes per page
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [classToDelete, setClassToDelete] = useState(null);
 
   useEffect(() => {
     const classesRef = ref(database, "classes");
 
     // Fetch class data from Firebase
-    onValue(classesRef, (snapshot) => {
+    const unsubscribe = onValue(classesRef, (snapshot) => {
       const classList = [];
       snapshot.forEach((childSnapshot) => {
         const classData = childSnapshot.val();
@@ -28,18 +32,17 @@ const UploadedClassesList = () => {
             className: classData.className,
             teacherFirstName: classData.teacherFirstName,
             teacherLastName: classData.teacherLastName,
-            teacherID: classData.teacherID,  // Added teacheruserID
-            teacherEmail: classData.teacherEmail,    // Added teacherEmail
+            teacherID: classData.teacherID,
+            teacherEmail: classData.teacherEmail,
           });
         }
       });
       setClasses(classList);
-    }, {
-      onlyOnce: true, // Fetch only once
     });
 
     return () => {
-      // Cleanup if needed
+      // Cleanup subscription on unmount
+      unsubscribe();
     };
   }, [uploadedBy]);
 
@@ -82,15 +85,63 @@ const UploadedClassesList = () => {
 
   const totalPages = Math.ceil(filteredClasses.length / classesPerPage);
 
+  const initiateDelete = (className) => {
+    setClassToDelete(className);
+    setIsModalOpen(true);
+  };
+
+  const handleDelete = async () => {
+    try {
+      const classesRef = ref(database, "classes");
+      onValue(classesRef, (snapshot) => {
+        snapshot.forEach((childSnapshot) => {
+          const classData = childSnapshot.val();
+          if (classData.className === classToDelete && classData.uploadedBy === uploadedBy) {
+            remove(ref(database, `classes/${childSnapshot.key}`));
+            toast.success(`Successfully deleted ${classToDelete}`);
+          }
+        });
+      }, { onlyOnce: true });
+    } catch (error) {
+      console.error("Error deleting class:", error);
+      toast.error("Failed to delete class. Please try again.");
+    }
+    setIsModalOpen(false);
+    setClassToDelete(null);
+  };
+
   return (
     <div className="bg-white p-4 mt-4 border shadow-sm rounded">
-      
+      {/* Delete Confirmation Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
+            <h3 className="text-lg font-semibold mb-4">Confirm Deletion</h3>
+            <p className="mb-6">Are you sure you want to delete {classToDelete}? This action cannot be undone.</p>
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <input
         type="text"
         placeholder="Search..."
         value={searchTerm}
         onChange={handleSearchChange}
-        className="border border-gray-300 rounded px-2 py-1 mb-4"
+        className="w-full border border-gray-300 rounded px-2 py-1 mb-4"
       />
 
       {currentClasses.length > 0 ? (
@@ -128,6 +179,9 @@ const UploadedClassesList = () => {
                 >
                   Teacher Email {sortKey === 'teacherEmail' && (sortOrder === 'asc' ? '↑' : '↓')}
                 </th>
+                <th className="border border-gray-300 px-4 py-2">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -138,6 +192,14 @@ const UploadedClassesList = () => {
                   <td className="border border-gray-300 px-4 py-2">{classData.teacherFirstName || 'N/A'}</td>
                   <td className="border border-gray-300 px-4 py-2">{classData.teacherLastName || 'N/A'}</td>
                   <td className="border border-gray-300 px-4 py-2 lowercase">{classData.teacherEmail || 'N/A'}</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    <button
+                      onClick={() => initiateDelete(classData.className)}
+                      className="bg-red-500 text-white hover:bg-red-600 px-4 py-2 rounded-full font-medium shadow-sm transition-colors duration-200"
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

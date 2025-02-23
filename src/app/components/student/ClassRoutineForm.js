@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { ref, push, get } from 'firebase/database';
+import { ref, push, get, onValue } from 'firebase/database';
 import { database } from '../../../../utils/firebaseConfig';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { isToday, format } from 'date-fns';
+import Select from 'react-select';
 
 const ClassRoutineForm = () => {
   const { data: session } = useSession();
@@ -19,6 +20,7 @@ const ClassRoutineForm = () => {
   });
 
   const [teachers, setTeachers] = useState([]); // State to store teacher options
+  const [classOptions, setClassOptions] = useState([]); // Changed from setClasses
 
   // Fetch teachers from Firebase 'userTypes' table where userType is 'teacher'
   useEffect(() => {
@@ -33,7 +35,7 @@ const ClassRoutineForm = () => {
               userID,
               ...usersData[userID],
             }))
-            .filter((user) => user.userType === 'teacher');
+            .filter((user) => user.userType === 'teacher' || user.userType === 'Teacher');
           
           setTeachers(filteredTeachers); // Set teacher data into state
         } else {
@@ -48,27 +50,74 @@ const ClassRoutineForm = () => {
     fetchTeachers(); // Call the function to fetch teachers on component mount
   }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  // Add new useEffect to fetch classes
+  useEffect(() => {
+    const fetchClassOptions = async () => {
+      try {
+        const classOptionsRef = ref(database, 't_dict');
+        onValue(classOptionsRef, (snapshot) => {
+          const data = snapshot.val();
+          if (data) {
+            const optionsArray = Object.keys(data)
+              .map((key) => data[key])
+              .filter((item) => item.category === 'level')
+              .map((item) => item.title);
+            setClassOptions(optionsArray);
+          }
+        });
+      } catch (error) {
+        console.error('Error fetching class options:', error);
+      }
+    };
 
-    // Update email when teacher is selected
-    if (name === 'teacher') {
-      // Find the teacher based on their full name
-      const selectedTeacher = teachers.find(
-        (teacher) => `${teacher.firstName} ${teacher.lastName}` === value
-      );
-      setFormData({
-        ...formData,
-        [name]: value, // This will be "FirstName LastName"
-        email: selectedTeacher ? selectedTeacher.email : '', // Set email based on the selected teacher
-      });
-    } else {
+    fetchClassOptions(); // Changed from fetchClasses
+  }, []);
+
+  // Convert class options to format required by react-select
+  const classSelectOptions = classOptions.map(className => ({
+    value: className,
+    label: className
+  }));
+
+  // Modify handleChange function to handle class selection
+  const handleChange = (e) => {
+    // Handle react-select changes for teacher and class
+    if (e && e.target === undefined) {
+      if (e.hasOwnProperty('email')) {
+        // This is the teacher select change
+        setFormData({
+          ...formData,
+          teacher: e?.value || '',
+          email: e?.email || '',
+        });
+      } else {
+        // This is the class select change
+        setFormData({
+          ...formData,
+          studentclass: e?.value || '',
+        });
+      }
+      return;
+    }
+
+    if (e?.target) {
+      // Handle other form fields
+      const { name, value } = e.target;
       setFormData({
         ...formData,
         [name]: value,
       });
     }
   };
+
+  // Modified function to sort teachers alphabetically
+  const teacherOptions = teachers
+    .map(teacher => ({
+      value: `${teacher.firstName} ${teacher.lastName}`,
+      label: `${teacher.firstName} ${teacher.lastName}`,
+      email: teacher.email
+    }))
+    .sort((a, b) => a.label.localeCompare(b.label));
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -164,57 +213,30 @@ const ClassRoutineForm = () => {
             </select>
           </div>
 
-
           {/* Teacher dropdown - dynamically populated */}
           <div className="m-4">
-            <select
-              name="teacher"
-              value={formData.teacher}
+            <Select
+              value={teacherOptions.find(option => option.value === formData.teacher)}
               onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 capitalize rounded"
-              required
-            >
-              <option value="">Select Teacher</option>
-              {teachers.map((teacher, index) => (
-                <option key={index} value={`${teacher.firstName} ${teacher.lastName}`}>
-                  {teacher.firstName} {teacher.lastName}
-                </option>
-              ))}
-            </select>
-          </div>
-
-            <input
-              type="hidden"
-              name="email"
-              value={formData.email}
-              readOnly
-              className="mt-1 block w-full p-2 border border-gray-300 rounded bg-gray-100"
-              placeholder="Teacher's email will be auto-filled"
+              options={teacherOptions}
+              className="text-sm"
+              placeholder="Select Teacher"
+              isClearable
+              isSearchable
             />
+          </div>
 
           {/* Class field */}
           <div className="m-4">
-            <select
-              name="studentclass"
-              value={formData.studentclass}
+            <Select
+              value={classSelectOptions.find(option => option.value === formData.studentclass)}
               onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded"
-              required
-            >
-              <option value="">Select Class</option>
-              <option value="1A">1A</option>
-              <option value="1B">1B</option>
-              <option value="1C">1C</option>
-              <option value="2A">2A</option>
-              <option value="2B">2B</option>
-              <option value="2C">2C</option>
-              <option value="3A">3A</option>
-              <option value="3B">3B</option>
-              <option value="3C">3C</option>
-              <option value="4A">4A</option>
-              <option value="4B">4B</option>
-              <option value="4C">4C</option>
-            </select>
+              options={classSelectOptions}
+              className="text-sm"
+              placeholder="Select Class"
+              isClearable
+              isSearchable
+            />
           </div>
 
           {/* Room field */}

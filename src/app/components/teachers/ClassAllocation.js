@@ -6,6 +6,7 @@ import { FaSpinner } from 'react-icons/fa';
 import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Select from 'react-select';
 
 const ClassAllocation = () => {
   const { data: session, status } = useSession();
@@ -29,7 +30,9 @@ const ClassAllocation = () => {
                 id: key,
                 ...teachersData[key],
               }));
-              const filteredTeachers = teachersArray.filter((teacher) => teacher.userType === 'teacher');
+              const filteredTeachers = teachersArray.filter((teacher) => 
+                teacher.userType === 'Teacher' || teacher.userType === 'teacher'
+              );
               setTeachers(filteredTeachers);
             }
           });
@@ -96,14 +99,35 @@ const ClassAllocation = () => {
     }
   };
 
-  const handleTeacherSelect = (teacher) => {
-    setSelectedTeacher(teacher.id);
-    setTeacherDetails({
-      firstName: teacher.firstName,
-      lastName: teacher.lastName,
-      email: teacher.email,
-      userID: teacher.id,
-    });
+  // Convert teachers array to format required by react-select
+  const teacherOptions = teachers.map(teacher => {
+    const nameParts = [];
+    if (teacher.firstName) nameParts.push(teacher.firstName);
+    if (teacher.lastName) nameParts.push(teacher.lastName);
+    const name = nameParts.length > 0 ? nameParts.join(' ') : '';
+    
+    return {
+      value: teacher.id,
+      label: name,
+      teacher: teacher,
+      sortName: name.toLowerCase()
+    };
+  }).sort((a, b) => a.sortName.localeCompare(b.sortName));
+
+  // Modified handleTeacherSelect to work with react-select
+  const handleTeacherSelect = (selectedOption) => {
+    if (selectedOption) {
+      setSelectedTeacher(selectedOption.value);
+      setTeacherDetails({
+        firstName: selectedOption.teacher.firstName,
+        lastName: selectedOption.teacher.lastName,
+        email: selectedOption.teacher.email,
+        userID: selectedOption.teacher.id,
+      });
+    } else {
+      setSelectedTeacher('');
+      setTeacherDetails({ firstName: '', lastName: '', email: '', userID: '' });
+    }
   };
 
   if (isLoading) {
@@ -121,20 +145,21 @@ const ClassAllocation = () => {
   return (
     <div className="w-full text-sm p-4 bg-white">
       <div className="text-xl font-bold pb-4">Allocate Teacher To Class</div>
+      
+      <div className="text-sm text-gray-600 mb-2">
+        Total Teachers: {teachers.length}
+      </div>
 
-      {/* Select Teacher */}
-      <select
-        value={selectedTeacher}
-        onChange={(e) => handleTeacherSelect(teachers.find(teacher => teacher.id === e.target.value))}
-        className="p-2 border border-gray-300 rounded w-full mb-4"
-      >
-        <option value="" disabled>Select a Teacher...</option>
-        {teachers.map((teacher) => (
-          <option key={teacher.id} value={teacher.id}>
-            {`${teacher.firstName || 'N/A'} ${teacher.lastName || 'N/A'}`}
-          </option>
-        ))}
-      </select>
+      <Select
+        value={teacherOptions.find(option => option.value === selectedTeacher)}
+        onChange={handleTeacherSelect}
+        options={teacherOptions}
+        isClearable
+        isSearchable
+        placeholder="Select a Teacher..."
+        className="mb-4"
+        classNamePrefix="react-select"
+      />
 
       <div className="bg-white border shadow-sm rounded p-4 ml-0 m-2">
         <form onSubmit={handleClassSubmit} className="space-y-4">

@@ -4,6 +4,11 @@ import { ref, onValue, update } from 'firebase/database';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import EditAdmissionForm from '../admin/admissions/EditAdmissionForm';
+import { Pie } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+
+// Register ChartJS components
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Accounts = () => {
   const { data: session } = useSession();
@@ -132,8 +137,72 @@ const Accounts = () => {
     };
   }, [modalOpen]);
 
+  // Add this new function to calculate gender counts
+  const calculateGenderDistribution = () => {
+    const genderCounts = filteredAdmissions.reduce((acc, admission) => {
+      const gender = admission.gender || 'Not Specified';
+      acc[gender] = (acc[gender] || 0) + 1;
+      return acc;
+    }, {});
+
+    return {
+      labels: Object.keys(genderCounts),
+      datasets: [
+        {
+          data: Object.values(genderCounts),
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.8)',   // pink for female
+            'rgba(54, 162, 235, 0.8)',   // blue for male
+            'rgba(156, 156, 156, 0.8)',  // grey for others/not specified
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(156, 156, 156, 1)',
+          ],
+          borderWidth: 1,
+        },
+      ],
+    };
+  };
+
   return (
     <div className="w-full p-4 bg-white shadow-md rounded-md">
+      {/* Add this section above the search bar */}
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-4">Gender Distribution</h2>
+        <div className="w-full max-w-md h-64 mx-auto">
+          <Pie 
+            data={calculateGenderDistribution()}
+            options={{
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: 'bottom',
+                  labels: {
+                    font: {
+                      size: 14
+                    }
+                  }
+                },
+                tooltip: {
+                  callbacks: {
+                    label: (context) => {
+                      const dataset = context.dataset;
+                      const total = dataset.data.reduce((acc, data) => acc + data, 0);
+                      const value = dataset.data[context.dataIndex];
+                      const percentage = ((value / total) * 100).toFixed(1);
+                      return `${context.label}: ${value} (${percentage}%)`;
+                    }
+                  }
+                }
+              }
+            }}
+          />
+        </div>
+      </div>
+
       {/* Search Bar */}
       <div className="mb-4">
         <input
@@ -217,10 +286,13 @@ const Accounts = () => {
 
       {/* Modal */}
       {modalOpen && selectedAdmission && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4 z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-end z-50">
           <div 
             id="modal-content"
-            className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto"
+            className="bg-white dark:bg-gray-800 w-1/2 h-full animate-slide-left"
+            style={{
+              animation: 'slideIn 0.3s ease-out'
+            }}
           >
             <div className="sticky top-0 bg-white dark:bg-gray-800 border-b dark:border-gray-700 p-4">
               <div className="flex justify-between items-center">
@@ -245,7 +317,7 @@ const Accounts = () => {
                 </button>
               </div>
             </div>
-            <div className="p-6">
+            <div className="p-6 overflow-y-auto h-[calc(100vh-80px)]">
               <EditAdmissionForm
                 formData={formData}
                 handleInputChange={handleInputChange}

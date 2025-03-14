@@ -167,10 +167,9 @@ const Accounts = () => {
   };
 
   return (
-    <div className="w-full p-4 bg-white shadow-md rounded-md">
+    <div className="w-full bg-white ">
       {/* Add this section above the search bar */}
       <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-4">Gender Distribution</h2>
         <div className="w-full max-w-md h-64 mx-auto">
           <Pie 
             data={calculateGenderDistribution()}
@@ -202,7 +201,7 @@ const Accounts = () => {
           />
         </div>
       </div>
-
+<div className='p-4 shadow-md rounded-md'>
       {/* Search Bar */}
       <div className="mb-4">
         <input
@@ -215,7 +214,7 @@ const Accounts = () => {
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto ">
         <table className="min-w-full table-auto text-base">
           <thead>
             <tr className="bg-gray-100">
@@ -225,12 +224,7 @@ const Accounts = () => {
               >
                 Name {sortField === 'firstName' && (sortDirection === 'asc' ? '↑' : '↓')}
               </th>
-              <th 
-                className="px-3 py-1.5 text-left text-sm font-medium cursor-pointer hover:bg-gray-200"
-                onClick={() => handleSort('email')}
-              >
-                Email {sortField === 'email' && (sortDirection === 'asc' ? '↑' : '↓')}
-              </th>
+             
               <th 
                 className="px-3 py-1.5 text-left text-sm font-medium cursor-pointer hover:bg-gray-200"
                 onClick={() => handleSort('phone')}
@@ -255,13 +249,13 @@ const Accounts = () => {
                 <td className="px-3 py-1.5 capitalize">
                   {admission.firstName} {admission.lastName}
                 </td>
-                <td className="px-3 py-1.5">{admission.email}</td>
                 <td className="px-3 py-1.5">{admission.phone || '-'}</td>
                 <td className="px-3 py-1.5">{admission.status}</td>
               </tr>
             ))}
           </tbody>
         </table>
+      </div>
       </div>
 
       {/* Pagination */}

@@ -227,9 +227,9 @@ const Accounts = () => {
              
               <th 
                 className="px-3 py-1.5 text-left text-sm font-medium cursor-pointer hover:bg-gray-200"
-                onClick={() => handleSort('phone')}
+                onClick={() => handleSort('class')}
               >
-                Phone {sortField === 'phone' && (sortDirection === 'asc' ? '↑' : '↓')}
+                Student Class {sortField === 'class' && (sortDirection === 'asc' ? '↑' : '↓')}
               </th>
               <th 
                 className="px-3 py-1.5 text-left text-sm font-medium cursor-pointer hover:bg-gray-200"
@@ -249,7 +249,7 @@ const Accounts = () => {
                 <td className="px-3 py-1.5 capitalize">
                   {admission.firstName} {admission.lastName}
                 </td>
-                <td className="px-3 py-1.5">{admission.phone || '-'}</td>
+                <td className="px-3 py-1.5">{admission.class || '-'}</td>
                 <td className="px-3 py-1.5">{admission.status}</td>
               </tr>
             ))}
